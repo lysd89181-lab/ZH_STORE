@@ -1,340 +1,302 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZH-STORE</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZH STORE | المتجر المتكامل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0a1a;
+            --main-purple: #2d005e;
+            --accent-yellow: #ffeb3b;
+            --card-bg: #1a1525;
+            --input-bg: #252035;
+            --text-color: #ffffff;
+            --border: #3d3450;
+        }
 
-<style>
-:root{
---bg:#0a0a0a;
---glass:rgba(255,255,255,0.05);
---card:rgba(20,20,20,0.75);
---accent:#ff8c00;
---accent2:#ff3c00;
---border:rgba(255,140,0,0.3);
---text:#fff;
---muted:#aaa;
-}
-*{box-sizing:border-box}
-body{
-margin:0;
-font-family:'Cairo',sans-serif;
-background:radial-gradient(circle at top,#1a0f00,#000);
-color:var(--text);
-padding-bottom:190px;
-}
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 22px;
-background:rgba(0,0,0,0.6);
-backdrop-filter:blur(15px);
-border-bottom:1px solid var(--border);
-box-shadow:0 0 30px rgba(255,140,0,.2);
-}
-.logo{
-font-size:24px;
-font-weight:900;
-background:linear-gradient(45deg,var(--accent),var(--accent2));
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-text-shadow:0 0 20px rgba(255,140,0,.6);
-}
-.hero{text-align:center;padding:35px 20px}
-.hero h1{margin:0;font-size:28px;color:var(--accent)}
-.hero p{color:var(--muted);margin-top:8px}
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 40px;
+        }
 
-.nav-scroll{
-display:flex;
-overflow-x:auto;
-gap:10px;
-padding:15px;
-}
-.nav-item{
-padding:8px 16px;
-border-radius:30px;
-background:var(--glass);
-border:1px solid var(--border);
-cursor:pointer;
-font-size:13px;
-transition:.3s;
-}
-.nav-item:hover{
-background:rgba(255,140,0,.15);
-transform:scale(1.05);
-}
+        .container {
+            width: 92%;
+            max-width: 550px;
+            margin-top: 20px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+        }
 
-.payment-methods{
-display:flex;
-gap:10px;
-padding:0 15px 15px;
-}
-.pay-card{
-flex:1;
-padding:12px;
-border-radius:15px;
-text-align:center;
-background:var(--glass);
-border:1px solid var(--border);
-cursor:pointer;
-transition:.3s;
-}
-.pay-card.active{
-background:rgba(255,140,0,.2);
-color:var(--accent);
-box-shadow:0 0 20px rgba(255,140,0,.5);
-}
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.category-title{
-margin:25px 15px 10px;
-font-size:20px;
-color:var(--accent);
-font-weight:bold;
-border-right:4px solid var(--accent);
-padding-right:10px;
-}
+        .header-section img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-yellow);
+            margin-bottom: 10px;
+        }
 
-.products-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px;
-padding:0 12px;
-}
+        label {
+            display: block;
+            color: var(--accent-yellow);
+            margin: 18px 0 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
 
-.product-card{
-background:var(--card);
-border-radius:18px;
-border:1px solid var(--border);
-overflow:hidden;
-backdrop-filter:blur(12px);
-transition:.4s;
-box-shadow:0 10px 25px rgba(0,0,0,.6);
-}
-.product-card:hover{
-transform:translateY(-6px) scale(1.02);
-box-shadow:0 0 30px rgba(255,140,0,.4);
-}
+        select, input {
+            width: 100%;
+            padding: 14px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Cairo';
+            outline: none;
+            transition: 0.3s;
+        }
 
-.img-container{height:120px;overflow:hidden}
-.product-img{width:100%;height:100%;object-fit:cover}
+        select:focus, input:focus {
+            border-color: var(--accent-yellow);
+        }
 
-.product-info{padding:12px;text-align:center}
-.product-name{font-size:14px;font-weight:bold;margin-bottom:6px}
-.price-box{
-color:var(--accent);
-font-size:18px;
-font-weight:900;
-margin:6px 0;
-}
-.qty-input{
-width:100%;
-padding:8px;
-border-radius:10px;
-border:1px solid #333;
-background:#000;
-color:#fff;
-margin-bottom:8px;
-text-align:center;
-}
-.add-to-cart-btn{
-width:100%;
-padding:10px;
-border:none;
-border-radius:12px;
-font-weight:bold;
-background:linear-gradient(45deg,var(--accent),var(--accent2));
-color:#000;
-cursor:pointer;
-transition:.3s;
-}
-.add-to-cart-btn:hover{
-transform:scale(1.05);
-box-shadow:0 0 20px rgba(255,140,0,.8);
-}
+        .description-box {
+            background: #120e1d;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 13px;
+            line-height: 1.8;
+            border-right: 5px solid var(--accent-yellow);
+            display: none;
+            color: #ddd;
+        }
 
-.cart-footer{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-padding:18px;
-background:rgba(0,0,0,.8);
-backdrop-filter:blur(15px);
-border-top:1px solid var(--border);
-}
-.cart-items-list{
-max-height:70px;
-overflow:auto;
-font-size:12px;
-color:#ccc;
-margin-bottom:8px;
-}
-.total-row{
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-.send-order{
-background:linear-gradient(45deg,var(--accent),var(--accent2));
-border:none;
-padding:12px 25px;
-border-radius:25px;
-font-weight:bold;
-cursor:pointer;
-box-shadow:0 0 25px rgba(255,140,0,.7);
-}
-</style>
+        .price-container {
+            background: linear-gradient(90deg, var(--main-purple), #4a148c);
+            color: var(--accent-yellow);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 900;
+            margin-top: 25px;
+            border: 1px solid var(--accent-yellow);
+        }
+
+        .btn-order {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent-yellow);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 17px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 235, 59, 0.3);
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .pay-btn {
+            padding: 10px;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .pay-btn.active {
+            background: var(--accent-yellow);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent-yellow);
+        }
+    </style>
 </head>
 <body>
 
-<div class="header">
-<div class="logo">ZH-STORE</div>
-<div>🔥</div>
-</div>
+<div class="container">
+    <div class="header-section">
+        <img src="logo.jpg" alt="ZH STORE" onerror="this.style.display='none'">
+        <h1 style="color: var(--accent-yellow); margin: 0; font-size: 24px;">ZH STORE</h1>
+        <p style="font-size: 12px; color: #aaa;">عالم الخدمات الرقمية في مكان واحد</p>
+    </div>
 
-<div class="hero">
-<h1>متجر ZH-STORE الرقمي</h1>
-<p>شحن ألعاب • متابعين • اشتراكات بأفضل الأسعار</p>
-</div>
+    <label>اختيار القسم</label>
+    <select id="mainCategory" onchange="loadServices()">
+        <option value="">-- اختر القسم --</option>
+        <option value="ps">🎮 ألعاب بلايستيشن (ثابت 20 د.ل)</option>
+        <option value="steam">⚙️ عروض ومنتجات ستيم</option>
+        <option value="tiktok">📱 خدمات تيك توك</option>
+        <option value="insta">📸 خدمات انستقرام</option>
+        <option value="social">🌐 فيسبوك وتيليجرام</option>
+        <option value="games">🔫 شدات ببجي وجواهر</option>
+        <option value="apps">🎬 اشتراكات بريميوم</option>
+    </select>
 
-<div class="nav-scroll" id="nav-scroll"></div>
+    <label>الخدمة المطلوبة</label>
+    <select id="subService" onchange="showDesc()">
+        <option value="">-- اختر القسم أولاً --</option>
+    </select>
 
-<div class="payment-methods">
-<div class="pay-card active" onclick="setMethod(this,'كاش',0)">💵 كاش</div>
-<div class="pay-card" onclick="setMethod(this,'لبيانا',2)">📱 لبيانا (+2)</div>
-<div class="pay-card" onclick="setMethod(this,'مدار',2)">📡 مدار (+2)</div>
-</div>
+    <div id="descBox" class="description-box">
+        <div id="descContent"></div>
+    </div>
 
-<div id="shop-container"></div>
+    <label>الرابط / اسم المستخدم / ID</label>
+    <input type="text" id="userInput" placeholder="ادخل البيانات المطلوبة هنا...">
 
-<div class="cart-footer">
-<div id="cart-items-list" class="cart-items-list"></div>
-<div class="total-row">
-<div>
-<span style="font-size:12px;color:#aaa;">الإجمالي:</span><br>
-<strong id="cart-total" style="font-size:22px;color:var(--accent);">0.00 د.ل</strong>
-</div>
-<button class="send-order" onclick="sendWhatsApp()">إرسال الطلب 🚀</button>
-</div>
+    <label>الكمية</label>
+    <input type="number" id="userQty" value="1" min="1" oninput="calc()">
+
+    <label>طريقة الدفع</label>
+    <div class="payment-grid">
+        <div class="pay-btn active" onclick="setPay(this, 0)">كاش</div>
+        <div class="pay-btn" onclick="setPay(this, 2)">لبيانا (+2)</div>
+        <div class="pay-btn" onclick="setPay(this, 2)">مدار (+2)</div>
+    </div>
+
+    <div class="price-container" id="finalPrice">0.00 د.ل</div>
+
+    <button class="btn-order" onclick="sendToWA()">إتمام الطلب عبر واتساب 🚀</button>
 </div>
 
 <script>
-let currentMethod="كاش";
-let pricePlus=0;
-let cart=[];
-const phone="218910834391";
+    const catalog = {
+        ps: [
+            {name: "Spider-Man 2", price: 20, d: "لعبة كاملة لجهاز PS5 - أصلية"},
+            {name: "God of War Ragnarök", price: 20, d: "اللعبة كاملة - تدعم اللغة العربية"},
+            {name: "Elden Ring", price: 20, d: "نسخة المتجر الرسمية - ضمان مدى الحياة"},
+            {name: "FC 25 (FIFA)", price: 20, d: "أحدث نسخة من سلسلة فيفا الشهيرة"},
+            {name: "GTA V", price: 20, d: "قراند 5 النسخة المحسنة للجيل الجديد"},
+            {name: "Resident Evil 4 Remake", price: 20, d: "اللعبة كاملة - رعب وإثارة"},
+            {name: "Hogwarts Legacy", price: 20, d: "عالم هاري بوتر السحري"},
+            {name: "Red Dead Redemption 2", price: 20, d: "أسطورة الغرب الأمريكي"},
+            {name: "Cyberpunk 2077", price: 20, d: "نسخة Ultimate الشاملة"},
+            {name: "The Last of Us Part II", price: 20, d: "أقوى تجربة سينمائية"},
+            {name: "Ghost of Tsushima", price: 20, d: "نسخة المخرج - كاملة"},
+            {name: "Assassin's Creed Mirage", price: 20, d: "تجربة بغداد باللغة العربية"},
+            {name: "Black Myth: Wukong", price: 20, d: "لعبة العام - أداء خرافي"}
+        ],
+        steam: [
+            {name: "بطاقة ستيم 5 دولار", price: 35, d: "كود رقمي يشحن أي حساب"},
+            {name: "بطاقة ستيم 10 دولار", price: 68, d: "شحن فوري ومباشر"},
+            {name: "شحن حساب ستيم (تركي)", price: 50, d: "زيادة رصيد الحساب التركي"},
+            {name: "ستيم ديك قسائم", price: 10, d: "قسائم تخفيض متنوعة"}
+        ],
+        tiktok: [
+            {name: "1000 متابع (حقيقي)", price: 15, d: "متابعين حقيقيين - ضمان 30 يوم"},
+            {name: "1000 لايك (سريع)", price: 5, d: "تفاعل فوري على المنشور"},
+            {name: "1000 مشاهدة (اكسبلور)", price: 2, d: "تزيد من فرص ظهور الفديو"},
+            {name: "100 مشاركة (Share)", price: 3, d: "نشر الفديو على نطاق واسع"}
+        ],
+        insta: [
+            {name: "1000 متابع (ضمان)", price: 12, d: "تعويض تلقائي في حال النقص"},
+            {name: "1000 لايك (عربي)", price: 6, d: "تفاعل من حسابات عربية"},
+            {name: "1000 مشاهدة ريلز", price: 3, d: "زيادة مشاهدات مقاطع الريلز"}
+        ],
+        social: [
+            {name: "1000 متابع فيسبوك", price: 18, d: "للملفات الشخصية والبيج"},
+            {name: "1000 عضو تيليجرام", price: 20, d: "أعضاء للقنوات والمجموعات"}
+        ],
+        games: [
+            {name: "60 شدة ببجي", price: 11, d: "شحن رسمي عبر الـ ID"},
+            {name: "325 شدة ببجي", price: 55, d: "شحن فوري - رسمي"},
+            {name: "110 جوهرة فري فاير", price: 15, d: "شحن سريع عبر الـ ID"}
+        ],
+        apps: [
+            {name: "نتفليكس (شهر)", price: 30, d: "بروفايل خاص - جودة 4K"},
+            {name: "شاهد VIP (شهر)", price: 35, d: "شامل الرياضة والمسلسلات"},
+            {name: "يوتيوب بريميوم (شهر)", price: 15, d: "بدون إعلانات - تشغيل خلفية"},
+            {name: "ChatGPT Plus", price: 240, d: "اشتراك الذكاء الاصطناعي المدفوع"}
+        ]
+    };
 
-/* ================= الخدمات كاملة ================= */
-const categories={
-"تيك توك":[
-{name:"1000 متابع تيك توك",price:12,img:"tiktok.jpg",isSocial:true},
-{name:"1000 لايك تيك توك",price:3,img:"tiktok.jpg",isSocial:true},
-{name:"1000 مشاهدة تيك توك",price:1,img:"tiktok.jpg",isSocial:true},
-{name:"100 مشاركة تيك توك",price:1,img:"tiktok.jpg",isSocial:true}
-],
-"انستقرام":[
-{name:"1000 متابع انستقرام",price:8,img:"instagram.jpg",isSocial:true},
-{name:"1000 لايك انستقرام",price:4,img:"instagram.jpg",isSocial:true},
-{name:"1000 مشاهدة انستقرام",price:1,img:"instagram.jpg",isSocial:true}
-],
-"فيسبوك":[
-{name:"1000 متابع صفحة",price:5,img:"facebook.jpg",isSocial:true},
-{name:"1000 مشاهدة ريلز",price:1,img:"facebook.jpg",isSocial:true}
-],
-"ببجي موبايل":[
-{name:"60 شدة",price:11,img:"pubg.jpg"},
-{name:"120 شدة",price:22,img:"pubg.jpg"},
-{name:"325 شدة",price:55,img:"pubg.jpg"},
-{name:"660 شدة",price:115,img:"pubg.jpg"}
-],
-"فري فاير":[
-{name:"110 جوهرة",price:20,img:"freefire.jpg"},
-{name:"221 جوهرة",price:32,img:"freefire.jpg"},
-{name:"2420 جوهرة",price:225,img:"freefire.jpg"}
-],
-"نجوم تيليجرام":[
-{name:"100 نجمة",price:25,img:"telegram.jpg"},
-{name:"250 نجمة",price:59,img:"telegram.jpg"},
-{name:"500 نجمة",price:113,img:"telegram.jpg"}
-],
-"اشتراكات":[
-{name:"GPT شهري",price:250,img:"gpt.jpg"},
-{name:"نتفليكس شهر",price:30,img:"netflix.jpg"},
-{name:"شاهد VIP",price:30,img:"shahid.jpg"}
-]
-};
+    let payExtra = 0;
 
-/* ================================================ */
+    function loadServices() {
+        const cat = document.getElementById('mainCategory').value;
+        const sub = document.getElementById('subService');
+        sub.innerHTML = '<option value="">-- اختر الخدمة --</option>';
+        if(cat) {
+            catalog[cat].forEach((item, i) => {
+                sub.innerHTML += `<option value="${i}">${item.name}</option>`;
+            });
+        }
+        showDesc();
+    }
 
-function render(){
-const container=document.getElementById("shop-container");
-const navScroll=document.getElementById("nav-scroll");
-container.innerHTML="";navScroll.innerHTML="";
-for(let cat in categories){
-navScroll.innerHTML+=`<div class="nav-item" onclick="document.getElementById('${cat}').scrollIntoView()">${cat}</div>`;
-container.innerHTML+=`<div class="category-title" id="${cat}">${cat}</div>`;
-let grid=document.createElement("div");
-grid.className="products-grid";
-categories[cat].forEach((p,i)=>{
-grid.innerHTML+=`
-<div class="product-card">
-<div class="img-container">
-<img src="${p.img}" class="product-img" onerror="this.src='https://via.placeholder.com/150'">
-</div>
-<div class="product-info">
-<div class="product-name">${p.name}</div>
-<div class="price-box">${p.price+pricePlus} د.ل</div>
-${p.isSocial?`<input type="number" class="qty-input" id="qty-${cat}-${i}" value="1000" min="200">`:'<div style="height:42px"></div>'}
-<button class="add-to-cart-btn" onclick="addClick('${cat}',${i})">إضافة للسلة</button>
-</div>
-</div>`;
-});
-container.appendChild(grid);
-}
-}
+    function showDesc() {
+        const cat = document.getElementById('mainCategory').value;
+        const i = document.getElementById('subService').value;
+        const box = document.getElementById('descBox');
+        if(cat && i !== "") {
+            document.getElementById('descContent').innerHTML = `<b>التفاصيل:</b><br>${catalog[cat][i].d}`;
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+        calc();
+    }
 
-function setMethod(el,method,plus){
-document.querySelectorAll(".pay-card").forEach(c=>c.classList.remove("active"));
-el.classList.add("active");
-currentMethod=method;
-pricePlus=plus;
-render();updateUI();
-}
+    function setPay(el, val) {
+        document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        payExtra = val;
+        calc();
+    }
 
-function addClick(cat,i){
-const p=categories[cat][i];
-let fPrice=p.price+pricePlus;
-let finalName=p.name;
-if(p.isSocial){
-const qty=parseInt(document.getElementById(`qty-${cat}-${i}`).value);
-if(qty<200)return alert("الحد الأدنى 200");
-fPrice=(fPrice*qty)/1000;
-finalName=`${p.name} (${qty})`;
-}
-cart.push({name:finalName,finalPrice:fPrice});
-updateUI();
-}
+    function calc() {
+        const cat = document.getElementById('mainCategory').value;
+        const i = document.getElementById('subService').value;
+        const qty = document.getElementById('userQty').value || 1;
+        if(cat && i !== "") {
+            let total = (catalog[cat][i].price * qty) + payExtra;
+            document.getElementById('finalPrice').innerText = total.toFixed(2) + " د.ل";
+        } else {
+            document.getElementById('finalPrice').innerText = "0.00 د.ل";
+        }
+    }
 
-function updateUI(){
-const list=document.getElementById("cart-items-list");
-list.innerHTML=cart.map((item,i)=>`- ${item.name} <span onclick="cart.splice(${i},1);updateUI()" style="color:red;cursor:pointer">✖</span>`).join('<br>');
-let total=cart.reduce((s,item)=>s+item.finalPrice,0);
-document.getElementById("cart-total").innerText=total.toFixed(2)+" د.ل";
-}
+    function sendToWA() {
+        const cat = document.getElementById('mainCategory').value;
+        const i = document.getElementById('subService').value;
+        const input = document.getElementById('userInput').value;
+        const qty = document.getElementById('userQty').value;
+        const total = document.getElementById('finalPrice').innerText;
 
-function sendWhatsApp(){
-if(cart.length===0)return alert("السلة فارغة!");
-let itemsText=cart.map(it=>`- ${it.name}: ${it.finalPrice.toFixed(2)}`).join('%0A');
-let total=cart.reduce((s,item)=>s+item.finalPrice,0);
-let msg=`*طلب جديد - ZH-STORE*%0Aطريقة الدفع: ${currentMethod}%0A${itemsText}%0Aالإجمالي: ${total.toFixed(2)} د.ل`;
-window.open(`https://wa.me/${phone}?text=${msg}`);
-}
+        if(!cat || i === "" || !input) return alert("الرجاء إكمال البيانات");
 
-render();
+        const name = catalog[cat][i].name;
+        const text = `*طلب جديد من ZH STORE*%0A------------------%0A*الخدمة:* ${name}%0A*البيانات:* ${input}%0A*الكمية:* ${qty}%0A*الإجمالي:* ${total}`;
+        window.open(`https://wa.me/218910834391?text=${text}`);
+    }
 </script>
 
 </body>
 </html>
+
