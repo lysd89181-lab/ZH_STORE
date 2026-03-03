@@ -1,302 +1,310 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZH STORE | المتجر المتكامل</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0f0a1a;
-            --main-purple: #2d005e;
-            --accent-yellow: #ffeb3b;
-            --card-bg: #1a1525;
-            --input-bg: #252035;
-            --text-color: #ffffff;
-            --border: #3d3450;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZH STORE | المتجر المتكامل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
-        body {
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--bg);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 40px;
-        }
+<style>
+:root {
+    --bg: #0f0a1a;
+    --main-purple: #2d005e;
+    --accent-yellow: #ffeb3b;
+    --card-bg: #1a1525;
+    --input-bg: #252035;
+    --text-color: #ffffff;
+    --border: #3d3450;
+}
 
-        .container {
-            width: 92%;
-            max-width: 550px;
-            margin-top: 20px;
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-        }
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--bg);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
+}
 
-        .header-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+.container {
+    width: 92%;
+    max-width: 550px;
+    margin-top: 20px;
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+}
 
-        .header-section img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 3px solid var(--accent-yellow);
-            margin-bottom: 10px;
-        }
+.header-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
 
-        label {
-            display: block;
-            color: var(--accent-yellow);
-            margin: 18px 0 8px;
-            font-weight: bold;
-            font-size: 14px;
-        }
+.header-section img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-yellow);
+    margin-bottom: 10px;
+}
 
-        select, input {
-            width: 100%;
-            padding: 14px;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: white;
-            font-family: 'Cairo';
-            outline: none;
-            transition: 0.3s;
-        }
+label {
+    display: block;
+    color: var(--accent-yellow);
+    margin: 18px 0 8px;
+    font-weight: bold;
+    font-size: 14px;
+}
 
-        select:focus, input:focus {
-            border-color: var(--accent-yellow);
-        }
+select, input {
+    width: 100%;
+    padding: 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: white;
+    font-family: 'Cairo';
+    outline: none;
+    transition: 0.3s;
+}
 
-        .description-box {
-            background: #120e1d;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 15px;
-            font-size: 13px;
-            line-height: 1.8;
-            border-right: 5px solid var(--accent-yellow);
-            display: none;
-            color: #ddd;
-        }
+select:focus, input:focus {
+    border-color: var(--accent-yellow);
+}
 
-        .price-container {
-            background: linear-gradient(90deg, var(--main-purple), #4a148c);
-            color: var(--accent-yellow);
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: 900;
-            margin-top: 25px;
-            border: 1px solid var(--accent-yellow);
-        }
+.description-box {
+    background: #120e1d;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    font-size: 13px;
+    line-height: 1.8;
+    border-right: 5px solid var(--accent-yellow);
+    display: none;
+    color: #ddd;
+}
 
-        .btn-order {
-            width: 100%;
-            padding: 16px;
-            background: var(--accent-yellow);
-            color: #000;
-            border: none;
-            border-radius: 12px;
-            font-weight: 900;
-            font-size: 17px;
-            margin-top: 20px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(255, 235, 59, 0.3);
-        }
+.price-container {
+    background: linear-gradient(90deg, var(--main-purple), #4a148c);
+    color: var(--accent-yellow);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    margin-top: 25px;
+    border: 1px solid var(--accent-yellow);
+}
 
-        .payment-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
+.btn-order {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent-yellow);
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    font-weight: 900;
+    font-size: 17px;
+    margin-top: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 235, 59, 0.3);
+}
 
-        .pay-btn {
-            padding: 10px;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            text-align: center;
-            font-size: 12px;
-            cursor: pointer;
-        }
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
 
-        .pay-btn.active {
-            background: var(--accent-yellow);
-            color: #000;
-            font-weight: bold;
-            border-color: var(--accent-yellow);
-        }
-    </style>
+.pay-btn {
+    padding: 10px;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.pay-btn.active {
+    background: var(--accent-yellow);
+    color: #000;
+    font-weight: bold;
+    border-color: var(--accent-yellow);
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <div class="header-section">
-        <img src="logo.jpg" alt="ZH STORE" onerror="this.style.display='none'">
-        <h1 style="color: var(--accent-yellow); margin: 0; font-size: 24px;">ZH STORE</h1>
-        <p style="font-size: 12px; color: #aaa;">عالم الخدمات الرقمية في مكان واحد</p>
-    </div>
+<div class="header-section">
+<img src="logo.jpg" alt="ZH STORE" onerror="this.style.display='none'">
+<h1 style="color: var(--accent-yellow); margin: 0; font-size: 24px;">ZH STORE</h1>
+<p style="font-size: 12px; color: #aaa;">عالم الخدمات الرقمية في مكان واحد</p>
+</div>
 
-    <label>اختيار القسم</label>
-    <select id="mainCategory" onchange="loadServices()">
-        <option value="">-- اختر القسم --</option>
-        <option value="ps">🎮 ألعاب بلايستيشن (ثابت 20 د.ل)</option>
-        <option value="steam">⚙️ عروض ومنتجات ستيم</option>
-        <option value="tiktok">📱 خدمات تيك توك</option>
-        <option value="insta">📸 خدمات انستقرام</option>
-        <option value="social">🌐 فيسبوك وتيليجرام</option>
-        <option value="games">🔫 شدات ببجي وجواهر</option>
-        <option value="apps">🎬 اشتراكات بريميوم</option>
-    </select>
+<label>اختيار القسم</label>
+<select id="mainCategory" onchange="loadServices()">
+<option value="">-- اختر القسم --</option>
+<option value="ps">🎮 ألعاب بلايستيشن (ثابت 20 د.ل)</option>
+<option value="steam">⚙️ عروض ومنتجات ستيم</option>
+<option value="tiktok">📱 خدمات تيك توك</option>
+<option value="insta">📸 خدمات انستقرام</option>
+<option value="social">🌐 فيسبوك وتيليجرام</option>
+<option value="games">🔫 شدات ببجي وجواهر</option>
+<option value="apps">🎬 اشتراكات بريميوم</option>
+<option value="random">🎁 كود عشوائي</option>
+</select>
 
-    <label>الخدمة المطلوبة</label>
-    <select id="subService" onchange="showDesc()">
-        <option value="">-- اختر القسم أولاً --</option>
-    </select>
+<label>الخدمة المطلوبة</label>
+<select id="subService" onchange="showDesc()">
+<option value="">-- اختر القسم أولاً --</option>
+</select>
 
-    <div id="descBox" class="description-box">
-        <div id="descContent"></div>
-    </div>
+<div id="descBox" class="description-box">
+<div id="descContent"></div>
+</div>
 
-    <label>الرابط / اسم المستخدم / ID</label>
-    <input type="text" id="userInput" placeholder="ادخل البيانات المطلوبة هنا...">
+<label>الرابط / اسم المستخدم / ID</label>
+<input type="text" id="userInput" placeholder="ادخل البيانات المطلوبة هنا...">
 
-    <label>الكمية</label>
-    <input type="number" id="userQty" value="1" min="1" oninput="calc()">
+<label>الكمية</label>
+<input type="number" id="userQty" value="1" min="1" oninput="calc()">
 
-    <label>طريقة الدفع</label>
-    <div class="payment-grid">
-        <div class="pay-btn active" onclick="setPay(this, 0)">كاش</div>
-        <div class="pay-btn" onclick="setPay(this, 2)">لبيانا (+2)</div>
-        <div class="pay-btn" onclick="setPay(this, 2)">مدار (+2)</div>
-    </div>
+<label>طريقة الدفع</label>
+<div class="payment-grid">
+<div class="pay-btn active" onclick="setPay(this, 0)">كاش</div>
+<div class="pay-btn" onclick="setPay(this, 2)">لبيانا (+2)</div>
+<div class="pay-btn" onclick="setPay(this, 2)">مدار (+2)</div>
+</div>
 
-    <div class="price-container" id="finalPrice">0.00 د.ل</div>
+<div class="price-container" id="finalPrice">0.00 د.ل</div>
 
-    <button class="btn-order" onclick="sendToWA()">إتمام الطلب عبر واتساب 🚀</button>
+<button class="btn-order" onclick="sendToWA()">إتمام الطلب عبر واتساب 🚀</button>
 </div>
 
 <script>
-    const catalog = {
-        ps: [
-            {name: "Spider-Man 2", price: 20, d: "لعبة كاملة لجهاز PS5 - أصلية"},
-            {name: "God of War Ragnarök", price: 20, d: "اللعبة كاملة - تدعم اللغة العربية"},
-            {name: "Elden Ring", price: 20, d: "نسخة المتجر الرسمية - ضمان مدى الحياة"},
-            {name: "FC 25 (FIFA)", price: 20, d: "أحدث نسخة من سلسلة فيفا الشهيرة"},
-            {name: "GTA V", price: 20, d: "قراند 5 النسخة المحسنة للجيل الجديد"},
-            {name: "Resident Evil 4 Remake", price: 20, d: "اللعبة كاملة - رعب وإثارة"},
-            {name: "Hogwarts Legacy", price: 20, d: "عالم هاري بوتر السحري"},
-            {name: "Red Dead Redemption 2", price: 20, d: "أسطورة الغرب الأمريكي"},
-            {name: "Cyberpunk 2077", price: 20, d: "نسخة Ultimate الشاملة"},
-            {name: "The Last of Us Part II", price: 20, d: "أقوى تجربة سينمائية"},
-            {name: "Ghost of Tsushima", price: 20, d: "نسخة المخرج - كاملة"},
-            {name: "Assassin's Creed Mirage", price: 20, d: "تجربة بغداد باللغة العربية"},
-            {name: "Black Myth: Wukong", price: 20, d: "لعبة العام - أداء خرافي"}
-        ],
-        steam: [
-            {name: "بطاقة ستيم 5 دولار", price: 35, d: "كود رقمي يشحن أي حساب"},
-            {name: "بطاقة ستيم 10 دولار", price: 68, d: "شحن فوري ومباشر"},
-            {name: "شحن حساب ستيم (تركي)", price: 50, d: "زيادة رصيد الحساب التركي"},
-            {name: "ستيم ديك قسائم", price: 10, d: "قسائم تخفيض متنوعة"}
-        ],
-        tiktok: [
-            {name: "1000 متابع (حقيقي)", price: 15, d: "متابعين حقيقيين - ضمان 30 يوم"},
-            {name: "1000 لايك (سريع)", price: 5, d: "تفاعل فوري على المنشور"},
-            {name: "1000 مشاهدة (اكسبلور)", price: 2, d: "تزيد من فرص ظهور الفديو"},
-            {name: "100 مشاركة (Share)", price: 3, d: "نشر الفديو على نطاق واسع"}
-        ],
-        insta: [
-            {name: "1000 متابع (ضمان)", price: 12, d: "تعويض تلقائي في حال النقص"},
-            {name: "1000 لايك (عربي)", price: 6, d: "تفاعل من حسابات عربية"},
-            {name: "1000 مشاهدة ريلز", price: 3, d: "زيادة مشاهدات مقاطع الريلز"}
-        ],
-        social: [
-            {name: "1000 متابع فيسبوك", price: 18, d: "للملفات الشخصية والبيج"},
-            {name: "1000 عضو تيليجرام", price: 20, d: "أعضاء للقنوات والمجموعات"}
-        ],
-        games: [
-            {name: "60 شدة ببجي", price: 11, d: "شحن رسمي عبر الـ ID"},
-            {name: "325 شدة ببجي", price: 55, d: "شحن فوري - رسمي"},
-            {name: "110 جوهرة فري فاير", price: 15, d: "شحن سريع عبر الـ ID"}
-        ],
-        apps: [
-            {name: "نتفليكس (شهر)", price: 30, d: "بروفايل خاص - جودة 4K"},
-            {name: "شاهد VIP (شهر)", price: 35, d: "شامل الرياضة والمسلسلات"},
-            {name: "يوتيوب بريميوم (شهر)", price: 15, d: "بدون إعلانات - تشغيل خلفية"},
-            {name: "ChatGPT Plus", price: 240, d: "اشتراك الذكاء الاصطناعي المدفوع"}
-        ]
-    };
+const catalog = {
 
-    let payExtra = 0;
+ps: [
+{name: "Spider-Man 2", price: 20, d: "لعبة كاملة لجهاز PS5 - أصلية"},
+{name: "God of War Ragnarök", price: 20, d: "اللعبة كاملة - تدعم اللغة العربية"},
+{name: "Elden Ring", price: 20, d: "نسخة المتجر الرسمية - ضمان مدى الحياة"},
+{name: "FC 25 (FIFA)", price: 20, d: "أحدث نسخة من سلسلة فيفا الشهيرة"},
+{name: "GTA V", price: 20, d: "قراند 5 النسخة المحسنة للجيل الجديد"},
+{name: "Resident Evil 4 Remake", price: 20, d: "اللعبة كاملة - رعب وإثارة"},
+{name: "Hogwarts Legacy", price: 20, d: "عالم هاري بوتر السحري"},
+{name: "Red Dead Redemption 2", price: 20, d: "أسطورة الغرب الأمريكي"},
+{name: "Cyberpunk 2077", price: 20, d: "نسخة Ultimate الشاملة"},
+{name: "The Last of Us Part II", price: 20, d: "أقوى تجربة سينمائية"},
+{name: "Ghost of Tsushima", price: 20, d: "نسخة المخرج - كاملة"},
+{name: "Assassin's Creed Mirage", price: 20, d: "تجربة بغداد باللغة العربية"},
+{name: "Black Myth: Wukong", price: 20, d: "لعبة العام - أداء خرافي"}
+],
 
-    function loadServices() {
-        const cat = document.getElementById('mainCategory').value;
-        const sub = document.getElementById('subService');
-        sub.innerHTML = '<option value="">-- اختر الخدمة --</option>';
-        if(cat) {
-            catalog[cat].forEach((item, i) => {
-                sub.innerHTML += `<option value="${i}">${item.name}</option>`;
-            });
-        }
-        showDesc();
-    }
 
-    function showDesc() {
-        const cat = document.getElementById('mainCategory').value;
-        const i = document.getElementById('subService').value;
-        const box = document.getElementById('descBox');
-        if(cat && i !== "") {
-            document.getElementById('descContent').innerHTML = `<b>التفاصيل:</b><br>${catalog[cat][i].d}`;
-            box.style.display = 'block';
-        } else {
-            box.style.display = 'none';
-        }
-        calc();
-    }
+tiktok: [
+{name: "1000 متابع (حقيقي)", price: 15, d: "متابعين حقيقيين - ضمان 30 يوم"},
+{name: "1000 لايك (سريع)", price: 5, d: "تفاعل فوري على المنشور"},
+{name: "1000 مشاهدة (اكسبلور)", price: 2, d: "تزيد من فرص ظهور الفديو"},
+{name: "100 مشاركة (Share)", price: 3, d: "نشر الفديو على نطاق واسع"}
+],
 
-    function setPay(el, val) {
-        document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        payExtra = val;
-        calc();
-    }
+insta: [
+{name: "1000 متابع (ضمان)", price: 12, d: "تعويض تلقائي في حال النقص"},
+{name: "1000 لايك (عربي)", price: 6, d: "تفاعل من حسابات عربية"},
+{name: "1000 مشاهدة ريلز", price: 3, d: "زيادة مشاهدات مقاطع الريلز"}
+],
 
-    function calc() {
-        const cat = document.getElementById('mainCategory').value;
-        const i = document.getElementById('subService').value;
-        const qty = document.getElementById('userQty').value || 1;
-        if(cat && i !== "") {
-            let total = (catalog[cat][i].price * qty) + payExtra;
-            document.getElementById('finalPrice').innerText = total.toFixed(2) + " د.ل";
-        } else {
-            document.getElementById('finalPrice').innerText = "0.00 د.ل";
-        }
-    }
+social: [
+{name: "1000 متابع فيسبوك", price: 18, d: "للملفات الشخصية والبيج"},
+{name: "1000 عضو تيليجرام", price: 20, d: "أعضاء للقنوات والمجموعات"}
+],
 
-    function sendToWA() {
-        const cat = document.getElementById('mainCategory').value;
-        const i = document.getElementById('subService').value;
-        const input = document.getElementById('userInput').value;
-        const qty = document.getElementById('userQty').value;
-        const total = document.getElementById('finalPrice').innerText;
+games: [
+{name: "60 شدة ببجي", price: 11, d: "شحن رسمي عبر الـ ID"},
+{name: "325 شدة ببجي", price: 55, d: "شحن فوري - رسمي"},
+{name: "110 جوهرة فري فاير", price: 15, d: "شحن سريع عبر الـ ID"}
+],
 
-        if(!cat || i === "" || !input) return alert("الرجاء إكمال البيانات");
+apps: [
+{name: "نتفليكس (شهر)", price: 30, d: "بروفايل خاص - جودة 4K"},
+{name: "شاهد VIP (شهر)", price: 35, d: "شامل الرياضة والمسلسلات"},
+{name: "يوتيوب بريميوم (شهر)", price: 15, d: "بدون إعلانات - تشغيل خلفية"},
+{name: "ChatGPT Plus", price: 240, d: "اشتراك الذكاء الاصطناعي المدفوع"}
+],
 
-        const name = catalog[cat][i].name;
-        const text = `*طلب جديد من ZH STORE*%0A------------------%0A*الخدمة:* ${name}%0A*البيانات:* ${input}%0A*الكمية:* ${qty}%0A*الإجمالي:* ${total}`;
-        window.open(`https://wa.me/218910834391?text=${text}`);
-    }
+random: [
+{name: "كود لعبة عشوائية", price: 5, d: "تحصل على كود لعبة عشوائية من متجر ستيم بسعر مفاجأة 🔥"}
+]
+
+};
+
+let payExtra = 0;
+
+function loadServices() {
+const cat = document.getElementById('mainCategory').value;
+const sub = document.getElementById('subService');
+sub.innerHTML = '<option value="">-- اختر الخدمة --</option>';
+if(cat) {
+catalog[cat].forEach((item, i) => {
+sub.innerHTML += `<option value="${i}">${item.name}</option>`;
+});
+}
+showDesc();
+}
+
+function showDesc() {
+const cat = document.getElementById('mainCategory').value;
+const i = document.getElementById('subService').value;
+const box = document.getElementById('descBox');
+if(cat && i !== "") {
+document.getElementById('descContent').innerHTML = `<b>التفاصيل:</b><br>${catalog[cat][i].d}`;
+box.style.display = 'block';
+} else {
+box.style.display = 'none';
+}
+calc();
+}
+
+function setPay(el, val) {
+document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
+el.classList.add('active');
+payExtra = val;
+calc();
+}
+
+function calc() {
+const cat = document.getElementById('mainCategory').value;
+const i = document.getElementById('subService').value;
+const qty = document.getElementById('userQty').value || 1;
+if(cat && i !== "") {
+let total = (catalog[cat][i].price * qty) + payExtra;
+document.getElementById('finalPrice').innerText = total.toFixed(2) + " د.ل";
+} else {
+document.getElementById('finalPrice').innerText = "0.00 د.ل";
+}
+}
+
+function sendToWA() {
+const cat = document.getElementById('mainCategory').value;
+const i = document.getElementById('subService').value;
+const input = document.getElementById('userInput').value;
+const qty = document.getElementById('userQty').value;
+const total = document.getElementById('finalPrice').innerText;
+
+if(!cat || i === "" || !input) return alert("الرجاء إكمال البيانات");
+
+const name = catalog[cat][i].name;
+const text = `*طلب جديد من ZH STORE*%0A------------------%0A*الخدمة:* ${name}%0A*البيانات:* ${input}%0A*الكمية:* ${qty}%0A*الإجمالي:* ${total}`;
+window.open(`https://wa.me/218910834391?text=${text}`);
+}
 </script>
 
 </body>
 </html>
-
