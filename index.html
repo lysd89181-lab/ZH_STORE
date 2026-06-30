@@ -1,309 +1,306 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZH STORE | المتجر المتكامل</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-
-<style>
-:root {
-    --bg: #0f0a1a;
-    --main-purple: #2d005e;
-    --accent-yellow: #ffeb3b;
-    --card-bg: #1a1525;
-    --input-bg: #252035;
-    --text-color: #ffffff;
-    --border: #3d3450;
-}
-
-body {
-    margin: 0;
-    font-family: 'Cairo', sans-serif;
-    background-color: var(--bg);
-    color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 40px;
-}
-
-.container {
-    width: 92%;
-    max-width: 550px;
-    margin-top: 20px;
-    background: var(--card-bg);
-    padding: 25px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-}
-
-.header-section {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.header-section img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid var(--accent-yellow);
-    margin-bottom: 10px;
-}
-
-label {
-    display: block;
-    color: var(--accent-yellow);
-    margin: 18px 0 8px;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-select, input {
-    width: 100%;
-    padding: 14px;
-    background: var(--input-bg);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    color: white;
-    font-family: 'Cairo';
-    outline: none;
-    transition: 0.3s;
-}
-
-select:focus, input:focus {
-    border-color: var(--accent-yellow);
-}
-
-.description-box {
-    background: #120e1d;
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 15px;
-    font-size: 13px;
-    line-height: 1.8;
-    border-right: 5px solid var(--accent-yellow);
-    display: none;
-    color: #ddd;
-}
-
-.price-container {
-    background: linear-gradient(90deg, var(--main-purple), #4a148c);
-    color: var(--accent-yellow);
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 22px;
-    font-weight: 900;
-    margin-top: 25px;
-    border: 1px solid var(--accent-yellow);
-}
-
-.btn-order {
-    width: 100%;
-    padding: 16px;
-    background: var(--accent-yellow);
-    color: #000;
-    border: none;
-    border-radius: 12px;
-    font-weight: 900;
-    font-size: 17px;
-    margin-top: 20px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(255, 235, 59, 0.3);
-}
-
-.payment-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.pay-btn {
-    padding: 10px;
-    background: var(--input-bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    text-align: center;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.pay-btn.active {
-    background: var(--accent-yellow);
-    color: #000;
-    font-weight: bold;
-    border-color: var(--accent-yellow);
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>iQ Store | المنصة الرقمية المتكاملة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #060814; --bg-card: #0d1127; --bg-input: #131936;
+            --cyan: #00f2fe; --purple: #9d4edd; --text-main: #ffffff; --text-muted: #8e9bb8;
+            --border-color: rgba(0, 242, 254, 0.15);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+        header {
+            background: rgba(13,17,39,0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; padding: 12px 16px;
+        }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .logo-text { font-size: 19px; font-weight: 800; }
+        .logo-text span { color: var(--cyan); }
+        .quick-wallet {
+            background: rgba(13,17,39,0.7); border: 1px solid rgba(157,78,221,0.3); border-radius: 30px;
+            padding: 4px 14px; display: flex; align-items: center; gap: 8px; cursor: pointer;
+        }
+        .quick-wallet span { font-weight: 700; font-size: 13px; }
+        .main-layout { display: flex; max-width: 1200px; margin: 0 auto; }
+        .sidebar {
+            width: 280px; background: var(--bg-card); border-left: 1px solid var(--border-color);
+            padding: 20px 14px; position: sticky; top: 57px; height: calc(100vh - 57px);
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .nav-list { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .nav-btn {
+            background: none; border: none; color: var(--text-muted); padding: 11px 14px;
+            border-radius: 12px; cursor: pointer; text-align: right; font-size: 13.5px; font-weight: 600;
+            display: flex; align-items: center; gap: 12px; transition: 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active { background: rgba(0,242,254,0.05); color: var(--cyan); }
+        .content-area { flex: 1; padding: 16px; min-width: 0; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .container { max-width: 900px; margin: 0 auto; }
+        .card {
+            background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px;
+            padding: 16px; margin-bottom: 16px;
+        }
+        .section-title { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .cat-card, .prod-card {
+            background: var(--bg-card); border: 1px solid rgba(255,255,255,0.04); border-radius: 14px;
+            padding: 12px; text-align: center; cursor: pointer;
+        }
+        .cat-card img, .prod-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+        .price { font-size: 12.5px; font-weight: 800; color: var(--cyan); }
+        .buy-btn {
+            background: linear-gradient(135deg, var(--purple), #7b2cbf); border: none; color: #fff;
+            width: 100%; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; margin-top: 8px;
+        }
+        .balance-card {
+            background: linear-gradient(135deg, rgba(13,17,39,0.9), rgba(157,78,221,0.15));
+            border: 1px solid rgba(157,78,221,0.2); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px;
+        }
+        .big-balance { font-size: 28px; font-weight: 900; margin: 6px 0; }
+        .notify-input {
+            background: var(--bg-input); border: 1px solid rgba(255,255,255,0.05); color: #fff;
+            width: 100%; padding: 12px; border-radius: 10px; font-size: 12px; outline: none; margin-bottom: 8px; text-align: right;
+        }
+        .notify-btn {
+            background: linear-gradient(135deg, var(--cyan), #00b4d8); border: none; color: var(--bg-main);
+            width: 100%; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer;
+        }
+        .modal {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(6,8,20,0.85); z-index: 200; display: flex; align-items: center; justify-content: center;
+        }
+        .modal.hidden { display: none; }
+        .modal-content {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+            width: 100%; max-width: 440px; padding: 20px; max-height: 90vh; overflow-y: auto;
+        }
+        .hidden { display: none !important; }
+        .loading { text-align: center; padding: 30px; font-size: 12px; color: var(--text-muted); }
+        @media (max-width: 768px) {
+            .sidebar { display: none; position: fixed; top: 0; right: 0; height: 100vh; z-index: 95; width: 280px; }
+            .sidebar.show { display: flex; }
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
-<div class="header-section">
-<img src="logo.jpg" alt="ZH STORE" onerror="this.style.display='none'">
-<h1 style="color: var(--accent-yellow); margin: 0; font-size: 24px;">ZH STORE</h1>
-<p style="font-size: 12px; color: #aaa;">عالم الخدمات الرقمية في مكان واحد</p>
+<!-- ========== المتجر مفتوح للكل بدون تسجيل ========== -->
+<div id="appPage">
+    <header>
+        <div class="header-container">
+            <div class="logo-text">iQ <span>Store</span></div>
+            <div class="quick-wallet" onclick="switchTab('wallet')">
+                💰 <span id="topBalance">0.000</span> <span class="currency-label">د.ل</span>
+            </div>
+        </div>
+    </header>
+    <div class="main-layout">
+        <div class="sidebar" id="sidebar">
+            <nav class="nav-list" id="navList"></nav>
+            <div style="margin-top:20px;text-align:center;color:var(--text-muted);font-size:11px;">
+                © 2026 iQ Store<br>جميع الحقوق محفوظة
+            </div>
+        </div>
+        <div class="content-area">
+            <div id="homePage" class="page active">
+                <div class="container">
+                    <div id="categoriesView">
+                        <div class="section-title">📂 الأقسام</div>
+                        <div class="grid-3" id="catsGrid"></div>
+                    </div>
+                    <div id="productsView" class="hidden">
+                        <button class="buy-btn" onclick="showCategories()" style="width:auto;padding:8px 16px;margin-bottom:12px;">⮌ رجوع</button>
+                        <div class="section-title" id="productsTitle">المنتجات</div>
+                        <div class="grid-3" id="prodsGrid"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="walletPage" class="page">
+                <div class="container">
+                    <div class="section-title">💰 المحفظة</div>
+                    <div class="balance-card">
+                        <div style="font-size:12px;color:var(--text-muted);">رصيدك الحالي</div>
+                        <div class="big-balance"><span id="walletBalance">0.000</span> <span class="currency-label">د.ل</span></div>
+                    </div>
+                    <div class="card">
+                        <input type="text" id="phoneInput" class="notify-input" placeholder="الرقم المحول منه">
+                        <input type="number" id="amountInput" class="notify-input" placeholder="القيمة">
+                        <button class="notify-btn" onclick="submitRecharge()">إرسال طلب شحن</button>
+                    </div>
+                </div>
+            </div>
+            <div id="ordersPage" class="page">
+                <div class="container">
+                    <div class="section-title">📋 سجل الطلبات</div>
+                    <div id="ordersList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<label>اختيار القسم</label>
-<select id="mainCategory" onchange="loadServices()">
-<option value="">-- اختر القسم --</option>
-<option value="ps">🎮 ألعاب بلايستيشن (ثابت 20 د.ل)</option>
-<option value="tiktok">📱 خدمات تيك توك</option>
-<option value="insta">📸 خدمات انستقرام</option>
-<option value="social">🌐 فيسبوك وتيليجرام</option>
-<option value="games">🔫 شدات ببجي وجواهر</option>
-<option value="apps">🎬 اشتراكات بريميوم</option>
-<option value="random">🎁 كود لعبة عشوائي</option>
-</select>
-
-<label>الخدمة المطلوبة</label>
-<select id="subService" onchange="showDesc()">
-<option value="">-- اختر القسم أولاً --</option>
-</select>
-
-<div id="descBox" class="description-box">
-<div id="descContent"></div>
+<!-- مودال الشراء -->
+<div id="buyModal" class="modal hidden">
+    <div class="modal-content">
+        <button class="btn" onclick="closeModal()" style="width:auto;padding:4px 10px;margin-bottom:10px;background:var(--bg-input);color:#fff;border:none;border-radius:6px;cursor:pointer;">✕ إغلاق</button>
+        <h3 id="modalName" style="text-align:center;margin-bottom:12px;"></h3>
+        <input type="text" id="targetInput" class="notify-input" placeholder="معرف اللاعب (ID)">
+        <input type="text" id="contactPhone" class="notify-input" placeholder="رقم التواصل">
+        <button class="notify-btn" onclick="confirmPurchase()">✅ تأكيد الشراء</button>
+    </div>
 </div>
 
-<label>الرابط / اسم المستخدم / ID</label>
-<input type="text" id="userInput" placeholder="ادخل البيانات المطلوبة هنا...">
-
-<label>الكمية</label>
-<input type="number" id="userQty" value="1" min="1" oninput="calc()">
-
-<label>طريقة الدفع</label>
-<div class="payment-grid">
-<div class="pay-btn active" onclick="setPay(this, 0)">كاش</div>
-<div class="pay-btn" onclick="setPay(this, 2)">لبيانا (+2)</div>
-<div class="pay-btn" onclick="setPay(this, 2)">مدار (+2)</div>
-</div>
-
-<div class="price-container" id="finalPrice">0.00 د.ل</div>
-
-<button class="btn-order" onclick="sendToWA()">إتمام الطلب عبر واتساب 🚀</button>
-</div>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
 <script>
-const catalog = {
+    // Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyAsDZDLbzB0Vfqgo8SenbE4DTxjc7m_xqA",
+        authDomain: "iq-store-f6195.firebaseapp.com",
+        projectId: "iq-store-f6195",
+        storageBucket: "iq-store-f6195.firebasestorage.app",
+        messagingSenderId: "971567926936",
+        appId: "1:971567926936:web:f85205b7d1ea210d3c0aed"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-ps: [
-{name: "Spider-Man 2", price: 20, d: "لعبة كاملة لجهاز PS5 - أصلية"},
-{name: "God of War Ragnarök", price: 20, d: "اللعبة كاملة - تدعم اللغة العربية"},
-{name: "Elden Ring", price: 20, d: "نسخة المتجر الرسمية - ضمان مدى الحياة"},
-{name: "FC 25 (FIFA)", price: 20, d: "أحدث نسخة من سلسلة فيفا الشهيرة"},
-{name: "GTA V", price: 20, d: "قراند 5 النسخة المحسنة للجيل الجديد"},
-{name: "Resident Evil 4 Remake", price: 20, d: "اللعبة كاملة - رعب وإثارة"},
-{name: "Hogwarts Legacy", price: 20, d: "عالم هاري بوتر السحري"},
-{name: "Red Dead Redemption 2", price: 20, d: "أسطورة الغرب الأمريكي"},
-{name: "Cyberpunk 2077", price: 20, d: "نسخة Ultimate الشاملة"},
-{name: "The Last of Us Part II", price: 20, d: "أقوى تجربة سينمائية"},
-{name: "Ghost of Tsushima", price: 20, d: "نسخة المخرج - كاملة"},
-{name: "Assassin's Creed Mirage", price: 20, d: "تجربة بغداد باللغة العربية"},
-{name: "Black Myth: Wukong", price: 20, d: "لعبة العام - أداء خرافي"}
-],
+    let currentCurrency = 'LYD', USD_RATE = 11;
+    let cachedCategories = [];
+    let allProducts = [];
+    let currentProduct = null;
 
+    // ========== دوال المتجر ==========
+    function switchTab(tab) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(tab + 'Page')?.classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    }
 
-tiktok: [
-{name: "1000 متابع (حقيقي)", price: 15, d: "متابعين حقيقيين - ضمان 30 يوم"},
-{name: "1000 لايك (سريع)", price: 5, d: "تفاعل فوري على المنشور"},
-{name: "1000 مشاهدة (اكسبلور)", price: 2, d: "تزيد من فرص ظهور الفديو"},
-{name: "100 مشاركة (Share)", price: 3, d: "نشر الفديو على نطاق واسع"}
-],
+    function formatPrice(priceInLYD) {
+        return currentCurrency === 'USD' ? (priceInLYD / USD_RATE).toFixed(3) : priceInLYD.toFixed(3);
+    }
 
-insta: [
-{name: "1000 متابع (ضمان)", price: 12, d: "تعويض تلقائي في حال النقص"},
-{name: "1000 لايك (عربي)", price: 6, d: "تفاعل من حسابات عربية"},
-{name: "1000 مشاهدة ريلز", price: 3, d: "زيادة مشاهدات مقاطع الريلز"}
-],
+    function getImageUrl(img) {
+        if (!img) return '';
+        if (img.startsWith('http')) return img;
+        return "https://raw.githubusercontent.com/lysd89181-lab/Media_Plus/main/" + img;
+    }
 
-social: [
-{name: "1000 متابع فيسبوك", price: 18, d: "للملفات الشخصية والبيج"},
-{name: "1000 عضو تيليجرام", price: 20, d: "أعضاء للقنوات والمجموعات"}
-],
+    function generateInvoice() { return 'iQ-' + Math.floor(10000 + Math.random() * 90000); }
 
-games: [
-{name: "60 شدة ببجي", price: 15, d: "شحن رسمي عبر الـ ID"},
-{name: "325 شدة ببجي", price: 65, d: "شحن فوري - رسمي"},
-{name: "110 جوهرة فري فاير", price: 20, d: "شحن سريع عبر الـ ID"}
-],
+    async function fetchCategories() {
+        const snap = await db.collection("categories").get();
+        cachedCategories = [];
+        snap.forEach(doc => { if (doc.data().active !== false) cachedCategories.push({ id: doc.id, ...doc.data() }); });
+        renderCategories();
+    }
 
-apps: [
-{name: "نتفليكس (شهر)", price: 37, d: "بروفايل خاص - جودة 4K"},
-{name: "شاهد VIP (شهر)", price: 35, d: "شامل الرياضة والمسلسلات"},
-{name: "يوتيوب بريميوم (شهر)", price: 35, d: "بدون إعلانات - تشغيل خلفية"},
-{name: "ChatGPT Plus", price: 360, d: "اشتراك الذكاء الاصطناعي المدفوع"}
-],
+    function renderCategories() {
+        const grid = document.getElementById('catsGrid');
+        if (cachedCategories.length === 0) { grid.innerHTML = '<div class="loading">لا توجد أقسام</div>'; return; }
+        grid.innerHTML = cachedCategories.map(c => `
+            <div class="cat-card" onclick="fetchProducts('${c.id}','${c.name}')">
+                <img src="${getImageUrl(c.image)}" alt="${c.name}" onerror="this.src='https://via.placeholder.com/300?text=iQ'">
+                <h4>${c.name}</h4>
+            </div>
+        `).join('');
+    }
 
-random: [
-{name: "كود لعبة عشوائية", price: 5, d: "تحصل على كود لعبة عشوائية من متجر ستيم بسعر مفاجأة 🔥"}
-]
+    async function fetchProducts(catId, catName) {
+        document.getElementById('productsTitle').innerText = catName;
+        document.getElementById('categoriesView').classList.add('hidden');
+        document.getElementById('productsView').classList.remove('hidden');
+        const grid = document.getElementById('prodsGrid');
+        grid.innerHTML = '<div class="loading">جاري التحميل...</div>';
+        const snap = await db.collection("products").where("categoryId", "==", catId).get();
+        allProducts = [];
+        snap.forEach(doc => { if (doc.data().active !== false) allProducts.push({ id: doc.id, ...doc.data() }); });
+        grid.innerHTML = allProducts.map(p => `
+            <div class="prod-card">
+                <img src="${getImageUrl(p.image)}" alt="${p.name}">
+                <div class="price">${formatPrice(p.price)} <small>د.ل</small></div>
+                <div style="font-size:11px;color:#fff;margin:4px 0;">${p.name}</div>
+                <button class="buy-btn" onclick="openModal('${p.id}','${p.name.replace(/'/g,"\\'")}',${p.price})">شراء</button>
+            </div>
+        `).join('');
+    }
 
-};
+    function showCategories() {
+        document.getElementById('productsView').classList.add('hidden');
+        document.getElementById('categoriesView').classList.remove('hidden');
+    }
 
-let payExtra = 0;
+    function openModal(id, name, price) {
+        currentProduct = { id, name, price };
+        document.getElementById('modalName').innerText = name;
+        document.getElementById('targetInput').value = '';
+        document.getElementById('contactPhone').value = '';
+        document.getElementById('buyModal').classList.remove('hidden');
+    }
 
-function loadServices() {
-const cat = document.getElementById('mainCategory').value;
-const sub = document.getElementById('subService');
-sub.innerHTML = '<option value="">-- اختر الخدمة --</option>';
-if(cat) {
-catalog[cat].forEach((item, i) => {
-sub.innerHTML += `<option value="${i}">${item.name}</option>`;
-});
-}
-showDesc();
-}
+    function closeModal() { document.getElementById('buyModal').classList.add('hidden'); }
 
-function showDesc() {
-const cat = document.getElementById('mainCategory').value;
-const i = document.getElementById('subService').value;
-const box = document.getElementById('descBox');
-if(cat && i !== "") {
-document.getElementById('descContent').innerHTML = `<b>التفاصيل:</b><br>${catalog[cat][i].d}`;
-box.style.display = 'block';
-} else {
-box.style.display = 'none';
-}
-calc();
-}
+    async function confirmPurchase() {
+        if (!currentProduct) return;
+        const target = document.getElementById('targetInput').value.trim();
+        const phone = document.getElementById('contactPhone').value.trim();
+        if (!target || !phone) return alert('⚠️ أكمل جميع البيانات');
+        try {
+            await db.collection("orders").add({
+                productId: currentProduct.id, productName: currentProduct.name,
+                price: currentProduct.price, targetData: target, contactPhone: phone, status: 'pending',
+                invoiceNumber: generateInvoice(), createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert('✅ تم تقديم الطلب');
+            closeModal();
+        } catch (e) { alert('❌ خطأ: ' + e.message); }
+    }
 
-function setPay(el, val) {
-document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
-el.classList.add('active');
-payExtra = val;
-calc();
-}
+    async function submitRecharge() {
+        const phone = document.getElementById('phoneInput').value.trim();
+        const amount = document.getElementById('amountInput').value.trim();
+        if (!phone || !amount) return alert('⚠️ أكمل البيانات');
+        try {
+            await db.collection("deposits").add({
+                phone: phone, amount: parseFloat(amount), provider: 'ليبيانا', status: 'pending',
+                invoiceNumber: generateInvoice(), createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            alert('✅ تم إرسال طلب الشحن');
+            document.getElementById('phoneInput').value = '';
+            document.getElementById('amountInput').value = '';
+        } catch (e) { alert('❌ خطأ: ' + e.message); }
+    }
 
-function calc() {
-const cat = document.getElementById('mainCategory').value;
-const i = document.getElementById('subService').value;
-const qty = document.getElementById('userQty').value || 1;
-if(cat && i !== "") {
-let total = (catalog[cat][i].price * qty) + payExtra;
-document.getElementById('finalPrice').innerText = total.toFixed(2) + " د.ل";
-} else {
-document.getElementById('finalPrice').innerText = "0.00 د.ل";
-}
-}
+    async function loadOrders() {
+        const list = document.getElementById('ordersList');
+        list.innerHTML = '<div class="loading">جاري التحميل...</div>';
+        const snap = await db.collection("orders").orderBy("createdAt", "desc").limit(20).get();
+        if (snap.empty) { list.innerHTML = '<div class="loading">لا توجد طلبات</div>'; return; }
+        list.innerHTML = '';
+        snap.forEach(doc => {
+            const d = doc.data();
+            list.innerHTML += `<div class="card" style="margin-bottom:8px;"><b>${d.productName}</b> - ${formatPrice(d.price)} د.ل | ${d.status || 'pending'}</div>`;
+        });
+    }
 
-function sendToWA() {
-const cat = document.getElementById('mainCategory').value;
-const i = document.getElementById('subService').value;
-const input = document.getElementById('userInput').value;
-const qty = document.getElementById('userQty').value;
-const total = document.getElementById('finalPrice').innerText;
+    // ========== بدء التطبيق ==========
+    document.getElementById('navList').innerHTML = `
+        <button class="nav-btn active" onclick="switchTab('home')">🏠 المتجر الرئيسي</button>
+        <button class="nav-btn" onclick="switchTab('wallet')">💰 المحفظة</button>
+        <button class="nav-btn" onclick="switchTab('orders')">📋 الطلبات</button>
+    `;
 
-if(!cat || i === "" || !input) return alert("الرجاء إكمال البيانات");
-
-const name = catalog[cat][i].name;
-const text = `*طلب جديد من ZH STORE*%0A------------------%0A*الخدمة:* ${name}%0A*البيانات:* ${input}%0A*الكمية:* ${qty}%0A*الإجمالي:* ${total}`;
-window.open(`https://wa.me/218910834391?text=${text}`);
-}
+    fetchCategories();
 </script>
-
 </body>
 </html>
