@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iQ Store | لوحة تحكم الإدارة</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background-color: #060814; }
+        .card-bg { background-color: #0d1127; }
+        .sidebar-bg { background-color: #0a0d1a; }
+        .purple-text { color: #9d4edd; }
+        .purple-bg { background: linear-gradient(135deg, #9d4edd, #7b2cbf); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #060814; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shake { 0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-5px)}20%,40%,60%,80%{transform:translateX(5px)}}
+        .shake { animation: shake 0.5s ease-in-out; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .cat-card-admin { background: #0d1127; border: 1px solid #1e293b; border-radius: 14px; padding: 14px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 12px; box-shadow: 0 0 15px rgba(157,78,221,0.08); }
+        .cat-card-admin:hover { border-color: #9d4edd; background: rgba(157,78,221,0.05); box-shadow: 0 0 20px rgba(157,78,221,0.15); }
+        .cat-card-admin.active { border-color: #9d4edd; background: rgba(157,78,221,0.08); }
+        .cat-card-admin img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+        
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #1e293b; transition: .4s; border-radius: 34px; border: 1px solid rgba(157,78,221,0.3); }
+        .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 2px; background-color: #64748b; transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider { background-color: #9d4edd; }
+        input:checked + .toggle-slider:before { transform: translateX(22px); background-color: #fff; }
+        
+        .notification { position: fixed; top: 20px; right: 20px; z-index: 10000; padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 700; box-shadow: 0 0 20px rgba(0,0,0,0.4); animation: fadeIn 0.3s ease-out; }
+        .notification.success { background: #059669; color: #fff; }
+        .notification.error { background: #dc2626; color: #fff; }
+        .notification.info { background: #7b2cbf; color: #fff; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus, textarea:focus, select:focus { outline: none; border-color: #9d4edd !important; box-shadow: 0 0 0 2px rgba(157,78,221,0.2); }
+    </style>
+</head>
+<body class="text-gray-200 min-h-screen flex flex-col md:flex-row">
+
+    <div id="adminGuardScreen" class="fixed inset-0 bg-[#060814] z-[999] flex flex-col items-center justify-center text-center p-4">
+        <div class="card-bg p-8 rounded-2xl border border-gray-700 shadow-2xl max-w-sm w-full space-y-5" id="guardCard">
+            <div class="w-16 h-16 bg-[#1a2540] rounded-full flex items-center justify-center text-2xl purple-text mx-auto border border-gray-600 shadow-lg"><i class="fa-solid fa-lock"></i></div>
+            <h2 class="text-lg font-bold text-white">لوحة تحكم iQ Store</h2>
+            <p class="text-xs text-gray-400">أدخل رمز الوصول للمتابعة</p>
+            <div class="space-y-3">
+                <div class="relative"><span class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"><i class="fa-solid fa-key"></i></span><input type="password" id="accessCode" placeholder="أدخل رمز الوصول" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl py-3 pr-9 pl-3 text-white text-sm text-center focus:outline-none focus:border-[#9d4edd]" autocomplete="off" onkeydown="if(event.key==='Enter')checkAccessCode()"></div>
+                <button onclick="checkAccessCode()" class="w-full purple-bg hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-sm transition-all shadow-md"><i class="fa-solid fa-arrow-left"></i> دخول</button>
+                <p id="accessError" class="text-red-400 text-xs hidden">❌ رمز الوصول غير صحيح</p>
+            </div>
+            <a href="index.html" class="block text-gray-500 hover:text-white text-xs">العودة للمتجر</a>
+        </div>
+    </div>
+
+    <aside class="sidebar-bg w-full md:w-64 border-b md:border-b-0 md:border-l border-gray-700 flex flex-col justify-between shrink-0">
+        <div>
+            <div class="p-5 border-b border-gray-700 flex items-center justify-between">
+                <div class="flex items-center gap-2"><span class="purple-bg text-white px-2 py-0.5 rounded text-sm font-black">iQ</span><span class="text-md font-bold text-white">الإدارة</span></div>
+                <span class="text-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded">v1.0</span>
+            </div>
+            <nav class="p-3 space-y-1">
+                <button onclick="switchTab('dashboardTab',this)" class="tab-btn w-full text-right purple-bg text-white font-bold px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-chart-pie"></i> الإحصائيات</button>
+                <button onclick="switchTab('ordersTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#0d1127] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-cart-shopping"></i> الطلبات</button>
+                <button onclick="switchTab('depositsTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#0d1127] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-money-bill-wave"></i> الإيداعات</button>
+                <button onclick="switchTab('categoriesTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#0d1127] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-tags"></i> الأقسام</button>
+                <button onclick="switchTab('productsTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#0d1127] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-cubes"></i> المنتجات</button>
+                <button onclick="switchTab('heroSlidesTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#0d1127] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-images"></i> شريط الصور</button>
+                <button onclick="switchTab('usersTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#0d1127] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-users"></i> المستخدمين</button>
+                <button onclick="switchTab('appSettingsTab',this)" class="tab-btn w-full text-right text-gray-400 hover:text-white hover:bg-[#0d1127] px-4 py-3 rounded-xl text-xs flex items-center gap-3"><i class="fa-solid fa-sliders"></i> إعدادات التطبيق</button>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-gray-700 bg-[#040710] flex items-center justify-between">
+            <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg purple-bg text-white flex items-center justify-center font-bold text-xs"><i class="fa-solid fa-user-gear"></i></div><div><p class="text-xs font-bold text-white">المدير</p><p class="text-[9px] text-gray-500">تحكم كامل</p></div></div>
+            <button onclick="logout()" class="text-gray-500 hover:text-red-400 text-sm"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+    </aside>
+
+    <main class="flex-grow p-4 md:p-8 max-w-7xl w-full mx-auto space-y-6 overflow-x-hidden">
+
+        <section id="dashboardTab" class="admin-tab space-y-6">
+            <h1 class="text-xl font-black text-white">📊 نظرة عامة</h1>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="card-bg p-4 rounded-2xl border border-gray-700"><p class="text-[10px] text-gray-400">إجمالي المبيعات</p><p class="text-xl font-black purple-text" id="statRevenue">0.00 د.ل</p></div>
+                <div class="card-bg p-4 rounded-2xl border border-gray-700"><p class="text-[10px] text-gray-400">طلبات معلقة</p><p class="text-xl font-black text-red-400" id="statPendingOrders">0</p></div>
+                <div class="card-bg p-4 rounded-2xl border border-gray-700"><p class="text-[10px] text-gray-400">إيداعات معلقة</p><p class="text-xl font-black text-amber-400" id="statPendingDeposits">0</p></div>
+                <div class="card-bg p-4 rounded-2xl border border-gray-700"><p class="text-[10px] text-gray-400">إجمالي المستخدمين</p><p class="text-xl font-black text-blue-400" id="statTotalUsers">0</p></div>
+            </div>
+        </section>
+
+        <section id="ordersTab" class="admin-tab hidden space-y-4">
+            <div class="flex justify-between"><h1 class="text-xl font-black text-white">📦 إدارة الطلبات</h1><button onclick="deleteSelectedOrders()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold"><i class="fa-solid fa-trash-can"></i> حذف المحدد</button></div>
+            <div class="card-bg rounded-2xl border border-gray-700 overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="bg-[#0a0f1a] text-gray-400 text-[10px] uppercase"><tr><th class="p-4"><input type="checkbox" id="selectAllOrders" onclick="toggleSelectAll('orderCheckbox',this)" class="accent-[#9d4edd]"></th><th class="p-4">العميل</th><th class="p-4">المنتج</th><th class="p-4">البيانات</th><th class="p-4">📞 التواصل</th><th class="p-4">الكمية</th><th class="p-4">المبلغ</th><th class="p-4">رقم الفاتورة</th><th class="p-4">التاريخ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr></thead><tbody id="ordersTableBody"><tr><td colspan="11" class="text-center p-8 text-gray-500">جاري التحميل...</td></tr></tbody></table></div></div>
+        </section>
+
+        <section id="depositsTab" class="admin-tab hidden space-y-4">
+            <h1 class="text-xl font-black text-white">💰 إدارة الإيداعات</h1>
+            <div class="card-bg rounded-2xl border border-gray-700 overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="bg-[#0a0f1a] text-gray-400 text-[10px] uppercase"><tr><th class="p-4">المستخدم</th><th class="p-4">المزود</th><th class="p-4">رقم/كود</th><th class="p-4">المبلغ</th><th class="p-4">رقم الفاتورة</th><th class="p-4">التاريخ</th><th class="p-4">الحالة</th><th class="p-4">إجراء</th></tr></thead><tbody id="depositsTableBody"><tr><td colspan="8" class="text-center p-8 text-gray-500">جاري التحميل...</td></tr></tbody></table></div></div>
+        </section>
+
+        <section id="categoriesTab" class="admin-tab hidden space-y-6">
+            <div class="flex justify-between"><h1 class="text-xl font-black text-white">🏷️ الأقسام</h1><button onclick="openCategoryModal()" class="purple-bg text-white text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة قسم</button></div>
+            <div id="categoryModal" class="hidden card-bg p-5 rounded-2xl border border-purple-500/30 max-w-lg mx-auto space-y-4"><div class="flex justify-between"><h3 id="catModalTitle" class="text-sm font-bold text-white">قسم جديد</h3><button onclick="closeCategoryModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div><form onsubmit="saveCategory(event)" class="space-y-3 text-xs"><input type="hidden" id="catId"><div><label class="text-gray-400">اسم القسم *</label><input type="text" id="catName" required class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div><div><label class="text-gray-400">نوع القسم</label><select id="catSectionType" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"><option value="cards">🎮 اشتراكات وألعاب</option><option value="smm">📱 رشق وخدمات السوشيال</option></select></div><div><label class="text-gray-400">رابط الصورة</label><input type="text" id="catImage" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white font-mono text-[11px]"></div><div><label class="text-gray-400">الترتيب</label><input type="number" id="catOrder" value="1" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div><button type="submit" class="purple-bg text-white font-bold py-3 rounded-xl w-full">حفظ</button></form></div>
+            <div class="card-bg rounded-2xl border border-gray-700 overflow-hidden"><table class="w-full text-right text-xs"><thead class="bg-[#0a0f1a] text-gray-400 text-[10px] uppercase"><tr><th class="p-4">صورة</th><th class="p-4">اسم</th><th class="p-4">نوع</th><th class="p-4">ترتيب</th><th class="p-4">تحكم</th></tr></thead><tbody id="categoriesTableBody"><tr><td colspan="5" class="text-center p-8 text-gray-500">جاري التحميل...</td></tr></tbody></table></div>
+        </section>
+
+        <section id="productsTab" class="admin-tab hidden space-y-6">
+            <div class="flex justify-between items-center"><h1 class="text-xl font-black text-white">🎮 المنتجات</h1><button onclick="openProductModal()" class="purple-bg text-white text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة منتج</button></div>
+            <div id="adminCategoriesView"><h3 class="text-sm font-bold text-white mb-3">📂 اختر قسم لعرض منتجاته</h3><div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="adminCatsGrid"><div class="text-center p-6 text-gray-500">⏳ جاري جلب الأقسام...</div></div></div>
+            
+            <div id="adminProductsView" class="hidden">
+                <button onclick="backToAdminCategories()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl text-xs font-bold mb-3">⬅ رجوع للأقسام</button>
+                <div class="flex justify-between items-center mb-3"><h3 class="text-sm font-bold text-white" id="adminProductsTitle"></h3><div class="flex gap-2"><button onclick="deleteSelectedProducts()" class="bg-red-600/20 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-trash-can"></i> حذف</button><button onclick="openBatchMoveModal()" class="bg-purple-600/20 text-purple-400 border border-purple-500/30 hover:bg-purple-600 hover:text-white px-3 py-1.5 rounded-xl text-[10px] font-bold"><i class="fa-solid fa-folder-tree"></i> نقل</button></div></div>
+                
+                <div id="batchMoveModal" class="hidden card-bg p-5 rounded-2xl border border-purple-500/30 max-w-lg mx-auto space-y-4 mb-4"><div class="flex justify-between"><h3 class="text-sm font-bold text-white">📦 نقل المنتجات لقسم آخر</h3><button onclick="closeBatchMoveModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div><div class="space-y-3 text-xs"><div><label class="text-gray-400 block mb-1">اختر القسم الجديد</label><select id="targetCategorySelect" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"><option value="">اختر القسم...</option></select></div><div class="bg-[#0a0f1a] p-3 rounded-xl border border-gray-700"><p class="text-gray-400 text-[10px] mb-2">📋 المحدد للنقل: <span id="moveSelectedCount" class="text-purple-400 font-bold">0</span></p></div><button onclick="applyBatchMove()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-xs">📦 نقل المنتجات المحددة</button></div></div>
+                
+                <div class="card-bg rounded-2xl border border-gray-700 overflow-hidden"><div class="overflow-x-auto custom-scrollbar"><table class="w-full text-right text-xs"><thead class="bg-[#0a0f1a] text-gray-400 text-[10px] uppercase"><tr><th class="p-4"><input type="checkbox" id="selectAllProducts" onclick="toggleSelectAll('productCheckbox',this)" class="accent-[#9d4edd]"></th><th class="p-4">صورة</th><th class="p-4">اسم المنتج</th><th class="p-4">السعر الأساسي</th><th class="p-4">الخصم</th><th class="p-4">نوع الحقل</th><th class="p-4">حالة العداد</th><th class="p-4">الحالة العامة</th><th class="p-4">تحكم</th></tr></thead><tbody id="productsTableBody"><tr><td colspan="9" class="text-center p-6 text-gray-500">اختر قسم أولاً</td></tr></tbody></table></div></div>
+            </div>
+
+            <div id="productModal" class="hidden card-bg p-5 rounded-2xl border border-purple-500/30 max-w-2xl mx-auto space-y-4"><div class="flex justify-between"><h3 id="prodModalTitle" class="text-sm font-bold text-white">منتج جديد</h3><button onclick="closeProductModal()" class="text-gray-500"><i class="fa-solid fa-xmark"></i></button></div><form onsubmit="saveProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs"><input type="hidden" id="prodId"><div class="md:col-span-2"><label class="text-gray-400">اسم المنتج *</label><input type="text" id="prodName" required class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div><div><label class="text-gray-400">السعر (د.ل) *</label><input type="number" step="0.001" id="prodPriceLYD" required class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div><div><label class="text-gray-400">السعر ($)</label><input type="number" step="0.01" id="prodPriceUSD" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div><div><label class="text-gray-400">القسم</label><select id="prodCategory" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></select></div><div><label class="text-gray-400">الخصم %</label><input type="number" id="prodDiscount" value="0" min="0" max="99" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div>
+            <div class="md:col-span-2 border border-purple-500/20 rounded-xl p-3 space-y-3"><p class="text-purple-400 text-[10px] font-bold">📝 إعدادات حقل البيانات للزبون</p><div class="grid grid-cols-2 gap-3"><div><label class="text-gray-400">نوع الحقل</label><select id="fieldType" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"><option value="id">🎮 ID لاعب</option><option value="phone">📞 رقم هاتف</option><option value="account">🔗 رابط الحساب</option><option value="custom">✏️ حقل مخصص</option></select></div><div><label class="text-gray-400">تفعيل الحقل</label><select id="fieldEnabled" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"><option value="true">✅ مفعل</option><option value="false">❌ معطل</option></select></div></div><div id="customLabelContainer" class="hidden"><label class="text-gray-400">نص الحقل المخصص</label><input type="text" id="fieldCustomLabel" placeholder="مثال: أدخل يوزر الانستقرام" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div></div>
+            <div class="md:col-span-2 border border-purple-500/20 rounded-xl p-3 space-y-2"><div class="flex items-center justify-between"><span class="text-purple-400 text-[10px] font-bold">🔢 تفعيل العداد والكميات المرنة</span><label class="toggle-switch"><input type="checkbox" id="enableQuantity" onchange="toggleQuantitySettings()"><span class="toggle-slider"></span></label></div><p class="text-[9px] text-gray-400">عند تفعيل هذا الخيار: سيتمكن الزبون من كتابة أي كمية يريدها بين الحد الأدنى والأقصى.</p><div id="quantitySettings" class="hidden space-y-3 mt-2"><div class="grid grid-cols-2 gap-3"><div><label class="text-gray-400">الحد الأدنى للقطع</label><input type="number" id="qtyMin" value="30" min="1" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div><div><label class="text-gray-400">الحد الأقصى للقطع</label><input type="number" id="qtyMax" value="100" min="1" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div></div></div></div>
+            <div class="md:col-span-2"><label class="text-gray-400">رابط الصورة</label><input type="text" id="prodImage" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white font-mono text-[11px]"></div><div class="md:col-span-2"><label class="text-gray-400">الوصف</label><textarea id="prodDescription" rows="2" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></textarea></div><div class="md:col-span-2"><label class="text-gray-400">الحالة العامة</label><select id="prodActive" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"><option value="true">✅ نشط</option><option value="false">❌ مخفي</option></select></div><div class="md:col-span-2"><button type="submit" class="purple-bg text-white font-bold py-3 rounded-xl w-full">حفظ التغييرات</button></div></form></div>
+        </section>
+
+        <section id="heroSlidesTab" class="admin-tab hidden space-y-6">
+            <div class="flex justify-between"><h1 class="text-xl font-black text-white">🖼️ شريط الصور المتحركة</h1><button onclick="addSlide()" class="purple-bg text-white text-xs font-bold px-4 py-2.5 rounded-xl"><i class="fa-solid fa-plus"></i> إضافة صورة</button></div>
+            <div class="card-bg rounded-2xl border border-gray-700 overflow-hidden p-4"><div id="slidesList" class="space-y-3"><div class="loading text-gray-500">⏳ جاري جلب الصور...</div></div><button onclick="saveSlides()" class="purple-bg text-white font-bold py-3 rounded-xl w-full mt-4 text-xs"><i class="fa-solid fa-floppy-disk"></i> حفظ التغييرات</button></div>
+        </section>
+
+        <section id="usersTab" class="admin-tab hidden space-y-4">
+            <h1 class="text-xl font-black text-white">👥 المستخدمين</h1>
+            <input type="text" oninput="searchUsers(this.value)" placeholder="🔍 بحث عن مستخدم..." class="w-full max-w-xs bg-[#0a0f1a] border border-gray-600 rounded-xl py-2.5 px-4 text-white text-xs">
+            <div class="card-bg rounded-2xl border border-gray-700 overflow-hidden"><table class="w-full text-right text-xs"><thead class="bg-[#0a0f1a] text-gray-400 text-[10px] uppercase"><tr><th class="p-4">اسم</th><th class="p-4">هاتف</th><th class="p-4">إيميل</th><th class="p-4">رصيد</th><th class="p-4">رتبة</th><th class="p-4">شحن/خصم</th></tr></thead><tbody id="usersTableBody"><tr><td colspan="6" class="text-center p-8 text-gray-500">جاري التحميل...</td></tr></tbody></table></div>
+        </section>
+
+        <section id="appSettingsTab" class="admin-tab hidden space-y-6">
+            <h1 class="text-xl font-black text-white">⚙️ إعدادات التطبيق العامة</h1>
+            <p class="text-xs text-gray-400">هذه الإعدادات تنعكس فوراً على تطبيق المستخدمين. يتم الحفظ تلقائياً في مجموعة <code class="bg-gray-800 px-2 py-0.5 rounded text-purple-400">app/settings</code></p>
+            
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4">
+                <h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">🏪 معلومات المتجر الأساسية</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div><label class="text-gray-400">اسم المتجر</label><input type="text" id="appBrandName" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div>
+                    <div><label class="text-gray-400">نص الحقوق</label><input type="text" id="appCopyright" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div>
+                    <div><label class="text-gray-400">مدة المعالجة</label><input type="text" id="appProcessingTime" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div>
+                    <div><label class="text-gray-400">معرف بايننس</label><input type="text" id="appBinanceId" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white font-mono"></div>
+                    <div><label class="text-gray-400">سعر صرف بايننس (د.ل لكل دولار)</label><input type="number" id="appBinanceRate" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div>
+                </div>
+            </div>
+
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4">
+                <h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">🚨 شريط الطوارئ</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="flex items-center gap-3"><label class="toggle-switch"><input type="checkbox" id="appEmergencyActive" onchange="toggleEmergencyFields()"><span class="toggle-slider"></span></label><span class="text-gray-400">تفعيل الشريط</span></div>
+                    <div class="md:col-span-2"><label class="text-gray-400">نص الرسالة</label><input type="text" id="appEmergencyMessage" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white"></div>
+                </div>
+            </div>
+
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4">
+                <h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">👁️ إظهار/إخفاء صفحات التطبيق</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                    <div class="flex items-center justify-between bg-[#0a0f1a] p-3 rounded-xl"><span>💰 المحفظة</span><label class="toggle-switch"><input type="checkbox" id="appSectionWallet" checked><span class="toggle-slider"></span></label></div>
+                    <div class="flex items-center justify-between bg-[#0a0f1a] p-3 rounded-xl"><span>📋 سجل الطلبات</span><label class="toggle-switch"><input type="checkbox" id="appSectionOrders" checked><span class="toggle-slider"></span></label></div>
+                    <div class="flex items-center justify-between bg-[#0a0f1a] p-3 rounded-xl"><span>📞 قسم الدعم</span><label class="toggle-switch"><input type="checkbox" id="appSectionSupport" checked><span class="toggle-slider"></span></label></div>
+                </div>
+            </div>
+
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">📋 القائمة الجانبية</h3><div id="sidebarMenuSettings" class="space-y-2"></div></div>
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">💳 طرق الدفع</h3><div id="paymentMethodsSettings" class="space-y-2"></div></div>
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">📞 أرقام ليبيانا ومدار</h3><div id="libyanaNumbersSettings" class="space-y-2"></div><button onclick="addLibyanaNumber()" class="bg-purple-600/20 text-purple-400 border border-purple-500/30 hover:bg-purple-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold w-full"><i class="fa-solid fa-plus"></i> إضافة رقم</button></div>
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">📞 قنوات الدعم</h3><div id="supportChannelsSettings" class="space-y-2"></div></div>
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">🛡️ أقسام الثقة</h3><div id="trustSectionsSettings" class="space-y-2"></div></div>
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">📌 روابط الفوتر</h3><div id="footerLinksSettings" class="space-y-2"></div></div>
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">📑 التبويبات الرئيسية</h3><div id="mainTabsSettings" class="space-y-2"></div></div>
+            <div class="card-bg p-5 rounded-2xl border border-gray-700 space-y-4"><h3 class="text-sm font-bold text-white border-b border-gray-700 pb-2">⚠️ نص تحذير قسم السوشيال ميديا</h3><textarea id="appSmmWarning" rows="3" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-xl p-3 text-white text-xs"></textarea></div>
+            <button onclick="saveAppSettings()" class="purple-bg text-white font-bold py-4 rounded-xl w-full text-sm sticky bottom-4 shadow-2xl"><i class="fa-solid fa-floppy-disk"></i> حفظ جميع إعدادات التطبيق</button>
+        </section>
+
+    </main>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAsDZDLbzB0Vfqgo8SenbE4DTxjc7m_xqA",
+            authDomain: "iq-store-f6195.firebaseapp.com",
+            projectId: "iq-store-f6195",
+            storageBucket: "iq-store-f6195.firebasestorage.app",
+            messagingSenderId: "971567926936",
+            appId: "1:971567926936:web:f85205b7d1ea210d3c0aed"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const ACCESS_CODE = "mansor";
+        let allUsers = [], allCategoriesList = [], currentEditingCategoryId = null;
+        let slidesList = [];
+        let currentAppSettings = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const fieldTypeSelect = document.getElementById('fieldType');
+            if (fieldTypeSelect) { fieldTypeSelect.addEventListener('change', function() { document.getElementById('customLabelContainer').classList.toggle('hidden', this.value !== 'custom'); }); }
+        });
+
+        function checkAccessCode() { if (document.getElementById("accessCode").value.trim() === ACCESS_CODE) { document.getElementById("adminGuardScreen").classList.add("hidden"); initDashboard(); } else { document.getElementById("accessError").classList.remove("hidden"); document.getElementById("guardCard").classList.add("shake"); setTimeout(() => document.getElementById("guardCard").classList.remove("shake"), 500); } }
+        function logout() { if (confirm("هل أنت متأكد؟")) { document.getElementById("adminGuardScreen").classList.remove("hidden"); document.getElementById("accessCode").value = ""; } }
+        function initDashboard() { loadStats(); loadOrders(); loadDeposits(); loadCategories(); loadAdminCategories(); loadUsers(); loadSlides(); loadAppSettings(); }
+        function switchTab(tabId, btn) { document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden')); document.getElementById(tabId).classList.remove('hidden'); document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('purple-bg', 'text-white'); b.classList.add('text-gray-400'); }); btn.classList.add('purple-bg', 'text-white'); btn.classList.remove('text-gray-400'); if(tabId==='heroSlidesTab') loadSlides(); if(tabId==='appSettingsTab') loadAppSettings(); }
+        function toggleSelectAll(className, master) { document.querySelectorAll(`.${className}`).forEach(cb => cb.checked = master.checked); }
+        function toggleQuantitySettings() { document.getElementById('quantitySettings').classList.toggle('hidden', !document.getElementById('enableQuantity').checked); }
+        function toggleEmergencyFields() { const active = document.getElementById('appEmergencyActive').checked; document.getElementById('appEmergencyMessage').disabled = !active; }
+
+        function loadStats() {
+            db.collection("orders").get().then(snap => { let rev = 0, pend = 0; snap.forEach(doc => { const d = doc.data(); if (d.status === "completed") rev += Number(d.amount || d.price || 0); if (d.status === "pending") pend++; }); document.getElementById("statRevenue").innerText = rev.toFixed(2) + ' د.ل'; document.getElementById("statPendingOrders").innerText = pend; });
+            db.collection("deposits").where("status", "==", "pending").get().then(s => document.getElementById("statPendingDeposits").innerText = s.size);
+            db.collection("users").get().then(s => document.getElementById("statTotalUsers").innerText = s.size);
+        }
+
+        function loadOrders() {
+            db.collection("orders").orderBy("createdAt", "desc").limit(100).onSnapshot(snap => {
+                const tbody = document.getElementById("ordersTableBody"); tbody.innerHTML = "";
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="11" class="text-center p-6 text-gray-500">لا توجد طلبات</td></tr>'; return; }
+                snap.forEach(doc => {
+                    const o = doc.data(); const date = o.createdAt ? new Date(o.createdAt.seconds * 1000).toLocaleString('ar-LY') : '---';
+                    const statusText = o.status === 'completed' ? '✅ مكتمل' : o.status === 'canceled' ? '❌ ملغي' : '🕒 معلق';
+                    const actionBtns = o.status === 'pending' ? `<button onclick="approveOrder('${doc.id}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">✅ قبول</button> <button onclick="cancelOrder('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">❌ إلغاء</button>` : o.status === 'completed' ? `<button onclick="cancelOrder('${doc.id}')" class="bg-amber-600 text-white px-2 py-1 rounded text-[10px]">↩ إلغاء</button>` : '<span class="text-gray-500">تم</span>';
+                    tbody.innerHTML += `<tr class="border-b border-gray-700/40"><td class="p-4"><input type="checkbox" value="${doc.id}" class="orderCheckbox accent-[#9d4edd]"></td><td class="p-4 text-white">${o.userName||'---'}</td><td class="p-4 purple-text">${o.serviceName||o.cardName||'---'}</td><td class="p-4 font-mono">${o.playerID||'---'}</td><td class="p-4 purple-text" style="direction:ltr;text-align:center;">📞 ${o.contactPhone||'---'}</td><td class="p-4">${o.quantity||1}</td><td class="p-4">${(o.amount||o.price||0).toFixed(2)} د.ل</td><td class="p-4 font-mono">${o.invoiceNumber||'---'}</td><td class="p-4 text-[10px]">${date}</td><td class="p-4">${statusText}</td><td class="p-4">${actionBtns}</td></tr>`;
+                });
+            });
+        }
+
+        async function approveOrder(id) { if (!confirm("تأكيد قبول الطلب؟")) return; try { await db.collection("orders").doc(id).update({ status: "completed" }); showNotification('✅ تم قبول الطلب', 'success'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
+        async function cancelOrder(id) { if (!confirm("تأكيد إلغاء الطلب وإرجاع المبلغ؟")) return; try { const orderDoc = await db.collection("orders").doc(id).get(); const o = orderDoc.data(); if (o && o.userId) { const userDoc = await db.collection("users").doc(o.userId).get(); const cb = userDoc.exists ? (userDoc.data().balance || 0) : 0; await db.collection("users").doc(o.userId).update({ balance: cb + (o.amount || o.price || 0) }); } await db.collection("orders").doc(id).update({ status: "canceled" }); showNotification('❌ تم إلغاء الطلب وإرجاع المبلغ', 'error'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
+        function deleteSelectedOrders() { const cbs = document.querySelectorAll('.orderCheckbox:checked'); if (!cbs.length) return alert("حدد طلباً"); if (!confirm(`حذف ${cbs.length} طلب؟`)) return; const batch = db.batch(); cbs.forEach(cb => batch.delete(db.collection("orders").doc(cb.value))); batch.commit().then(() => { document.getElementById("selectAllOrders").checked = false; loadStats(); }); }
+
+        function loadDeposits() {
+            db.collection("deposits").orderBy("createdAt", "desc").limit(100).onSnapshot(snap => {
+                const tbody = document.getElementById("depositsTableBody"); tbody.innerHTML = "";
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="8" class="text-center p-6 text-gray-500">لا توجد إيداعات</td></tr>'; return; }
+                snap.forEach(doc => {
+                    const d = doc.data(); const date = d.createdAt ? new Date(d.createdAt.seconds * 1000).toLocaleString('ar-LY') : '---';
+                    const statusText = d.status === 'approved' ? '✅ مقبول' : d.status === 'rejected' ? '❌ مرفوض' : '🕒 معلق';
+                    const actionBtns = d.status === 'pending' ? `<button onclick="approveDeposit('${doc.id}','${d.userId}','${d.amount||0}')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[10px]">✅ قبول</button> <button onclick="rejectDeposit('${doc.id}')" class="bg-red-600 text-white px-2 py-1 rounded text-[10px]">❌ رفض</button>` : '<span class="text-gray-500">تم</span>';
+                    tbody.innerHTML += `<tr class="border-b border-gray-700/40"><td class="p-4">${d.userName||d.userId||'---'}</td><td class="p-4">${d.provider||'تحويل'}</td><td class="p-4 font-mono">${d.phone||d.card_code||'---'}</td><td class="p-4 purple-text">${(d.amount||0).toFixed(2)} د.ل</td><td class="p-4 font-mono">${d.invoiceNumber||'---'}</td><td class="p-4 text-[10px]">${date}</td><td class="p-4">${statusText}</td><td class="p-4">${actionBtns}</td></tr>`;
+                });
+            });
+        }
+
+        async function approveDeposit(id, userId, amount) { try { const amt = parseFloat(amount); const userDoc = await db.collection("users").doc(userId).get(); const cb = userDoc.exists ? (userDoc.data().balance || 0) : 0; await db.collection("users").doc(userId).update({ balance: cb + amt }); await db.collection("deposits").doc(id).update({ status: "approved" }); showNotification('✅ تمت الموافقة وإضافة الرصيد', 'success'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
+        async function rejectDeposit(id) { try { await db.collection("deposits").doc(id).update({ status: "rejected" }); showNotification('❌ تم رفض الإيداع', 'error'); loadStats(); } catch (e) { alert("❌ خطأ: " + e.message); } }
+
+        function loadCategories() {
+            db.collection("categories").orderBy("order").limit(100).onSnapshot(snap => {
+                allCategoriesList = []; const tbody = document.getElementById("categoriesTableBody"); tbody.innerHTML = "";
+                snap.forEach(doc => { const c = doc.data(); c.id = doc.id; allCategoriesList.push(c); 
+                    const typeText = c.sectionType === 'smm' ? '📱 سوشيال' : '🎮 ألعاب';
+                    tbody.innerHTML += `<tr class="border-b border-gray-700/40"><td class="p-4"><img src="${c.image||c.cover||''}" class="w-10 h-10 rounded-lg object-cover" onerror="this.style.display='none'"></td><td class="p-4 text-white font-bold">${c.name}</td><td class="p-4">${typeText}</td><td class="p-4">${c.order||0}</td><td class="p-4"><button onclick="editCategory('${doc.id}')" class="text-blue-400 text-[11px]"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteCategory('${doc.id}')" class="text-red-400 text-[11px]"><i class="fa-solid fa-trash"></i></button></td></tr>`; 
+                });
+                updateAllSelects();
+            });
+        }
+
+        function updateAllSelects() {
+            const prodSelect = document.getElementById("prodCategory"); if (prodSelect) { prodSelect.innerHTML = '<option value="">اختر القسم...</option>'; allCategoriesList.forEach(c => prodSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`); }
+            const moveSelect = document.getElementById("targetCategorySelect"); if (moveSelect) { moveSelect.innerHTML = '<option value="">اختر القسم...</option>'; allCategoriesList.forEach(c => moveSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`); }
+        }
+
+        function openCategoryModal() { document.getElementById("catId").value=""; document.getElementById("catName").value=""; document.getElementById("catImage").value=""; document.getElementById("catOrder").value="1"; document.getElementById("catSectionType").value="cards"; document.getElementById("catModalTitle").innerText="إضافة قسم"; document.getElementById("categoryModal").classList.remove("hidden"); }
+        function editCategory(id) { const c=allCategoriesList.find(x=>x.id===id); if(!c)return; document.getElementById("catId").value=id; document.getElementById("catName").value=c.name||""; document.getElementById("catImage").value=c.image||c.cover||""; document.getElementById("catOrder").value=c.order||1; document.getElementById("catSectionType").value=c.sectionType||"cards"; document.getElementById("catModalTitle").innerText="تعديل قسم"; document.getElementById("categoryModal").classList.remove("hidden"); }
+        function closeCategoryModal() { document.getElementById("categoryModal").classList.add("hidden"); }
+        function saveCategory(e) { e.preventDefault(); const id=document.getElementById("catId").value; const d={name:document.getElementById("catName").value,image:document.getElementById("catImage").value,cover:document.getElementById("catImage").value,order:parseInt(document.getElementById("catOrder").value)||1,sectionType:document.getElementById("catSectionType").value}; if(id)db.collection("categories").doc(id).update(d); else db.collection("categories").add(d); closeCategoryModal(); }
+        function deleteCategory(id) { if(confirm("حذف؟"))db.collection("categories").doc(id).delete(); }
+
+        function loadAdminCategories() {
+            const grid = document.getElementById("adminCatsGrid"); grid.innerHTML = '<div class="col-span-full text-center p-6 text-gray-500">⏳ جاري جلب الأقسام...</div>';
+            db.collection("categories").orderBy("order").get().then(snap => {
+                if (snap.empty) { grid.innerHTML = '<div class="col-span-full text-center p-6 text-gray-500">لا توجد أقسام</div>'; return; }
+                grid.innerHTML = ''; snap.forEach(doc => { const c = doc.data(); const div = document.createElement('div'); div.className = 'cat-card-admin'; div.innerHTML = `<img src="${c.image||c.cover||''}" onerror="this.style.display='none'"><div><p class="text-xs font-bold text-white">${c.name}</p><p class="text-[10px] text-gray-500">${c.sectionType==='smm'?'سوشيال':'ألعاب'} | ترتيب: ${c.order||0}</p></div>`; div.onclick = () => openCategoryProducts(doc.id, c.name); grid.appendChild(div); });
+            });
+        }
+
+        function openCategoryProducts(catId, catName) {
+            currentEditingCategoryId = catId; document.getElementById("adminCategoriesView").classList.add("hidden"); document.getElementById("adminProductsView").classList.remove("hidden");
+            if (catName) document.getElementById("adminProductsTitle").innerText = `🎮 ${catName}`;
+            const tbody = document.getElementById("productsTableBody"); tbody.innerHTML = '<tr><td colspan="9" class="text-center p-6 text-gray-500">⏳ جاري الجلب...</td></tr>';
+            db.collection("products").where("categoryId", "==", catId).get().then(snap => {
+                if (snap.empty) { tbody.innerHTML = '<tr><td colspan="9" class="text-center p-6 text-gray-500">لا توجد منتجات في هذا القسم</td></tr>'; return; }
+                let products = []; snap.forEach(doc => { const p = doc.data(); p._id = doc.id; products.push(p); });
+                products.sort((a, b) => (a.priceLYD || a.price || 0) - (b.priceLYD || b.price || 0));
+                tbody.innerHTML = products.map(p => {
+                    const imgSrc = p.image || p.img || ''; const discount = p.discount || 0;
+                    const fieldType = p.fieldType || p.type || 'id';
+                    const typeIcon = fieldType === 'id' ? '🎮' : fieldType === 'phone' ? '📞' : fieldType === 'account' ? '🔗' : fieldType === 'custom' ? '✏️' : '📦';
+                    const qtyStatusText = p.enableQuantity ? `<span class="bg-purple-500/20 text-purple-400 border border-purple-500/30 px-1.5 py-0.5 rounded text-[10px]">🔢 مرن (${p.qtyMin||30} - ${p.qtyMax||100})</span>` : `<span class="bg-gray-700/40 text-gray-400 px-1.5 py-0.5 rounded text-[10px]">🔒 قطعة واحدة</span>`;
+                    return `<tr class="border-b border-gray-700/40"><td class="p-4"><input type="checkbox" value="${p._id}" class="productCheckbox accent-[#9d4edd]" onchange="updateMoveSelectedCount()"></td><td class="p-4"><img src="${imgSrc}" class="w-10 h-10 rounded-lg object-cover" onerror="this.style.display='none'" loading="lazy"></td><td class="p-4 text-white font-bold text-[11px]">${p.name||'---'}</td><td class="p-4 purple-text text-[11px]">${(p.priceLYD||p.price||0).toFixed(3)} د.ل</td><td class="p-4 text-[11px]">${discount>0?`<span class="bg-red-500 text-white px-1.5 py-0.5 rounded text-[9px]">-${discount}%</span>`:'--'}</td><td class="p-4 text-[11px]">${typeIcon}</td><td class="p-4 text-[11px]">${qtyStatusText}</td><td class="p-4 text-[11px]">${p.active!==false?'✅ نشط':'❌ مخفي'}</td><td class="p-4"><button onclick="editProduct('${p._id}')" class="text-blue-400 text-[10px]"><i class="fa-solid fa-pen"></i></button> <button onclick="deleteProduct('${p._id}')" class="text-red-400 text-[10px] mr-1"><i class="fa-solid fa-trash"></i></button></td></tr>`;
+                }).join('');
+            });
+        }
+
+        function backToAdminCategories() { document.getElementById("adminProductsView").classList.add("hidden"); document.getElementById("adminCategoriesView").classList.remove("hidden"); currentEditingCategoryId = null; loadAdminCategories(); }
+        function updateMoveSelectedCount() { document.getElementById("moveSelectedCount").innerText = document.querySelectorAll('.productCheckbox:checked').length; }
+        function openBatchMoveModal() { updateMoveSelectedCount(); updateAllSelects(); document.getElementById("batchMoveModal").classList.remove("hidden"); }
+        function closeBatchMoveModal() { document.getElementById("batchMoveModal").classList.add("hidden"); }
+        async function applyBatchMove() { const cbs = document.querySelectorAll('.productCheckbox:checked'); if (!cbs.length) return alert("⚠️ حدد منتج"); const targetId = document.getElementById("targetCategorySelect").value; if (!targetId) return alert("⚠️ اختر القسم"); const targetCat = allCategoriesList.find(c => c.id === targetId); if (!targetCat) return alert("⚠️ القسم غير موجود"); if (!confirm(`نقل ${cbs.length} منتج إلى "${targetCat.name}"؟`)) return; const batch = db.batch(); cbs.forEach(cb => batch.update(db.collection("products").doc(cb.value), { categoryId: targetId })); try { await batch.commit(); document.getElementById("selectAllProducts").checked = false; showNotification('✅ تم النقل', 'success'); closeBatchMoveModal(); if (currentEditingCategoryId) openCategoryProducts(currentEditingCategoryId, ''); } catch (e) { alert("❌ " + e.message); } }
+
+        function openProductModal() {
+            document.getElementById("prodId").value=""; document.getElementById("prodName").value=""; document.getElementById("prodPriceLYD").value=""; document.getElementById("prodPriceUSD").value=""; document.getElementById("prodImage").value=""; document.getElementById("prodDescription").value=""; document.getElementById("prodActive").value="true"; document.getElementById("prodDiscount").value="0"; document.getElementById("fieldType").value="id"; document.getElementById("fieldEnabled").value="true"; document.getElementById("fieldCustomLabel").value=""; document.getElementById("customLabelContainer").classList.add("hidden"); document.getElementById("enableQuantity").checked=false; document.getElementById("qtyMin").value="30"; document.getElementById("qtyMax").value="100"; document.getElementById("quantitySettings").classList.add("hidden");
+            if (currentEditingCategoryId) document.getElementById("prodCategory").value = currentEditingCategoryId;
+            document.getElementById("prodModalTitle").innerText="إضافة منتج"; document.getElementById("productModal").classList.remove("hidden");
+        }
+
+        function editProduct(id) {
+            db.collection("products").doc(id).get().then(doc => {
+                if (!doc.exists) return; const p = doc.data();
+                document.getElementById("prodId").value=id; document.getElementById("prodName").value=p.name||""; document.getElementById("prodPriceLYD").value=p.priceLYD||p.price||0; document.getElementById("prodPriceUSD").value=p.priceUSD||0; document.getElementById("prodImage").value=p.image||p.img||""; document.getElementById("prodDescription").value=p.description||""; document.getElementById("prodActive").value=String(p.active!==false); document.getElementById("prodDiscount").value=p.discount||0; document.getElementById("fieldType").value=p.fieldType||p.type||"id"; document.getElementById("fieldEnabled").value=String(p.fieldEnabled!==false); document.getElementById("fieldCustomLabel").value=p.fieldCustomLabel||""; document.getElementById("prodCategory").value=p.categoryId||""; document.getElementById("enableQuantity").checked=p.enableQuantity||false; document.getElementById("qtyMin").value=p.qtyMin||30; document.getElementById("qtyMax").value=p.qtyMax||100;
+                if(p.fieldType==='custom') document.getElementById("customLabelContainer").classList.remove("hidden"); else document.getElementById("customLabelContainer").classList.add("hidden");
+                if(p.enableQuantity) document.getElementById("quantitySettings").classList.remove("hidden"); else document.getElementById("quantitySettings").classList.add("hidden");
+                document.getElementById("prodModalTitle").innerText="تعديل منتج"; document.getElementById("productModal").classList.remove("hidden");
+            });
+        }
+
+        function closeProductModal() { document.getElementById("productModal").classList.add("hidden"); }
+
+        function saveProduct(e) {
+            e.preventDefault(); const id=document.getElementById("prodId").value;
+            let imgInput = document.getElementById("prodImage").value.trim();
+            const BASE_IMAGE_URL = "https://raw.githubusercontent.com/lysd89181-lab/Media_Plus/main/";
+            if (imgInput && !imgInput.startsWith("http")) { imgInput = BASE_IMAGE_URL + imgInput; }
+            const isQtyEnabled = document.getElementById("enableQuantity").checked;
+            const d={
+                name:document.getElementById("prodName").value, priceLYD:parseFloat(document.getElementById("prodPriceLYD").value)||0,
+                price:parseFloat(document.getElementById("prodPriceLYD").value)||0, priceUSD:parseFloat(document.getElementById("prodPriceUSD").value)||0,
+                image:imgInput, img:imgInput, description:document.getElementById("prodDescription").value,
+                active:document.getElementById("prodActive").value==="true", type:document.getElementById("fieldType").value,
+                fieldType:document.getElementById("fieldType").value, fieldEnabled:document.getElementById("fieldEnabled").value==="true",
+                fieldCustomLabel:document.getElementById("fieldCustomLabel").value, categoryId:document.getElementById("prodCategory").value,
+                discount:parseInt(document.getElementById("prodDiscount").value)||0, enableQuantity:isQtyEnabled, order:Date.now()
+            };
+            if(isQtyEnabled){ d.qtyMin=parseInt(document.getElementById("qtyMin").value)||30; d.qtyMax=parseInt(document.getElementById("qtyMax").value)||100; }
+            else { d.qtyMin=1; d.qtyMax=1; }
+            if(id) { db.collection("products").doc(id).update(d).then(() => { showNotification('✅ تم تحديث المنتج', 'success'); closeProductModal(); if(currentEditingCategoryId) openCategoryProducts(currentEditingCategoryId,''); }); }
+            else { db.collection("products").add({...d,sales:0}).then(() => { showNotification('✅ تم إضافة المنتج', 'success'); closeProductModal(); if(currentEditingCategoryId) openCategoryProducts(currentEditingCategoryId,''); }); }
+        }
+
+        function deleteProduct(id) { if(confirm("حذف؟")){db.collection("products").doc(id).delete().then(()=>{if(currentEditingCategoryId)openCategoryProducts(currentEditingCategoryId,'');});} }
+        function deleteSelectedProducts() { const cbs=document.querySelectorAll('.productCheckbox:checked');if(!cbs.length)return alert("حدد منتجاً");if(!confirm(`حذف ${cbs.length}؟`))return;const batch=db.batch();cbs.forEach(cb=>batch.delete(db.collection("products").doc(cb.value)));batch.commit().then(()=>{document.getElementById("selectAllProducts").checked=false;loadStats();if(currentEditingCategoryId)openCategoryProducts(currentEditingCategoryId,'');}); }
+
+        function loadSlides() {
+            const container = document.getElementById('slidesList'); container.innerHTML = '<div class="loading text-gray-500">⏳ جاري الجلب...</div>';
+            db.collection("settings").doc("hero_slides").get().then(doc => {
+                if (doc.exists && doc.data().slides) { slidesList = doc.data().slides; } else { slidesList = [{image:'',link:'',active:true}]; }
+                renderSlides();
+            }).catch(() => { slidesList = [{image:'',link:'',active:true}]; renderSlides(); });
+        }
+
+        function renderSlides() {
+            const container = document.getElementById('slidesList');
+            container.innerHTML = slidesList.map((s, i) => `
+                <div class="flex items-center gap-3 bg-[#0a0f1a] p-3 rounded-xl border border-gray-700">
+                    <span class="text-gray-400 text-xs w-6">${i+1}</span>
+                    <input type="text" value="${s.image||''}" placeholder="رابط الصورة" oninput="slidesList[${i}].image=this.value" class="flex-1 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">
+                    <input type="text" value="${s.link||''}" placeholder="رابط (اختياري)" oninput="slidesList[${i}].link=this.value" class="flex-1 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">
+                    <select onchange="slidesList[${i}].active=this.value==='true'" class="bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">
+                        <option value="true" ${s.active!==false?'selected':''}>✅</option><option value="false" ${s.active===false?'selected':''}>❌</option>
+                    </select>
+                    <button onclick="slidesList.splice(${i},1);renderSlides();" class="text-red-400 text-sm">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        function addSlide() { slidesList.push({image:'',link:'',active:true}); renderSlides(); }
+        async function saveSlides() { try { await db.collection("settings").doc("hero_slides").set({ slides: slidesList, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }); showNotification('✅ تم حفظ شريط الصور', 'success'); } catch (e) { alert('❌ خطأ: ' + e.message); } }
+
+        function loadUsers() { db.collection("users").limit(100).onSnapshot(snap=>{allUsers=[];snap.forEach(doc=>{const u=doc.data();u.uid=doc.id;allUsers.push(u);});renderUsersTable(allUsers);}); }
+        function renderUsersTable(arr) { const t=document.getElementById("usersTableBody");t.innerHTML="";if(!arr.length){t.innerHTML='<tr><td colspan="6" class="text-center p-6 text-gray-500">لا يوجد</td></tr>';return;} arr.forEach(u=>{t.innerHTML+=`<tr class="border-b border-gray-700/40"><td class="p-4 text-white">${u.username||u.name||'---'}</td><td class="p-4 font-mono">${u.phone||'---'}</td><td class="p-4 text-[11px]">${u.email||'---'}</td><td class="p-4 purple-text">${(u.balance||0).toFixed(4)}</td><td class="p-4">${u.role==='admin'?'👑':'👤'}</td><td class="p-4"><input type="number" step="0.01" id="wallet_${u.uid}" class="w-16 bg-[#0a0f1a] border border-gray-600 rounded p-1 text-center text-white text-xs" placeholder="مبلغ"><button onclick="updateWallet('${u.uid}','add')" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-[10px]">+</button> <button onclick="updateWallet('${u.uid}','sub')" class="bg-red-600 text-white px-2 py-0.5 rounded text-[10px]">-</button></td></tr>`;}); }
+        function updateWallet(uid, type) { const v=parseFloat(document.getElementById(`wallet_${uid}`).value);if(!v||v<=0)return;const u=allUsers.find(x=>x.uid===uid);if(!u)return;const nb=type==='add'?(u.balance||0)+v:Math.max(0,(u.balance||0)-v);db.collection("users").doc(uid).update({balance:nb}).then(()=>{document.getElementById(`wallet_${uid}`).value="";loadStats();showNotification(`✅ تم ${type==='add'?'شحن':'خصم'} ${v.toFixed(2)} د.ل`,'success');}); }
+        function searchUsers(term) { const t=term.toLowerCase().trim();if(!t){renderUsersTable(allUsers);return;} renderUsersTable(allUsers.filter(u=>(u.username||'').toLowerCase().includes(t)||(u.name||'').toLowerCase().includes(t)||(u.phone||'').includes(t)||(u.email||'').toLowerCase().includes(t))); }
+
+        async function loadAppSettings() {
+            try {
+                const doc = await db.collection("app").doc("settings").get();
+                if (doc.exists) { currentAppSettings = doc.data(); populateAppSettingsForm(); }
+                else { showNotification('⚠️ مجموعة app غير موجودة. سيتم إنشاؤها عند الحفظ.', 'info'); currentAppSettings = getDefaultAppSettings(); populateAppSettingsForm(); }
+            } catch (e) { console.error("خطأ:", e); currentAppSettings = getDefaultAppSettings(); populateAppSettingsForm(); }
+        }
+
+        function getDefaultAppSettings() {
+            return {
+                brand_name: "iQ Store", copyright_text: "جميع الحقوق محفوظة", processing_time: "من دقيقة إلى 3 ساعات",
+                emergency_banner: { active: false, message: "", bg_color: "#9d4edd" },
+                smm_warning_text: "أنت الآن بصدد الدخول إلى قسم رشق الخدمات والمتابعين...",
+                sections_visible: { wallet: true, orders: true, support: true },
+                main_tabs: [
+                    { id: 'cards', title: 'اشتراكات وألعاب', icon: 'gamepad', active: true },
+                    { id: 'smm', title: 'رشق وخدمات السوشيال', icon: 'social', active: true }
+                ],
+                sidebar_menu: [
+                    { id: 'home', title: 'المتجر الرئيسي', icon: 'home', active: true, order: 1 },
+                    { id: 'wallet', title: 'محفظتي المالية', icon: 'wallet', active: true, order: 2 },
+                    { id: 'orders', title: 'سجل طلباتي', icon: 'orders', active: true, order: 3 },
+                    { id: 'support', title: 'قسم الدعم وقنواتنا', icon: 'support', active: true, order: 4 }
+                ],
+                payment_methods: [
+                    { id: 'libyana', title: '📞 ليبيانا ومدار', icon: 'phone', active: true },
+                    { id: 'binance', title: '₿ بايننس', icon: 'bitcoin', active: true },
+                    { id: 'cards', title: '💳 كروت تعبئة', icon: 'card', active: true }
+                ],
+                libyana_numbers: [
+                    { label: 'ليبيانا', number: '0920414760', active: true },
+                    { label: 'مدار', number: '0912377291', active: true }
+                ],
+                binance_id: '1046437963', binance_rate: 11,
+                support_channels: [
+                    { type: 'whatsapp', title: 'مركز دعم الواتساب', url: 'https://wa.me/218920414760', active: true },
+                    { type: 'telegram', title: 'دعم تيليجرام', url: 'https://t.me/media_plus_1', active: true }
+                ],
+                trust_sections: [
+                    { id: 'about', title: 'من نحن', icon: 'info-circle', active: true, content: '<p>محتوى من نحن...</p>' },
+                    { id: 'faq', title: 'الأسئلة الشائعة', icon: 'question-circle', active: true, content: '<p>محتوى الأسئلة الشائعة...</p>' }
+                ],
+                footer_links: [
+                    { id: 'about', title: 'من نحن', active: true },
+                    { id: 'faq', title: 'الأسئلة الشائعة', active: true }
+                ]
+            };
+        }
+
+        function populateAppSettingsForm() {
+            const s = currentAppSettings;
+            document.getElementById('appBrandName').value = s.brand_name || 'iQ Store';
+            document.getElementById('appCopyright').value = s.copyright_text || 'جميع الحقوق محفوظة';
+            document.getElementById('appProcessingTime').value = s.processing_time || 'من دقيقة إلى 3 ساعات';
+            document.getElementById('appBinanceId').value = s.binance_id || '1046437963';
+            document.getElementById('appBinanceRate').value = s.binance_rate || 11;
+            const emb = s.emergency_banner || {};
+            document.getElementById('appEmergencyActive').checked = emb.active || false;
+            document.getElementById('appEmergencyMessage').value = emb.message || '';
+            document.getElementById('appEmergencyMessage').disabled = !emb.active;
+            const sv = s.sections_visible || {};
+            document.getElementById('appSectionWallet').checked = sv.wallet !== false;
+            document.getElementById('appSectionOrders').checked = sv.orders !== false;
+            document.getElementById('appSectionSupport').checked = sv.support !== false;
+            document.getElementById('appSmmWarning').value = s.smm_warning_text || '';
+            renderSidebarMenuSettings(s.sidebar_menu || []);
+            renderPaymentMethodsSettings(s.payment_methods || []);
+            renderLibyanaNumbersSettings(s.libyana_numbers || []);
+            renderSupportChannelsSettings(s.support_channels || []);
+            renderTrustSectionsSettings(s.trust_sections || []);
+            renderFooterLinksSettings(s.footer_links || []);
+            renderMainTabsSettings(s.main_tabs || []);
+        }
+
+        function renderSidebarMenuSettings(items) {
+            document.getElementById('sidebarMenuSettings').innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-3 bg-[#0a0f1a] p-3 rounded-xl border border-gray-700">
+                    <span class="text-gray-400 text-xs w-6">${i+1}</span>
+                    <input type="text" value="${item.title||''}" oninput="currentAppSettings.sidebar_menu[${i}].title=this.value" class="flex-1 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">
+                    <input type="number" value="${item.order||i+1}" oninput="currentAppSettings.sidebar_menu[${i}].order=parseInt(this.value)" class="w-16 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs" min="1">
+                    <label class="toggle-switch"><input type="checkbox" ${item.active!==false?'checked':''} onchange="currentAppSettings.sidebar_menu[${i}].active=this.checked"><span class="toggle-slider"></span></label>
+                </div>
+            `).join('');
+        }
+
+        function renderPaymentMethodsSettings(items) {
+            document.getElementById('paymentMethodsSettings').innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-3 bg-[#0a0f1a] p-3 rounded-xl border border-gray-700">
+                    <input type="text" value="${item.title||''}" oninput="currentAppSettings.payment_methods[${i}].title=this.value" class="flex-1 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">
+                    <label class="toggle-switch"><input type="checkbox" ${item.active!==false?'checked':''} onchange="currentAppSettings.payment_methods[${i}].active=this.checked"><span class="toggle-slider"></span></label>
+                </div>
+            `).join('');
+        }
+
+        function renderLibyanaNumbersSettings(items) {
+            document.getElementById('libyanaNumbersSettings').innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-3 bg-[#0a0f1a] p-3 rounded-xl border border-gray-700">
+                    <input type="text" value="${item.label||''}" oninput="currentAppSettings.libyana_numbers[${i}].label=this.value" class="w-24 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs" placeholder="اسم">
+                    <input type="text" value="${item.number||''}" oninput="currentAppSettings.libyana_numbers[${i}].number=this.value" class="flex-1 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs font-mono" placeholder="الرقم">
+                    <label class="toggle-switch"><input type="checkbox" ${item.active!==false?'checked':''} onchange="currentAppSettings.libyana_numbers[${i}].active=this.checked"><span class="toggle-slider"></span></label>
+                    <button onclick="currentAppSettings.libyana_numbers.splice(${i},1);renderLibyanaNumbersSettings(currentAppSettings.libyana_numbers)" class="text-red-400">🗑️</button>
+                </div>
+            `).join('');
+        }
+
+        function addLibyanaNumber() { if (!currentAppSettings.libyana_numbers) currentAppSettings.libyana_numbers = []; currentAppSettings.libyana_numbers.push({ label: 'جديد', number: '09XXXXXXXX', active: true }); renderLibyanaNumbersSettings(currentAppSettings.libyana_numbers); }
+
+        function renderSupportChannelsSettings(items) {
+            document.getElementById('supportChannelsSettings').innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-3 bg-[#0a0f1a] p-3 rounded-xl border border-gray-700">
+                    <select onchange="currentAppSettings.support_channels[${i}].type=this.value" class="bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">
+                        <option value="whatsapp" ${item.type==='whatsapp'?'selected':''}>واتساب</option>
+                        <option value="telegram" ${item.type==='telegram'?'selected':''}>تيليجرام</option>
+                        <option value="instagram" ${item.type==='instagram'?'selected':''}>انستغرام</option>
+                    </select>
+                    <input type="text" value="${item.title||''}" oninput="currentAppSettings.support_channels[${i}].title=this.value" class="flex-1 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">
+                    <input type="text" value="${item.url||''}" oninput="currentAppSettings.support_channels[${i}].url=this.value" class="flex-1 bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs font-mono">
+                    <label class="toggle-switch"><input type="checkbox" ${item.active!==false?'checked':''} onchange="currentAppSettings.support_channels[${i}].active=this.checked"><span class="toggle-slider"></span></label>
+                </div>
+            `).join('');
+        }
+
+        function renderTrustSectionsSettings(items) {
+            document.getElementById('trustSectionsSettings').innerHTML = items.map((item, i) => `
+                <div class="bg-[#0a0f1a] p-3 rounded-xl border border-gray-700 space-y-2">
+                    <div class="flex items-center gap-3"><span class="text-white font-bold text-xs">${item.title||''}</span><label class="toggle-switch"><input type="checkbox" ${item.active!==false?'checked':''} onchange="currentAppSettings.trust_sections[${i}].active=this.checked"><span class="toggle-slider"></span></label></div>
+                    <textarea rows="2" oninput="currentAppSettings.trust_sections[${i}].content=this.value" class="w-full bg-[#0a0f1a] border border-gray-600 rounded-lg p-2 text-white text-xs">${item.content||''}</textarea>
+                </div>
+            `).join('');
+        }
+
+        function renderFooterLinksSettings(items) {
+            document.getElementById('footerLinksSettings').innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-3 bg-[#0a0f1a] p-3 rounded-xl border border-gray-700">
+                    <span class="text-white font-bold text-xs flex-1">${item.title||''}</span>
+                    <label class="toggle-switch"><input type="checkbox" ${item.active!==false?'checked':''} onchange="currentAppSettings.footer_links[${i}].active=this.checked"><span class="toggle-slider"></span></label>
+                </div>
+            `).join('');
+        }
+
+        function renderMainTabsSettings(items) {
+            document.getElementById('mainTabsSettings').innerHTML = items.map((item, i) => `
+                <div class="flex items-center gap-3 bg-[#0a0f1a] p-3 rounded-xl border border-gray-700">
+                    <span class="text-white font-bold text-xs flex-1">${item.title||''}</span>
+                    <label class="toggle-switch"><input type="checkbox" ${item.active!==false?'checked':''} onchange="currentAppSettings.main_tabs[${i}].active=this.checked"><span class="toggle-slider"></span></label>
+                </div>
+            `).join('');
+        }
+
+        async function saveAppSettings() {
+            currentAppSettings.brand_name = document.getElementById('appBrandName').value;
+            currentAppSettings.copyright_text = document.getElementById('appCopyright').value;
+            currentAppSettings.processing_time = document.getElementById('appProcessingTime').value;
+            currentAppSettings.binance_id = document.getElementById('appBinanceId').value;
+            currentAppSettings.binance_rate = parseFloat(document.getElementById('appBinanceRate').value) || 11;
+            currentAppSettings.emergency_banner = { active: document.getElementById('appEmergencyActive').checked, message: document.getElementById('appEmergencyMessage').value, bg_color: '#9d4edd' };
+            currentAppSettings.sections_visible = { wallet: document.getElementById('appSectionWallet').checked, orders: document.getElementById('appSectionOrders').checked, support: document.getElementById('appSectionSupport').checked };
+            currentAppSettings.smm_warning_text = document.getElementById('appSmmWarning').value;
+            try {
+                await db.collection("app").doc("settings").set(currentAppSettings);
+                showNotification('✅ تم حفظ جميع إعدادات التطبيق بنجاح!', 'success');
+            } catch (e) { showNotification('❌ خطأ: ' + e.message, 'error'); }
+        }
+
+        function showNotification(message, type) { const n=document.createElement('div');n.className=`notification ${type}`;n.textContent=message;document.body.appendChild(n);setTimeout(()=>n.remove(),3000); }
+    </script>
+</body>
+  </html>
