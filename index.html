@@ -85,12 +85,7 @@
             object-fit: cover;
             box-shadow: var(--neon-glow);
         }
-        .top-bar .actions-zone {
-            justify-self: end;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .top-bar .actions-zone { justify-self: end; display: flex; align-items: center; gap: 15px; }
         
         .glass-balance-floating {
             position: fixed;
@@ -145,21 +140,6 @@
         .sidebar-item:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--accent-color); transform: translateX(-4px); }
         .sidebar-item svg { width: 18px; height: 18px; fill: var(--accent-color); }
         
-        /* علامة توثيق شبيهة بتيك توك */
-        .tiktok-verified-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 15px;
-            height: 15px;
-            background-color: #25f4ee;
-            color: #000;
-            border-radius: 50%;
-            font-size: 9px;
-            font-weight: bold;
-            margin-right: 5px;
-        }
-        
         .sidebar-reward-box {
             margin-top: auto;
             background: rgba(255, 255, 255, 0.03);
@@ -174,41 +154,42 @@
         .social-reward-icon { width: 36px; height: 36px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); }
         .social-reward-icon:hover { transform: scale(1.1); border-color: var(--accent-color); }
         .social-reward-icon img { width: 20px; height: 20px; object-fit: contain; }
-
         .sidebar-footer { margin-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; font-size: 10px; color: rgba(255,255,255,0.4); text-align: center; }
 
-        /* تعديل الخصم ليكون متاحاً وجذاباً للمستخدمين العاديين */
+        /* تعديل إعلان الحث على الاشتراك للمستخدمين العاديين */
         .vip-countdown-section {
-            background: linear-gradient(135deg, #2c1a04, #000000);
-            border: 2px solid #eccc68;
+            background: linear-gradient(135deg, #1e110b, #000000);
+            border: 2px solid var(--accent-color);
             margin: 16px;
             padding: 14px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            display: block;
+            display: block; /* ظاهر افتراضياً للعاديين لحثهم على الترقية */
         }
         .vip-countdown-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .vip-countdown-title { font-size: 12px; font-weight: 900; color: #eccc68; display: flex; align-items: center; gap: 6px; }
-        .timer-display { display: flex; gap: 4px; direction: ltr; font-family: monospace; font-size: 14px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(236, 204, 104, 0.3); }
-        .discount-item-row { display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
-        .discount-item-info { font-size: 12px; font-weight: 700; color: #fff; }
-        .price-badge-zone { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+        .vip-countdown-title { font-size: 13px; font-weight: 900; color: var(--accent-light); display: flex; align-items: center; gap: 6px; }
+        .timer-display { display: flex; gap: 4px; direction: ltr; font-family: monospace; font-size: 14px; font-weight: 900; color: #fff; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .discount-item-row { display: flex; flex-direction: column; gap: 8px; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .discount-item-info { font-size: 12px; font-weight: 700; color: #fff; text-align: right; }
+        .price-badge-zone { display: flex; align-items: center; justify-content: space-between; width: 100%; }
         .old-price { font-size: 11px; text-decoration: line-through; color: #ff4757; font-weight: bold; }
         .new-price { font-size: 13px; color: #2ed573; font-weight: 900; background: rgba(46, 213, 115, 0.1); padding: 2px 8px; border-radius: 4px; }
 
-        /* منطقة صور إعلانية متحركة بدلاً من المربعات النصية القديمة */
-        .ads-banner-slider {
+        /* ستايل منطقة البنرات الإعلانية الصورية في الأعلى */
+        .promo-banners-slider {
             margin: 16px;
             overflow: hidden;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
             aspect-ratio: 16 / 7;
+            position: relative;
         }
-        .ads-banner-slider img {
+        .promo-banners-slider img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .hero-banner { margin: 16px; background: var(--card-bg); border-radius: var(--radius); padding: 20px; color: #fff; box-shadow: var(--shadow); border: 1px solid var(--border-color); position: relative; }
@@ -230,42 +211,44 @@
 
         .section-back-header { display: none; padding: 10px 16px; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; }
 
-        /* تحويل الكروت إلى مستطيل طولي بناءً على طلبك والتصميم المرفق */
+        /* تعديل هيكلية كروت عرض المنتجات لتصبح مستطيلة طولية */
         .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px 20px; }
         .product-card { background: var(--card-bg); border-radius: var(--radius); position: relative; overflow: hidden; cursor: pointer; transition: var(--transition); border: 1px solid var(--border-color); display: flex; flex-direction: column; box-shadow: var(--shadow); }
+        .product-card:hover { transform: translateY(-3px); border-color: var(--accent-color); }
+        
+        /* نسبة العرض إلى الارتفاع مستطيلة طولية */
         .product-img-wrapper { width: 100%; aspect-ratio: 3 / 4; position: relative; overflow: hidden; background: rgba(0,0,0,0.3); }
         .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* شارات التوفر وعدم التوفر */
-        .availability-badge { position: absolute; top: 8px; left: 8px; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; z-index: 5; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        .availability-badge.in-stock { background: var(--success); color: #000; }
-        .availability-badge.out-of-stock { background: var(--danger); color: #fff; }
+        /* شارة حالة توفر المنتج */
+        .stock-status-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 9px;
+            font-weight: 800;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .stock-status-badge.available { background: var(--success); color: #000; }
+        .stock-status-badge.unavailable { background: var(--danger); color: #fff; }
 
-        .product-info-bottom { padding: 12px 8px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 5px; }
+        .product-info-bottom { padding: 12px 8px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; }
         .product-card .pname { font-size: 13px; font-weight: 800; color: #fff; line-height: 1.4; }
-        .product-card .price-range { font-size: 12px; color: var(--accent-light); font-weight: 700; }
-        .product-card .vip-badge { position: absolute; top: 8px; right: 8px; background: #ffd700; color: #000; font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 6px; z-index: 5; }
+        .product-card .price-range { font-size: 11px; color: var(--accent-light); font-weight: 700; }
+        .product-card .vip-badge { position: absolute; top: 8px; right: 8px; background: #ffd700; color: #000; font-size: 8px; font-weight: 900; padding: 3px 7px; border-radius: 6px; z-index: 10; }
 
+        /* نظام النجوم والتقييم الموحد */
         .review-stars-box { display: flex; align-items: center; justify-content: center; gap: 2px; margin-top: 2px; }
-        .review-stars-box span { color: #f1c40f; font-size: 11px; }
-        .review-count-lbl { font-size: 10px; color: rgba(255,255,255,0.6); margin-right: 4px; }
+        .review-stars-box span.stars { color: #f1c40f; font-size: 11px; }
+        .review-count-lbl { font-size: 9px; color: rgba(255,255,255,0.5); margin-right: 4px; font-weight: 600; }
 
-        /* تعديل ستايل الباقات بالكامل لتصبح مدمجة في صفحة القسم مثل واجهة Media Plus ومحاطة بإطار ذهبي رائع */
-        .plans-list-container { 
-            grid-column: span 2;
-            margin: 8px 0 16px; 
-            background: linear-gradient(135deg, #1f140e, #0e0704); 
-            border-radius: var(--radius); 
-            padding: 16px; 
-            border: 2px solid #eccc68; 
-            display: none; 
-            box-shadow: 0 0 15px rgba(236, 204, 104, 0.15); 
-        }
-        .royal-vip-theme .plans-list-container {
-            background: linear-gradient(135deg, #151515, #050505);
-        }
-        .plan-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .plan-item:last-child { border-bottom: none; }
+        /* تعديل شكل تسليم وعرض الباقات داخل القسم */
+        .plans-list-container { margin: 16px; background: var(--card-bg); border-radius: var(--radius); padding: 16px; border: 1.5px solid var(--accent-color); display: none; box-shadow: var(--neon-glow); }
+        .plan-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); margin-bottom: 6px; border-radius: 8px; }
+        .plan-item:last-child { margin-bottom: 0; }
         
         .checkout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(5px); }
         .checkout-modal.active { display: flex; }
@@ -320,6 +303,23 @@
         .avatar-upload-wrapper { position: relative; width: 90px; height: 90px; margin: 0 auto 10px; }
         .user-avatar-pfp { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); box-shadow: var(--neon-glow); }
         .avatar-edit-label { position: absolute; bottom: 0; left: 0; background: var(--accent-color); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--top-bar-bg); }
+
+        /* ستايل أيقونة التوثيق المطابقة للتيك توك جنب الاسم */
+        .tiktok-verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 15px;
+            height: 15px;
+            background-color: #20d5ec;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 9px;
+            font-weight: bold;
+            margin-right: 5px;
+            position: relative;
+            box-shadow: 0 0 4px rgba(32, 213, 236, 0.6);
+        }
     </style>
 </head>
 <body>
@@ -401,27 +401,25 @@
         <div class="sidebar-footer"><p>جميع الحقوق محفوظة لمنصة دليفريكو باي © 2026</p></div>
     </div>
 
-    <!-- قسم الخصومات المحدث: يظهر الآن للجميع لتشجيع العاديين على الترقية مع زر تفعيل -->
+    <!-- قسم الخصومات: تم توجيهه وإتاحته بالكامل لغير المشتركين لتحفيزهم على الاشتراك وتوضيح الفائدة -->
     <div class="vip-countdown-section" id="vipPromoSection">
         <div class="vip-countdown-header">
-            <span class="vip-countdown-title">⏳ عروض الساعة للحسابات الملكية (اشترك لتستفيد):</span>
+            <span class="vip-countdown-title">⚡ عروض حصرية لفترة محدودة عند الترقية:</span>
             <div class="timer-display" id="promoTimer">02:59:59</div>
         </div>
         <div class="discount-item-row">
-            <div class="discount-item-info">الاشتراك المميز الفخم / البلس الفوري</div>
+            <div class="discount-item-info">اشترك الآن في العضوية الملكية ووفر أكثر من 80% من أسعار شحن باقات الألعاب والبطاقات الرقمية الفورية!</div>
             <div class="price-badge-zone">
-                <div>
-                    <span class="old-price">50 د.ل</span>
-                    <span class="new-price">10 د.ل</span>
-                </div>
-                <button onclick="switchSection('profile')" style="background:#eccc68; color:#000; border:none; padding:4px 10px; border-radius:6px; font-weight:bold; font-size:11px; cursor:pointer;">ترقية الآن 👑</button>
+                <span class="old-price">سعر العاديين: 50 د.ل</span>
+                <span class="new-price">سعر الـ VIP الملكي: 10 د.ل</span>
             </div>
         </div>
+        <button class="buy-btn" style="background:#eccc68; color:#000; font-size:12px; margin-top:8px;" onclick="switchSection('profile')">🚀 ترقية حسابي الآن واستلام الخصم</button>
     </div>
 
-    <!-- بنر إعلاني مخصص للصور بدلاً من النصوص -->
-    <div class="ads-banner-slider" id="mainAdsSlider">
-        <img src="https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=800" alt="إعلان المنصة" id="adsBannerImg">
+    <!-- استبدال المربعات النصية السابقة ببنر إعلاني صوري ديناميكي بالكامل وقابل للتغيير من الفايربيس -->
+    <div class="promo-banners-slider" id="topPromoSliderArea">
+        <img src="https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=800" id="dynamicPromoBannerImg" alt="إعلان ترويجي" onclick="showToast('📢 تابع العروض والخصومات اليومية المتجددة!')">
     </div>
 
     <div class="hero-banner" id="heroBanner">
@@ -444,6 +442,14 @@
 
     <div class="section active" id="homeSection">
         <div class="products-grid" id="productsGrid"></div>
+        
+        <div class="plans-list-container" id="plansListContainer">
+            <h4 style="color:var(--accent-color); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:14px;">
+                <span id="selectedProductName">الباقات المتاحة الفورية</span>
+                <button onclick="document.getElementById('plansListContainer').style.display='none'" style="background:none; border:none; color:var(--danger); font-size:15px; cursor:pointer;">إغلاق ✕</button>
+            </h4>
+            <div id="plansList"></div>
+        </div>
     </div>
 
     <div class="checkout-modal" id="checkoutModal">
@@ -617,7 +623,8 @@
                     <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarChange(event)">
                 </div>
 
-                <div style="display:flex; align-items:center; justify-content:center; gap:5px; margin-bottom:5px;">
+                <!-- إظهار اسم العضو وجنبه مباشرة توثيق التيك توك -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:4px; margin-bottom:5px;">
                     <span id="profileNameDisplay" style="font-size:18px; font-weight:800; color:#fff;">اسم العضو</span>
                     <span id="verifiedBadgeContainer"></span>
                 </div>
@@ -639,10 +646,10 @@
                 <svg viewBox="0 0 24 24" style="fill: #eccc68;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                 <span>قسم ترقية الحساب إلى النظام الملكي VIP</span>
             </div>
-            <p style="font-size:11px; text-align:right; color:#f0e6d3; line-height:1.5;">انضم الآن للنظام الملكي الحصري لتحديث شكل ومظهر سيستم دليفريكو باي بالكامل للون الأسود والذهب والحصول على تخفيضات ومميزات خارقة فورية.</p>
+            <p style="font-size:11px; text-align:right; color:#f0e6d3; line-height:1.5;">انضم الآن للنظام الملكي الحصري لتحديث شكل ومظهر سيستم دليفريكو باي بالكامل للون الأسود والذهبي والحصول على تخفيضات ومميزات خارقة فورية.</p>
             
             <ul class="vip-features-list">
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> علامة توثيق ذهبية تظهر بجانب اسم حسابك مباشرة.</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> علامة توثيق زرقاء مميزة تظهر بجانب اسم حسابك مباشرة.</li>
                 <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> إمكانية استرجاع المبلغ خلال 60 دقيقة من الاشتراك في نتفلكس وشاهد فقط.</li>
                 <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> دعم سريع ذو أولوية فائقة خلال فترة الاشتراك في حالة حدوث مشكلة.</li>
                 <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> سهولة وإتاحة إلغاء الخدمات المباشرة خلال فترة السماح المقررة.</li>
@@ -720,7 +727,7 @@
                     window.location.href = 'long.html';
                 } else {
                     await loadUserData(user);
-                    await fetchProductsFromFirestore();
+                    await fetchProductsAndBanners();
                     initApp();
                 }
             });
@@ -738,6 +745,7 @@
                     purchases = data.purchases || [];
                     notifications = data.notifications || [];
                     lastCheckInTime = data.lastCheckInTime || null;
+                    document.getElementById('profileNameDisplay').innerText = data.displayName || user.email;
                     
                     const savedAvatar = localStorage.getItem('user_custom_avatar_' + user.uid);
                     if (savedAvatar) {
@@ -762,32 +770,29 @@
                         lastCheckInTime: null
                     });
                     currentUserDocId = user.uid;
+                    document.getElementById('profileNameDisplay').innerText = user.email.split('@')[0];
                 }
-                updateUsernameDisplay(doc.exists ? doc.data().displayName : user.email.split('@')[0]);
             } catch (e) { console.error(e); }
         }
 
-        function updateUsernameDisplay(name) {
-            const verifiedBadgeHtml = isVip ? `<span class="tiktok-verified-badge">✓</span>` : '';
-            document.getElementById('profileNameDisplay').innerHTML = `${name} ${verifiedBadgeHtml}`;
-            
-            // إضافة التوثيق للشريط الجانبي أيضاً بجانب الاسم
-            const sidebarHeader = document.querySelector('.sidebar h3');
-            if(sidebarHeader) {
-                sidebarHeader.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.99L19.53 19H4.47L12 5.99zM13 16h-2v2h2v-2zm0-6h-2v4h2v-4z"/></svg> دليفريكو باي ${verifiedBadgeHtml}`;
-            }
-        }
-
-        async function fetchProductsFromFirestore() {
+        // جلب المنتجات وكذلك البنرات الإعلانية بشكل ديناميكي من الفاير ستور
+        async function fetchProductsAndBanners() {
             try {
+                // 1. جلب صور البنرات الإعلانية
+                const bannerDoc = await db.collection('app_settings').doc('banners').get();
+                if(bannerDoc.exists && bannerDoc.data().topBannerUrl) {
+                    document.getElementById('dynamicPromoBannerImg').src = bannerDoc.data().topBannerUrl;
+                }
+
+                // 2. جلب المنتجات وحالتها (متوفر / غير متوفر)
                 const snapshot = await db.collection('products').get();
                 let loaded = [];
                 snapshot.forEach(doc => { loaded.push({ id: doc.id, ...doc.data() }); });
                 
-                // إضافة متغير available الافتراضي للتحكم في التوفر في حال عدم وجوده بـ Firestore
+                // إضافة حقل التوفر بشكل افتراضي إذا لم يكن مدخلاً في الداتابيز لضمان عدم حدوث خطأ برمجي
                 activeProducts = loaded.length > 0 ? loaded : [
                     { id: '1', name: 'ببجي موبايل الشحن العالمي', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400', category: 'games', rating: 4.9, reviewCount: 142, available: true, plans: [{ id: 'p1', name: '60 شدة ببجي كود فوري', price: 6, vipPrice: 5 }, { id: 'p2', name: '325 شدة شحن فوري', price: 28, vipPrice: 25 }] },
-                    { id: '2', name: 'اشتراك منصة نيتفليكس حساب كامل', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400', category: 'cards', rating: 4.8, reviewCount: 98, available: false, plans: [{ id: 'p3', name: 'باقة بريميوم 4K شهر', price: 15, vipPrice: 12 }] }
+                    { id: '2', name: 'اشتراك منصة نيتفليكس حساب كامل', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400', category: 'cards', rating: 4.8, reviewCount: 98, available: true, plans: [{ id: 'p3', name: 'باقة بريميوم 4K شهر', price: 15, vipPrice: 12 }] }
                 ];
             } catch (e) { console.error(e); }
         }
@@ -809,8 +814,6 @@
 
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
-            grid.innerHTML = ''; 
-            
             let filtered = activeProducts.filter(p => currentCategory === 'all' || p.category === currentCategory);
             
             filtered.forEach(p => {
@@ -828,8 +831,7 @@
                 return;
             }
 
-            // توليد كروت المنتجات
-            filtered.forEach(p => {
+            grid.innerHTML = filtered.map(p => {
                 let displayPrice = "اتصل بنا";
                 if(p.plans && p.plans.length > 0) {
                     let minPrice = isVip ? (p.plans[0].vipPrice || p.plans[0].price) : p.plans[0].price;
@@ -838,37 +840,29 @@
                 
                 let rate = p.rating || 5.0;
                 let count = p.reviewCount || 12;
-                
-                // تحديد شارة التوفر
-                const isProdAvailable = p.available !== false; 
-                const availabilityHtml = isProdAvailable 
-                    ? `<span class="availability-badge in-stock">✓ متوفر</span>` 
-                    : `<span class="availability-badge out-of-stock">✕ غير متوفر</span>`;
 
-                const cardHtml = `
-                    <div class="product-card" id="prod-card-${p.id}" onclick="showProductPlans('${p.id}')">
-                        ${availabilityHtml}
+                // التحقق من حالة التوفر (الافتراضي متوفر true)
+                let isAvailable = p.available !== false;
+                let stockBadge = isAvailable ? 
+                    `<span class="stock-status-badge available">🟢 متوفر</span>` : 
+                    `<span class="stock-status-badge unavailable">🔴 غير متوفر</span>`;
+
+                return `
+                    <div class="product-card" onclick="showProductPlans('${p.id}')">
+                        ${stockBadge}
                         <div class="product-img-wrapper"><img src="${p.image}" alt="${p.name}"></div>
                         <div class="product-info-bottom">
                             <div class="pname">${p.name}</div>
                             <div class="price-range">${displayPrice}</div>
                             <div class="review-stars-box">
-                                <span>★ ★ ★ ★ ★</span>
+                                <span class="stars">★ ★ ★ ★ ★</span>
                                 <span class="review-count-lbl">(${rate} / ${count})</span>
                             </div>
                         </div>
                         ${isVip ? '<span class="vip-badge">👑 ملكي VIP</span>' : ''}
                     </div>
-                    <div class="plans-list-container" id="plans-container-${p.id}">
-                        <h4 style="color:#eccc68; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:13px;">
-                            <span id="selectedProductName-${p.id}">عروض متوفرة لـ ${p.name}</span>
-                            <button onclick="event.stopPropagation(); closeProductPlans('${p.id}')" style="background:none; border:none; color:var(--danger); font-size:14px; cursor:pointer; font-weight:bold;">إغلاق ✕</button>
-                        </h4>
-                        <div id="plansList-${p.id}"></div>
-                    </div>
                 `;
-                grid.innerHTML += cardHtml;
-            });
+            }).join('');
         }
 
         function filterByCategory(code) {
@@ -877,16 +871,19 @@
             const hero = document.getElementById('heroBanner');
             const mainTabs = document.getElementById('mainTabsContainer');
             const backHeader = document.getElementById('backSectionHeader');
+            const sliderArea = document.getElementById('topPromoSliderArea');
             const selectedCatObj = categories.find(c => c.code === code);
             
             if(code !== 'all') {
                 hero.classList.add('hidden');
                 mainTabs.classList.add('hidden');
+                sliderArea.style.display = 'none';
                 backHeader.style.display = 'flex';
                 document.getElementById('currentActiveCategoryName').innerText = selectedCatObj ? selectedCatObj.title : "الخدمات";
             } else {
                 hero.classList.remove('hidden');
                 mainTabs.classList.remove('hidden');
+                sliderArea.style.display = 'block';
                 backHeader.style.display = 'none';
             }
             renderProducts();
@@ -896,26 +893,29 @@
             currentCategory = 'all';
             document.getElementById('heroBanner').classList.remove('hidden');
             document.getElementById('mainTabsContainer').classList.remove('hidden');
+            document.getElementById('topPromoSliderArea').style.display = 'block';
             document.getElementById('backSectionHeader').style.display = 'none';
-            
-            // إغلاق أي قوائم باقات مفتوحة
-            document.querySelectorAll('.plans-list-container').forEach(c => c.style.display = 'none');
-            
+            document.getElementById('plansListContainer').style.display = 'none';
             switchSection('home');
             renderCategoryChips();
             renderProducts();
         }
 
-        // عرض الباقات مدمجاً بداخل نفس القسم أسفل المنتج تماماً بناءً على صورة العميل المرفقة
         function showProductPlans(productId) {
-            // إغلاق كل حاويات الباقات الأخرى المفتوحة أولاً للحفاظ على التنسيق
-            document.querySelectorAll('.plans-list-container').forEach(c => c.style.display = 'none');
-            
             const product = activeProducts.find(p => p.id === productId);
-            if (!product || !product.plans) return;
+            if (!product) return;
             
-            const container = document.getElementById(`plans-container-${productId}`);
-            const listDiv = document.getElementById(`plansList-${productId}`);
+            if(product.available === false) {
+                return showToast('⚠️ عذراً، هذا المنتج غير متوفر حالياً. سيتم إتاحته قريباً جداً!');
+            }
+
+            if(!product.plans) return;
+            
+            const container = document.getElementById('plansListContainer');
+            const nameHeader = document.getElementById('selectedProductName');
+            const listDiv = document.getElementById('plansList');
+            
+            nameHeader.innerText = `عروض متوفرة لـ ${product.name}`;
             
             listDiv.innerHTML = product.plans.map(plan => {
                 const finalPrice = isVip ? (plan.vipPrice || plan.price) : plan.price;
@@ -924,7 +924,7 @@
                         <div>
                             <span style="font-weight:700; font-size:13px; color:#fff;">${plan.name}</span>
                         </div>
-                        <button class="cta-btn" onclick="initiateCheckoutFlow('${product.id}', '${plan.id}')" style="padding:6px 14px; font-size:12px; background:#eccc68; color:#000; font-weight:bold; border-radius:6px; border:none;">
+                        <button class="cta-btn" onclick="initiateCheckoutFlow('${product.id}', '${plan.id}')" style="padding:6px 12px; font-size:12px; background:var(--accent-color); color:#fff;">
                             شراء بقيمة ${finalPrice} د.ل
                         </button>
                     </div>
@@ -932,11 +932,7 @@
             }).join('');
             
             container.style.display = 'block';
-            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        function closeProductPlans(productId) {
-            document.getElementById(`plans-container-${productId}`).style.display = 'none';
+            container.scrollIntoView({ behavior: 'smooth' });
         }
 
         function initiateCheckoutFlow(productId, planId) {
@@ -1014,7 +1010,7 @@
             closeCheckoutModal();
             updateUI();
             renderPurchases();
-            document.querySelectorAll('.plans-list-container').forEach(c => c.style.display = 'none');
+            document.getElementById('plansListContainer').style.display = 'none';
             showToast(`🎉 تم إرسال وتنفيذ طلبك بنجاح! راجع أرشيف المشتريات للنسخ والاستلام الفوري`);
         }
 
@@ -1162,9 +1158,7 @@
             const timerElement = document.getElementById('promoTimer');
             
             const interval = setInterval(() => {
-                if (totalSeconds <= 0) {
-                    totalSeconds = 3 * 60 * 60;
-                }
+                if (totalSeconds <= 0) { totalSeconds = 3 * 60 * 60; }
                 totalSeconds--;
                 
                 const hrs = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
@@ -1208,16 +1202,10 @@
             document.body.classList.add('royal-vip-theme');
             
             db.collection('users').doc(currentUserDocId).update({ walletBalance, isVip });
-            
-            // تحديث الاسم والشارات لتعكس التوثيق فوراً
-            db.collection('users').doc(currentUserDocId).get().then(doc => {
-                updateUsernameDisplay(doc.exists ? doc.data().displayName : auth.currentUser.email.split('@')[0]);
-            });
-
             updateUI();
             renderProducts();
             calculateExchangeFee();
-            showToast('👑 مبارك الترقية للنظام الملكي الفخم! تم تفعيل التوثيق والمميزات وتغيير المظهر بالكامل');
+            showToast('👑 مبارك الترقية للنظام الملكي الفخم! تم تفعيل التوثيق والمميزات بنجاح');
         }
 
         function requestExchangePoints() {
@@ -1236,6 +1224,10 @@
             document.getElementById('pointsDisplay').innerText = totalPoints;
             document.getElementById('profileLevel').innerText = isVip ? 'عضوية دليفريكو باي الملكية VIP' : 'عضوية عادية هادئة';
             document.getElementById('upgradeBtn').style.display = isVip ? 'none' : 'block';
+            
+            // شارة توثيق مطابقة تماماً لشكل تيك توك وتظهر جنب اسم المستخدم مباشرة
+            document.getElementById('verifiedBadgeContainer').innerHTML = isVip ? 
+                `<span class="tiktok-verified-badge" title="حساب موثق ملكي">✓</span>` : '';
         }
 
         function copyToClipboard(text) {
@@ -1315,24 +1307,24 @@
             const tabs = document.getElementById('mainTabsContainer');
             const chips = document.getElementById('categoryChipsContainer');
             const backHeader = document.getElementById('backSectionHeader');
-            const adsSlider = document.getElementById('mainAdsSlider');
+            const sliderArea = document.getElementById('topPromoSliderArea');
 
             if (section === 'home') {
-                adsSlider.style.display = 'block';
                 if(currentCategory === 'all') {
                     hero?.classList.remove('hidden');
                     tabs?.classList.remove('hidden');
+                    if(sliderArea) sliderArea.style.display = 'block';
                 } else {
                     backHeader.style.display = 'flex';
                 }
                 chips?.classList.remove('hidden');
             } else {
-                adsSlider.style.display = 'none';
                 hero?.classList.add('hidden');
                 tabs?.classList.add('hidden');
                 chips?.classList.add('hidden');
+                if(sliderArea) sliderArea.style.display = 'none';
                 backHeader.style.display = 'none';
-                document.querySelectorAll('.plans-list-container').forEach(c => c.style.display = 'none');
+                document.getElementById('plansListContainer').style.display = 'none';
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
