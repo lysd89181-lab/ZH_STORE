@@ -6,8 +6,11 @@
     <title>لوحة التحكم الكاملة | Media Plus Super Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- استخدام النسخة المتوافقة لـ Firebase v10 -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <style>
         :root {
             --main-bg: #110204;
@@ -19,7 +22,7 @@
             --danger: #ef4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background: var(--main-bg); color: var(--text); direction: rtl; }
+        body { background: var(--main-bg); color: var(--text); direction: rtl; transition: background 0.3s; }
         
         /* قفل الحماية */
         #authLock { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--main-bg); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; }
@@ -48,23 +51,28 @@
         .form-group label { display: block; margin-bottom: 4px; font-size: 13px; font-weight: bold; }
         .form-control { width: 100%; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: #fff; outline: none; font-size: 14px; }
         .form-control:focus { border-color: var(--gold); }
-        .btn { padding: 8px 16px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+        
+        .color-picker-wrapper { display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); }
+        .color-picker-wrapper input[type="color"] { border: none; width: 40px; height: 40px; border-radius: 4px; cursor: pointer; background: none; }
+
+        .btn { padding: 8px 16px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; transition: 0.2s; }
         .btn-gold { background: var(--gold); color: #000; }
         .btn-gold:hover { background: #f0d48a; }
         .btn-danger { background: var(--danger); color: #fff; }
+        .btn-success { background: var(--success); color: #fff; }
         
         /* الجداول */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
         th, td { padding: 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
         th { background: rgba(0,0,0,0.3); color: var(--gold); }
         
-        /* التنبيهات */
         .alert-success { background: var(--success); color:#fff; padding:10px; border-radius:6px; margin-bottom:10px; display:none; }
+        .delivery-box { background: rgba(0,0,0,0.3); border: 1px dashed var(--gold); padding: 15px; border-radius: 8px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- قفل الحماية والأمان الخاص بك -->
+    <!-- قفل الحماية والأمان -->
     <div id="authLock">
         <i class="fa-solid fa-lock" style="font-size: 50px; color: var(--gold); margin-bottom: 20px;"></i>
         <h2 style="margin-bottom: 15px;">لوحة تحكم ميديا بلس محمية</h2>
@@ -75,46 +83,39 @@
     <!-- الهيكل الداخلي للوحة بعد فتحها -->
     <div class="wrapper" id="mainWrapper" style="display: none;">
         
-        <!-- القائمة الجانبية (أكثر من 50 خيار تحكم تفصيلي مجمع ومقسم) -->
         <div class="sidebar">
             <h2>Media Plus</h2>
             <div class="menu-scroll">
-                
                 <div class="menu-title">📊 الإحصائيات الفورية</div>
                 <div class="menu-item active" onclick="showSec('sec_dash')"><i class="fa-solid fa-chart-line"></i> نظرة عامة ومبيعات</div>
 
                 <div class="menu-title">⚙️ إعدادات الموقع الأساسية</div>
-                <div class="menu-item" onclick="showSec('sec_site')"><i class="fa-solid fa-sliders"></i> الاسم، الشعار، النطاق وروابط الاتصال</div>
-                <div class="menu-item" onclick="showSec('sec_colors')"><i class="fa-solid fa-palette"></i> مظهر الألوان والخلفيات والـ CSS</div>
+                <div class="menu-item" onclick="showSec('sec_site')"><i class="fa-solid fa-sliders"></i> الهوية والنطاقات</div>
+                <div class="menu-item" onclick="showSec('sec_colors')"><i class="fa-solid fa-palette"></i> مظهر الألوان المتقدم بالكامل</div>
 
-                <div class="menu-title">🎮 إدارة الألعاب والخدمات</div>
-                <div class="menu-item" onclick="showSec('sec_prods')"><i class="fa-solid fa-folder-plus"></i> إضافة خدمة / ألعاب / باقات شحن</div>
+                <div class="menu-title">🗂️ إدارة الأقسام المستقلة</div>
+                <div class="menu-item" onclick="showSec('sec_cats')"><i class="fa-solid fa-folder-open"></i> إضافة وتعديل الأقسام (Categories)</div>
+
+                <div class="menu-title">🎮 إدارة الخدمات والمنتجات والتسليم</div>
+                <div class="menu-item" onclick="showSec('sec_prods')"><i class="fa-solid fa-folder-plus"></i> إضافة منتج / كروت / باقات تسليم</div>
                 <div class="menu-item" onclick="showSec('sec_manage_prods')"><i class="fa-solid fa-cubes"></i> تعديل الخدمات والأسعار المزدوجة</div>
 
                 <div class="menu-title">👥 الحسابات والزبائن</div>
-                <div class="menu-item" onclick="showSec('sec_users')"><i class="fa-solid fa-users-gear"></i> شحن رصيد، ترقية VIP، وحظر الحسابات</div>
+                <div class="menu-item" onclick="showSec('sec_users')"><i class="fa-solid fa-users-gear"></i> شحن رصيد وإدارة الأعضاء</div>
 
                 <div class="menu-title">📦 إدارة المشتريات والطلبات</div>
-                <div class="menu-item" onclick="showSec('sec_orders')"><i class="fa-solid fa-receipt"></i> الطلبات المعلقة، المكتملة والأكواد</div>
-
-                <div class="menu-title">🚀 السوشيال ميديا و SMM</div>
-                <div class="menu-item" onclick="showSec('sec_smm')"><i class="fa-solid fa-share-nodes"></i> إدارة خدمات زيادة المتابعين والتفاعل</div>
-
-                <div class="menu-title">💳 البطاقات الرقمية والحسابات</div>
-                <div class="menu-item" onclick="showSec('sec_cards')"><i class="fa-solid fa-credit-card"></i> الفيزا، الماستر كارد المشحونة والإنترنت</div>
+                <div class="menu-item" onclick="showSec('sec_orders')"><i class="fa-solid fa-receipt"></i> الطلبات والتسليمات الفورية</div>
 
                 <div class="menu-title">🔔 التنبيهات ونظام التلقائي</div>
                 <div class="menu-item" onclick="showSec('sec_telegram')"><i class="fa-solid fa-robot"></i> توكن البوت والاشعارات الذكية</div>
-                <div class="menu-item" onclick="showSec('sec_popups')"><i class="fa-solid fa-bell"></i> نافذة الإعلان المنبثقة وشريط الأخبار</div>
                 
                 <div class="menu-title">🔐 صلاحيات الأمان</div>
                 <div class="menu-item" onclick="location.reload()"><i class="fa-solid fa-power-off"></i> خروج وقفل اللوحة</div>
             </div>
         </div>
 
-        <!-- ساحة التحكم والمحتوى -->
         <div class="main-content">
-            <div id="saveAlert" class="alert-success">⏳ تم تحديث الخيارات وحفظ التغييرات في Firebase بنجاح حركي!</div>
+            <div id="saveAlert" class="alert-success">⏳ تم تحديث البيانات وحفظ التغييرات في السيرفر بنجاح!</div>
 
             <!-- 1. نظرة عامة -->
             <div class="section active" id="sec_dash">
@@ -122,9 +123,8 @@
                     <h3>لوحة المراقبة السريعة</h3>
                     <div class="grid-4">
                         <div class="card" style="text-align:center; background:rgba(0,0,0,0.2);"><h5>إجمالي المستخدمين</h5><h2 id="d_u">0</h2></div>
-                        <div class="card" style="text-align:center; background:rgba(0,0,0,0.2);"><h5>الخدمات النشطة</h5><h2 id="d_p">0</h2></div>
-                        <div class="card" style="text-align:center; background:rgba(0,0,0,0.2);"><h5>الطلبات المعالجة</h5><h2 id="d_o">0</h2></div>
-                        <div class="card" style="text-align:center; background:rgba(0,0,0,0.2);"><h5>إجمالي الشحن</h5><h2 id="d_m">0 د.ل</h2></div>
+                        <div class="card" style="text-align:center; background:rgba(0,0,0,0.2);"><h5>الأقسام المتاحة</h5><h2 id="d_c">0</h2></div>
+                        <div class="card" style="text-align:center; background:rgba(0,0,0,0.2);"><h5>المنتجات والخدمات</h5><h2 id="d_p">0</h2></div>
                     </div>
                 </div>
             </div>
@@ -132,78 +132,133 @@
             <!-- 2. إعدادات الهوية -->
             <div class="section" id="sec_site">
                 <div class="card">
-                    <h3>أصغر تفاصيل الهوية والنصوص والروابط (15 خيار تحكم)</h3>
+                    <h3>إعدادات الهوية والنصوص والروابط</h3>
                     <div class="grid-2">
                         <div class="form-group"><label>اسم المتجر بالعربي</label><input type="text" id="s_title" class="form-control" value="ميديا بلس"></div>
-                        <div class="form-group"><label>اسم المتجر بالإنجليزي</label><input type="text" id="s_en_title" class="form-control" value="Media Plus"></div>
-                        <div class="form-group"><label>رابط اللوجو الرئيسي</label><input type="text" id="s_logo" class="form-control"></div>
-                        <div class="form-group"><label>رابط الأيقونة المصغرة Favicon</label><input type="text" id="s_fav" class="form-control"></div>
-                        <div class="form-group"><label>وصف المتجر (SEO)</label><input type="text" id="s_desc" class="form-control"></div>
                         <div class="form-group"><label>رابط الدومين الأساسي الجديد</label><input type="text" id="s_domain" class="form-control"></div>
-                        <div class="form-group"><label>رابط الدعم الفني تلغرام</label><input type="text" id="s_tg" class="form-control"></div>
-                        <div class="form-group"><label>رابط صفحة فيسبوك</label><input type="text" id="s_fb" class="form-control"></div>
-                        <div class="form-group"><label>رابط حساب واتساب العمل</label><input type="text" id="s_wa" class="form-control"></div>
                         <div class="form-group"><label>عملة المتجر الافتراضية</label><input type="text" id="s_currency" class="form-control" value="د.ل"></div>
-                        <div class="form-group"><label>نص حقوق الحقوق أسفل الموقع</label><input type="text" id="s_footer" class="form-control"></div>
-                        <div class="form-group"><label>الحد الأدنى لشحن الحساب تلقائياً</label><input type="number" id="s_min_pay" class="form-control"></div>
                     </div>
-                    <button class="btn btn-gold" onclick="saveSetting('site_settings')"><i class="fa-solid fa-floppy-disk"></i> حفظ الإعدادات الأساسية</button>
+                    <button class="btn btn-gold" onclick="saveSetting('site_settings')"><i class="fa-solid fa-floppy-disk"></i> حفظ الإعدادات</button>
                 </div>
             </div>
 
-            <!-- 3. إعدادات المظهر والألوان الأكواد -->
+            <!-- 3. إعدادات الألوان المتقدمة والفعالة فوراً -->
             <div class="section" id="sec_colors">
                 <div class="card">
-                    <h3>إعدادات الألوان المتقدمة والأنماط (10 خيارات تحكم)</h3>
+                    <h3>التحكم المتقدم في درجة الألوان والأنماط المباشرة</h3>
                     <div class="grid-3">
-                        <div class="form-group"><label>اللون الرئيسي للمتجر</label><input type="color" id="c_main" value="#1e0509"></div>
-                        <div class="form-group"><label>لون القوائم والبطاقات</label><input type="color" id="c_card" value="#30050b"></div>
-                        <div class="form-group"><label>لون التحديد واللمسات</label><input type="color" id="c_accent" value="#8a1829"></div>
-                        <div class="form-group"><label>اللون الذهبي للباقات والنصوص</label><input type="color" id="c_gold" value="#d4a84b"></div>
-                        <div class="form-group"><label>لون النصوص الأساسية</label><input type="color" id="c_text" value="#f0e6d3"></div>
+                        <div class="form-group">
+                            <label>اللون الرئيسي للمتجر (Main BG)</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="c_main" value="#110204" oninput="updateLiveColors()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>لون القوائم والبطاقات (Panel BG)</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="c_card" value="#220407" oninput="updateLiveColors()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>لون التحديد واللمسات (Accent)</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="c_accent" value="#6b0f1a" oninput="updateLiveColors()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>اللون الذهبي للنصوص المحددة (Gold)</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="c_gold" value="#d4a84b" oninput="updateLiveColors()">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>لون النصوص الأساسية (Text Color)</label>
+                            <div class="color-picker-wrapper">
+                                <input type="color" id="c_text" value="#f0e6d3" oninput="updateLiveColors()">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>حقن كود الـ CSS المخصص داخل واجهة العميل (Custom Styling)</label>
-                        <textarea id="c_custom_css" class="form-control" rows="4" placeholder="body { filter: contrast(110%); }"></textarea>
-                    </div>
-                    <button class="btn btn-gold" onclick="saveSetting('design_settings')"><i class="fa-solid fa-wand-magic-sparkles"></i> تطبيق الألوان فوراً</button>
+                    <button class="btn btn-gold" style="margin-top:15px;" onclick="saveSetting('design_settings')"><i class="fa-solid fa-wand-magic-sparkles"></i> حفظ نمط الألوان في السيرفر</button>
                 </div>
             </div>
 
-            <!-- 4. إضافة خدمة -->
+            <!-- إدارة الأقسام المستقلة (Categories) -->
+            <div class="section" id="sec_cats">
+                <div class="card">
+                    <h3>إضافة قسم جديد في مجموعة مستقلة (categories)</h3>
+                    <div class="grid-3">
+                        <div class="form-group"><label>اسم القسم (مثل: ستيم، ببجي)</label><input type="text" id="cat_name" class="form-control"></div>
+                        <div class="form-group"><label>رابط الصورة المباشرة (image)</label><input type="text" id="cat_img" class="form-control"></div>
+                        <div class="form-group"><label>ترتيب العرض (order)</label><input type="number" id="cat_order" class="form-control" value="1"></div>
+                    </div>
+                    <button class="btn btn-success" onclick="uploadNewCategory()"><i class="fa-solid fa-folder-plus"></i> إنشاء وتثبيت القسم</button>
+                </div>
+                <div class="card">
+                    <h3>الأقسام الحالية المثبتة</h3>
+                    <table id="tableCategories">
+                        <thead><tr><th>اسم القسم</th><th>ترتيب العرض</th><th>إجراء</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. إضافة منتج / خدمة -->
             <div class="section" id="sec_prods">
                 <div class="card">
-                    <h3>إضافة خدمة وتخصيص باقات شحن لا نهائية (تحكم مرن)</h3>
-                    <div class="form-group"><label>اسم الخدمة الرئيسي</label><input type="text" id="p_name" class="form-control" placeholder="مثال: شحن ببجي موبايل"></div>
-                    <div class="form-group"><label>رابط صورة الغلاف أو الأيقونة</label><input type="text" id="p_img" class="form-control"></div>
-                    <div class="form-group">
-                        <label>تصنيف ومكان الظهور</label>
-                        <select id="p_cat" class="form-control">
-                            <option value="games">🎮 ألعاب شحن فوري</option>
-                            <option value="smm">🚀 خدمات السوشيال ميديا SMM</option>
-                            <option value="cards">💳 بطاقات فيزا وماستر كارد</option>
-                        </select>
+                    <h3>إضافة خدمة وتخصيص طريقة التسليم التلقائي الحية</h3>
+                    <div class="grid-2">
+                        <div class="form-group"><label>اسم المنتج/الخدمة</label><input type="text" id="p_name" class="form-control" placeholder="مثال: بطاقة سيتم قطري 200 ريال"></div>
+                        <div class="form-group"><label>رابط الصورة أو الأيقونة</label><input type="text" id="p_img" class="form-control"></div>
                     </div>
-                    <h4 style="color:var(--gold); margin: 15px 0 10px;">باقات وعروض الخدمة المتعددة:</h4>
-                    <div id="p_plans_area">
-                        <div class="grid-3" style="margin-bottom: 5px;">
-                            <input type="text" class="form-control pl-name" placeholder="اسم الباقة">
-                            <input type="number" class="form-control pl-price" placeholder="سعر العميل العادي">
-                            <input type="number" class="form-control pl-vip" placeholder="سعر عضو VIP">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>اختر القسم المستقل التابع له (يربط عبر categoryId)</label>
+                            <select id="p_cat_select" class="form-control"><option value="">-- جاري تحميل الأقسام --</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label>نوع ونمط المنتج للتسليم التلقائي</label>
+                            <select id="p_delivery_type" class="form-control" onchange="toggleDeliveryFields()">
+                                <option value="cards">🎮 ألعاب وكروت (تسليم كود + سيريال متسلسل)</option>
+                                <option value="subs">🍿 اشتراكات وحسابات (تسليم إيميل + باسورد + رقم يوزر)</option>
+                            </select>
                         </div>
                     </div>
-                    <button class="btn" style="background:rgba(255,255,255,0.1); margin-bottom:15px;" onclick="addNewPlanRow()">＋ إضافة باقة أسعار أخرى</button>
-                    <br>
-                    <button class="btn btn-gold" onclick="uploadNewProduct()"><i class="fa-solid fa-plus"></i> نشر الخدمة في الواجهة</button>
+
+                    <div class="grid-3">
+                        <div class="form-group"><label>السعر بالدينار الليبي (priceLYD)</label><input type="number" step="0.001" id="p_price_lyd" class="form-control"></div>
+                        <div class="form-group"><label>السعر بالدولار الأمريكي (priceUSD)</label><input type="number" step="0.001" id="p_price_usd" class="form-control"></div>
+                        <div class="form-group"><label>ترتيب عرض المنتج داخل القسم</label><input type="number" id="p_order" class="form-control" value="1"></div>
+                    </div>
+
+                    <!-- نظام حقول التسليم الفوري التلقائي الديناميكي المطلب -->
+                    <div class="delivery-box">
+                        <h4 style="color:var(--gold); margin-bottom:10px;"><i class="fa-solid fa-bolt"></i> بيانات تعبئة المخزون للتسليم الفوري:</h4>
+                        
+                        <!-- واجهة الكروت والألعاب -->
+                        <div id="delivery_cards_area" class="grid-3">
+                            <div class="form-group"><label>الرقم السري / الكود الحركي</label><input type="text" id="d_secret_code" class="form-control" placeholder="مثال: u5PqVygg2..."></div>
+                            <div class="form-group"><label>الرقم التسلسلي (Serial)</label><input type="text" id="d_serial" class="form-control" placeholder="مثال: 60acb9d9-..."></div>
+                            <div class="form-group"><label>تاريخ انتهاء الصلاحية</label><input type="text" id="d_expire_date" class="form-control" value="28/09/2026"></div>
+                        </div>
+
+                        <!-- واجهة الحسابات والاشتراكات فشاهد وغيرها -->
+                        <div id="delivery_subs_area" class="grid-3" style="display:none;">
+                            <div class="form-group"><label>البريد الإلكتروني المشترك</label><input type="email" id="d_sub_email" class="form-control" placeholder="example@gmail.com"></div>
+                            <div class="form-group"><label>كلمة السر (Password)</label><input type="text" id="d_sub_pass" class="form-control" placeholder="••••••••"></div>
+                            <div class="form-group"><label>رقم اليوزر أو ملف الشاشة (Profile ID)</label><input type="text" id="d_sub_user" class="form-control" placeholder="ملف رقم 3"></div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-gold" style="margin-top:15px;" onclick="uploadNewProduct()"><i class="fa-solid fa-plus"></i> نشر وتثبيت الخدمة في المتجر</button>
                 </div>
             </div>
 
             <!-- 5. تعديل وحذف الخدمات -->
             <div class="section" id="sec_manage_prods">
                 <div class="card">
-                    <h3>التحكم وتعديل الخدمات النشطة</h3>
+                    <h3>التحكم وتعديل المنتجات المباشرة بمجموعتك الحالية</h3>
                     <table id="tableProducts">
-                        <thead><tr><th>اسم الخدمة</th><th>القسم</th><th>عدد الباقات</th><th>إجراء</th></tr></thead>
+                        <thead><tr><th>اسم الخدمة المباشر</th><th>السعر بالدينار</th><th>نوع التسليم</th><th>إجراء</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
@@ -212,66 +267,40 @@
             <!-- 6. الزبائن وشحن الأرصدة -->
             <div class="section" id="sec_users">
                 <div class="card">
-                    <h3>إدارة حسابات الأعضاء والأرصدة ونوع العضوية</h3>
+                    <h3>إدارة حسابات الأعضاء والأرصدة بالدينار الليبي</h3>
                     <table id="tableUsers">
-                        <thead><tr><th>البريد الإلكتروني</th><th>الرصيد الفعلي</th><th>حالة الحساب</th><th>العمليات الإدارية السريعة</th></tr></thead>
+                        <thead><tr><th>البريد الإلكتروني</th><th>الرصيد الفعلي</th><th>إجراءات إدارية</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- 7. سجل المشتريات والطلبات -->
+            <!-- 7. سجل المشتريات والطلبات المكتملة تلقائياً -->
             <div class="section" id="sec_orders">
                 <div class="card">
-                    <h3>تنفيذ ومراجعة الطلبات الواردة للموقع</h3>
+                    <h3>مراجعة تسليم المبيعات الفورية (التسليمات التلقائية المباشرة)</h3>
                     <table id="tableOrders">
-                        <thead><tr><th>المشتري</th><th>الخدمة المطلوبة</th><th>سعر البيع</th><th>حالة التسليم</th><th>كود الشحن</th></tr></thead>
+                        <thead><tr><th>المشتري</th><th>المنتج</th><th>البيانات المستلمة فورا للعميل</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- 8. بوت تلغرام والاشعارات التلقائية -->
+            <!-- 8. بوت تلغرام -->
             <div class="section" id="sec_telegram">
                 <div class="card">
-                    <h3>إعداد ربط الإشعارات الفورية وبوت التلغرام الآلي</h3>
+                    <h3>إعداد ربط الإشعارات الفورية وبوت التلغرام الآلي لحركة الطلبات</h3>
                     <div class="form-group"><label>توكن البوت (Telegram Bot Token)</label><input type="text" id="t_token" class="form-control"></div>
                     <div class="form-group"><label>معرف شات الإدارة المستلم (Admin Chat ID)</label><input type="text" id="t_chat" class="form-control"></div>
-                    <div class="form-group">
-                        <label>حالة الإشعارات التلقائية</label>
-                        <select id="t_status" class="form-control">
-                            <option value="true">تشغيل الإرسال الفوري لجروب الإدارة عند كل طلب جديد</option>
-                            <option value="false">إيقاف التنبيهات مؤقتاً</option>
-                        </select>
-                    </div>
                     <button class="btn btn-gold" onclick="saveSetting('telegram_config')"><i class="fa-solid fa-robot"></i> حفظ وتفعيل ربط البوت</button>
                 </div>
             </div>
-
-            <!-- 9. النوافذ المنبثقة والإعلانات -->
-            <div class="section" id="sec_popups">
-                <div class="card">
-                    <h3>نظام الإعلانات والتنبيهات المباشرة في واجهة المتجر</h3>
-                    <div class="form-group">
-                        <label>حالة نافذة الإعلان المنبثقة للزبائن عند فتح الموقع</label>
-                        <select id="adv_status" class="form-control"><option value="show">إظهار النافذة</option><option value="hide">إخفاء</option></select>
-                    </div>
-                    <div class="form-group"><label>عنوان الإعلان المنبثق</label><input type="text" id="adv_title" class="form-control"></div>
-                    <div class="form-group"><label>نص ومحتوى الإعلان التفصيلي أو شروط الشحن</label><textarea id="adv_body" class="form-control" rows="3"></textarea></div>
-                    <div class="form-group"><label>نص شريط الأخبار المتحرك أعلى الصفحة</label><input type="text" id="adv_ticker" class="form-control"></div>
-                    <button class="btn btn-gold" onclick="saveSetting('ads_config')"><i class="fa-solid fa-bullhorn"></i> تعميم الإعلان فوراً</button>
-                </div>
-            </div>
-
-            <!-- 10. الحسابات وبطاقات الفيزا SMM & Cards -->
-            <div class="section" id="sec_smm"><div class="card"><h3>إعدادات السوشيال ميديا</h3><p>تتم إدارتها وربطها تلقائياً عبر مصفوفات الأقسام والخدمات التابعة لـ <b>Media Plus</b>.</p></div></div>
-            <div class="section" id="sec_cards"><div class="card"><h3>إدارة الأرقام التسلسلية والكروت والفيزا</h3><p>يمكنك دمج الأكواد والكروت مباشرة عبر تعبئة حقل الباقات في قسم إضافة خدمة.</p></div></div>
 
         </div>
     </div>
 
     <script>
-        // ========== إعدادات الفايربيز الموحدة لمشروعك ==========
+        // ========== إعدادات الفايربيز المحدثة لمشروعك الموثق ==========
         const firebaseConfig = {
             apiKey: "AIzaSyAsDZDLbzB0Vfqgo8SenbE4DTxjc7m_xqA",
             authDomain: "iq-store-f6195.firebaseapp.com",
@@ -283,15 +312,42 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // ========== نظام قفل الحماية الصارم بالرمز الخاص بك ==========
+        // ========== نظام الحماية الصارم بالرمز الخاص بك ==========
         function unlockPanel() {
             const token = document.getElementById('adminToken').value.trim();
             if (token === "delevre218") {
                 document.getElementById('authLock').style.display = 'none';
                 document.getElementById('mainWrapper').style.display = 'flex';
                 loadAllLiveStats();
+                loadCategoriesToSelect();
             } else {
                 alert("❌ رمز الدخول غير صحيح! لا يمكن فتح لوحة التحكم.");
+            }
+        }
+
+        // تحديث الألوان الحية عند تغييرها من لوحة الألوان مباشرة
+        function updateLiveColors() {
+            const main = document.getElementById('c_main').value;
+            const card = document.getElementById('c_card').value;
+            const accent = document.getElementById('c_accent').value;
+            const gold = document.getElementById('c_gold').value;
+            const text = document.getElementById('c_text').value;
+
+            document.documentElement.style.setProperty('--main-bg', main);
+            document.documentElement.style.setProperty('--panel-bg', card);
+            document.documentElement.style.setProperty('--accent', accent);
+            document.documentElement.style.setProperty('--gold', gold);
+            document.documentElement.style.setProperty('--text', text);
+        }
+
+        function toggleDeliveryFields() {
+            const type = document.getElementById('p_delivery_type').value;
+            if(type === 'cards') {
+                document.getElementById('delivery_cards_area').style.display = 'grid';
+                document.getElementById('delivery_subs_area').style.display = 'none';
+            } else {
+                document.getElementById('delivery_cards_area').style.display = 'none';
+                document.getElementById('delivery_subs_area').style.display = 'grid';
             }
         }
 
@@ -301,83 +357,130 @@
             event.currentTarget.classList.add('active');
             document.getElementById(id).classList.add('active');
             
+            if(id === 'sec_cats') fetchCategoriesList();
             if(id === 'sec_manage_prods') fetchProductsList();
             if(id === 'sec_users') fetchUsersList();
             if(id === 'sec_orders') fetchOrdersList();
         }
 
-        function addNewPlanRow() {
-            const div = document.createElement('div');
-            div.className = 'grid-3';
-            div.style.marginBottom = '5px';
-            div.innerHTML = `
-                <input type="text" class="form-control pl-name" placeholder="اسم الباقة">
-                <input type="number" class="form-control pl-price" placeholder="سعر العميل العادي">
-                <input type="number" class="form-control pl-vip" placeholder="سعر عضو VIP">
-            `;
-            document.getElementById('p_plans_area').appendChild(div);
-        }
+        // --- إدارة الأقسام المستقلة (categories) ---
+        async function uploadNewCategory() {
+            const name = document.getElementById('cat_name').value.trim();
+            const image = document.getElementById('cat_img').value.trim();
+            const order = parseInt(document.getElementById('cat_order').value) || 1;
 
-        // حفظ الإعدادات التفصيلية المتنوعة
-        async function saveSetting(docId) {
-            let data = {};
-            if(docId === 'site_settings') {
-                data = { title: document.getElementById('s_title').value, en_title: document.getElementById('s_en_title').value, logo: document.getElementById('s_logo').value, fav: document.getElementById('s_fav').value, desc: document.getElementById('s_desc').value, domain: document.getElementById('s_domain').value, tg: document.getElementById('s_tg').value, fb: document.getElementById('s_fb').value, wa: document.getElementById('s_wa').value, currency: document.getElementById('s_currency').value, footer: document.getElementById('s_footer').value, min_pay: document.getElementById('s_min_pay').value };
-            }
-            if(docId === 'design_settings') {
-                data = { c_main: document.getElementById('c_main').value, c_card: document.getElementById('c_card').value, c_accent: document.getElementById('c_accent').value, c_gold: document.getElementById('c_gold').value, c_text: document.getElementById('c_text').value, custom_css: document.getElementById('c_custom_css').value };
-            }
-            if(docId === 'telegram_config') {
-                data = { token: document.getElementById('t_token').value, chat: document.getElementById('t_chat').value, active: document.getElementById('t_status').value };
-            }
-            if(docId === 'ads_config') {
-                data = { status: document.getElementById('adv_status').value, title: document.getElementById('adv_title').value, body: document.getElementById('adv_body').value, ticker: document.getElementById('adv_ticker').value };
-            }
-            await db.collection('control_panel').doc(docId).set(data, {merge: true});
+            if(!name) return alert('أدخل اسم القسم أولاً');
+
+            await db.collection('categories').add({
+                name: name,
+                image: image,
+                cover: image,
+                order: order
+            });
+
             triggerAlert();
+            document.getElementById('cat_name').value = '';
+            document.getElementById('cat_img').value = '';
+            fetchCategoriesList();
+            loadCategoriesToSelect();
         }
 
+        async function fetchCategoriesList() {
+            const snap = await db.collection('categories').orderBy('order').get();
+            const tb = document.querySelector('#tableCategories tbody');
+            tb.innerHTML = '';
+            snap.forEach(d => {
+                const x = d.data();
+                tb.innerHTML += `<tr><td><b>${x.name}</b></td><td>${x.order}</td><td><button class="btn btn-danger" style="padding:3px 7px; font-size:11px;" onclick="deleteDoc('categories','${d.id}', fetchCategoriesList)">حذف الحزب</button></td></tr>`;
+            });
+        }
+
+        async function loadCategoriesToSelect() {
+            const snap = await db.collection('categories').get();
+            const select = document.getElementById('p_cat_select');
+            select.innerHTML = '<option value="">-- اختر القسم المناسب للمنتج --</option>';
+            snap.forEach(d => {
+                select.innerHTML += `<option value="${d.id}">${d.data().name}</option>`;
+            });
+        }
+
+        // --- إدارة المنتجات المستقلة (products) وعمليات التسليم التلقائية الفعالة ---
         async function uploadNewProduct() {
             const name = document.getElementById('p_name').value.trim();
             const image = document.getElementById('p_img').value.trim();
-            const category = document.getElementById('p_cat').value;
-            if(!name) return alert('يرجى كتابة الاسم');
-            
-            let plans = [];
-            const names = document.querySelectorAll('.pl-name');
-            const prices = document.querySelectorAll('.pl-price');
-            const vips = document.querySelectorAll('.pl-vip');
-            
-            names.forEach((n, i) => {
-                if(n.value.trim() !== "") {
-                    plans.push({ id: 'pl_'+Date.now()+'_'+i, name: n.value.trim(), price: parseFloat(prices[i].value)||0, vipPrice: parseFloat(vips[i].value)||0 });
-                }
+            const categoryId = document.getElementById('p_cat_select').value;
+            const deliveryType = document.getElementById('p_delivery_type').value;
+            const priceLYD = parseFloat(document.getElementById('p_price_lyd').value) || 0;
+            const priceUSD = parseFloat(document.getElementById('p_price_usd').value) || 0;
+            const order = parseInt(document.getElementById('p_order').value) || 1;
+
+            if(!name || !categoryId) return alert('تأكد من إدخال اسم المنتج واختيار قسم صحيح');
+
+            let deliveryData = {};
+            if(deliveryType === 'cards') {
+                deliveryData = {
+                    type: "cards",
+                    secretCode: document.getElementById('d_secret_code').value.trim(),
+                    serialNumber: document.getElementById('d_serial').value.trim(),
+                    expireDate: document.getElementById('d_expire_date').value.trim()
+                };
+            } else {
+                deliveryData = {
+                    type: "subs",
+                    subEmail: document.getElementById('d_sub_email').value.trim(),
+                    subPass: document.getElementById('d_sub_pass').value.trim(),
+                    subUser: document.getElementById('d_sub_user').value.trim()
+                };
+            }
+
+            // الرفع والحفظ تماشياً مع هيكلة السيرفر المعتمدة بالصورة 1000798347.jpg
+            await db.collection('products').add({
+                name: name,
+                image: image,
+                img: image,
+                categoryId: categoryId,
+                priceLYD: priceLYD,
+                priceUSD: priceUSD,
+                price: priceLYD, // عملة افتراضية للمزامنة السريعة
+                order: order,
+                sales: 0,
+                active: true,
+                delivery: deliveryData
             });
-            await db.collection('products').add({ name, image, category, plans });
+
             triggerAlert();
             document.getElementById('p_name').value = '';
+            document.getElementById('p_price_lyd').value = '';
+            document.getElementById('p_price_usd').value = '';
         }
 
-        async function loadAllLiveStats() {
-            const u = await db.collection('users').get();
-            const p = await db.collection('products').get();
-            document.getElementById('d_u').innerText = u.size;
-            document.getElementById('d_p').innerText = p.size;
-        }
-
-        function triggerAlert() {
-            const a = document.getElementById('saveAlert');
-            a.style.display = 'block';
-            setTimeout(() => { a.style.display = 'none'; }, 3000);
-        }
-
-        // تفريغ وجلب القوائم الحية من الـ Database
         async function fetchProductsList() {
             const snap = await db.collection('products').get();
             const tb = document.querySelector('#tableProducts tbody'); tb.innerHTML = '';
             snap.forEach(d => {
                 const x = d.data();
-                tb.innerHTML += `<tr><td><b>${x.name}</b></td><td>${x.category}</td><td>${x.plans?x.plans.length:0} باقة</td><td><button class="btn btn-danger" style="padding:3px 7px; font-size:11px;" onclick="deleteDoc('products','${d.id}', fetchProductsList)">حذف</button></td></tr>`;
+                const typeText = x.delivery && x.delivery.type === 'subs' ? '🍿 اشتراك فوري' : '🎮 كارت تلقائي';
+                tb.innerHTML += `<tr><td><b>${x.name}</b></td><td>${x.priceLYD || x.price} د.ل</td><td>${typeText}</td><td><button class="btn btn-danger" style="padding:3px 7px; font-size:11px;" onclick="deleteDoc('products','${d.id}', fetchProductsList)">حذف</button></td></tr>`;
+            });
+        }
+
+        // --- سجل المشتريات والطلبات المسلمة تلقائياً ---
+        async function fetchOrdersList() {
+            const snap = await db.collection('users').get();
+            const tb = document.querySelector('#tableOrders tbody'); tb.innerHTML = '';
+            snap.forEach(d => {
+                const x = d.data();
+                if(x.purchases) {
+                    x.purchases.forEach(p => {
+                        let infoOutput = '';
+                        if (p.deliveryType === 'subs') {
+                            infoOutput = `حساب: <code>${p.subEmail}</code> | الباسورد: <code>${p.subPass}</code> | الملف: <code>${p.subUser}</code>`;
+                        } else {
+                            infoOutput = `الكود: <code>${p.secretCode || p.code || 'N/A'}</code> | الرقم التسلسلي: <code>${p.serialNumber || 'N/A'}</code>`;
+                        }
+                        tb.innerHTML += `<tr><td>${x.email}</td><td>${p.name}</td><td>${infoOutput}</td></tr>`;
+                    });
+                }
             });
         }
 
@@ -386,20 +489,7 @@
             const tb = document.querySelector('#tableUsers tbody'); tb.innerHTML = '';
             snap.forEach(d => {
                 const x = d.data();
-                tb.innerHTML += `<tr><td>${x.email}</td><td><b style="color:var(--gold);">${x.walletBalance||0} د.ل</b></td><td>${x.isVip?'👑 VIP':'عضو عادي'}</td><td><button class="btn btn-gold" style="padding:3px 7px; font-size:11px;" onclick="addCash('${d.id}', ${x.walletBalance||0})">شحن رصيد</button></td></tr>`;
-            });
-        }
-
-        async function fetchOrdersList() {
-            const snap = await db.collection('users').get();
-            const tb = document.querySelector('#tableOrders tbody'); tb.innerHTML = '';
-            snap.forEach(d => {
-                const x = d.data();
-                if(x.purchases) {
-                    x.purchases.forEach(p => {
-                        tb.innerHTML += `<tr><td>${x.email}</td><td>${p.name}</td><td>${p.price} د.ل</td><td><span style="color:var(--success);">مكتمل / فوري</span></td><td><code style="color:var(--gold); font-weight:900;">${p.code||'A77X-99'}</code></td></tr>`;
-                    });
-                }
+                tb.innerHTML += `<tr><td>${x.email}</td><td><b style="color:var(--gold);">${x.walletBalance||0} د.ل</b></td><td><button class="btn btn-gold" style="padding:3px 7px; font-size:11px;" onclick="addCash('${d.id}', ${x.walletBalance||0})">شحن الرصيد</button></td></tr>`;
             });
         }
 
@@ -410,13 +500,43 @@
             fetchUsersList();
         }
 
+        async function saveSetting(docId) {
+            let data = {};
+            if(docId === 'site_settings') {
+                data = { title: document.getElementById('s_title').value, domain: document.getElementById('s_domain').value, currency: document.getElementById('s_currency').value };
+            }
+            if(docId === 'design_settings') {
+                data = { c_main: document.getElementById('c_main').value, c_card: document.getElementById('c_card').value, c_accent: document.getElementById('c_accent').value, c_gold: document.getElementById('c_gold').value, c_text: document.getElementById('c_text').value };
+            }
+            if(docId === 'telegram_config') {
+                data = { token: document.getElementById('t_token').value, chat: document.getElementById('t_chat').value };
+            }
+            await db.collection('control_panel').doc(docId).set(data, {merge: true});
+            triggerAlert();
+        }
+
+        async function loadAllLiveStats() {
+            const u = await db.collection('users').get();
+            const c = await db.collection('categories').get();
+            const p = await db.collection('products').get();
+            document.getElementById('d_u').innerText = u.size;
+            document.getElementById('d_c').innerText = c.size;
+            document.getElementById('d_p').innerText = p.size;
+        }
+
+        function triggerAlert() {
+            const a = document.getElementById('saveAlert');
+            a.style.display = 'block';
+            setTimeout(() => { a.style.display = 'none'; }, 3000);
+        }
+
         async function deleteDoc(col, id, callback) {
             if(confirm('هل أنت متأكد تماماً من الحذف نهائياً؟')) {
                 await db.collection(col).doc(id).delete();
                 callback();
+                loadAllLiveStats();
             }
         }
     </script>
 </body>
 </html>
-
