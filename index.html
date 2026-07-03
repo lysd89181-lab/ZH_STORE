@@ -76,14 +76,15 @@
             box-shadow: var(--neon-glow);
         }
         .top-bar .hamburger-zone { justify-self: start; }
-        .top-bar .center-logo-zone { justify-self: center; }
+        .top-bar .center-logo-zone { justify-self: center; display: flex; align-items: center; justify-content: center; height: 100%; }
         .top-bar .center-logo-zone img {
-            width: 45px;
+            width: auto;
             height: 45px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-color);
-            object-fit: cover;
-            box-shadow: var(--neon-glow);
+            max-width: 140px;
+            border-radius: 0;
+            border: none;
+            object-fit: contain;
+            box-shadow: none;
         }
         .top-bar .actions-zone { justify-self: end; display: flex; align-items: center; gap: 15px; }
         
@@ -104,6 +105,7 @@
             box-shadow: var(--shadow), var(--neon-glow);
             transition: var(--transition);
             cursor: pointer;
+            direction: rtl;
         }
         .glass-balance-floating .plus-btn {
             width: 28px;
@@ -116,10 +118,11 @@
             justify-content: center;
             font-weight: 900;
             font-size: 15px;
+            order: 1;
         }
-        .glass-balance-floating .balance-info { display: flex; flex-direction: column; align-items: flex-start; direction: ltr; }
+        .glass-balance-floating .balance-info { display: flex; flex-direction: column; align-items: flex-start; direction: rtl; order: 2; margin-left: 4px; }
         .glass-balance-floating .balance-info .lbl { font-size: 8px; color: rgba(255,255,255,0.6); font-weight: 600; }
-        .glass-balance-floating .balance-info .val { font-size: 13px; font-weight: 900; color: #fff; }
+        .glass-balance-floating .balance-info .val { font-size: 13px; font-weight: 900; color: #fff; display: flex; gap: 4px; direction: ltr; }
 
         .notif-bell { position: relative; color: var(--accent-color); display: flex; align-items: center; cursor: pointer; }
         .notif-bell svg { width: 24px; height: 24px; fill: var(--accent-color); }
@@ -156,7 +159,6 @@
         .social-reward-icon img { width: 20px; height: 20px; object-fit: contain; }
         .sidebar-footer { margin-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; font-size: 10px; color: rgba(255,255,255,0.4); text-align: center; }
 
-        /* تعديل إعلان الحث على الاشتراك ليظهر فقط للعاديين (غير المشتركين) */
         .vip-countdown-section {
             background: linear-gradient(135deg, #1e110b, #000000);
             border: 2px solid var(--accent-color);
@@ -165,7 +167,7 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
         }
-        .vip-countdown-section.hidden { display: none; } /* إخفاء للمشتركين */
+        .vip-countdown-section.hidden { display: none; } 
         
         .vip-countdown-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .vip-countdown-title { font-size: 13px; font-weight: 900; color: var(--accent-light); display: flex; align-items: center; gap: 6px; }
@@ -176,7 +178,6 @@
         .old-price { font-size: 11px; text-decoration: line-through; color: #ff4757; font-weight: bold; }
         .new-price { font-size: 13px; color: #2ed573; font-weight: 900; background: rgba(46, 213, 115, 0.1); padding: 2px 8px; border-radius: 4px; }
 
-        /* استبدال الإعلان التروجيني القديم بصور بانرات */
         .promo-banners-slider {
             margin: 16px;
             overflow: hidden;
@@ -193,7 +194,6 @@
             display: block;
         }
 
-        /* أخفاء الهيرو بانر النصي القديم واستبداله بالصور */
         .hero-banner { display: none; }
 
         .tabs-container { display: flex; gap: 10px; padding: 0 16px; margin-bottom: 16px; }
@@ -243,7 +243,7 @@
         
         .checkout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(5px); }
         .checkout-modal.active { display: flex; }
-        .checkout-box { background: var(--top-bar-bg); border: 2px solid var(--accent-color); border-radius: var(--radius); padding: 20px; max-width: 380px; width: 100%; box-shadow: var(--shadow); }
+        .checkout-box { background: var(--top-bar-bg); border: 2px solid var(--accent-color); border-radius: var(--radius); padding: 20px; max-width: 380px; width: 100%; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
 
         .notif-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 400; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
         .notif-modal.active { display: flex; }
@@ -310,6 +310,15 @@
             position: relative;
             box-shadow: 0 0 4px rgba(32, 213, 236, 0.6);
         }
+
+        .gift-box-wrapper {
+            background: rgba(255, 71, 87, 0.05);
+            border: 1px dashed rgba(255, 71, 87, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -343,7 +352,7 @@
         <div class="plus-btn">＋</div>
         <div class="balance-info">
             <span class="lbl">محفظتي الحالية</span>
-            <span class="val" id="topBalance">0.00 د.ل</span>
+            <span class="val" id="topBalance"><span> د.ل</span><b>0.00</b>+</span>
         </div>
     </div>
 
@@ -391,7 +400,6 @@
         <div class="sidebar-footer"><p>جميع الحقوق محفوظة لمنصة دليفريكو باي © 2026</p></div>
     </div>
 
-    <!-- قسم الخصومات: يظهر فقط للعاديين (غير المشتركين) -->
     <div class="vip-countdown-section" id="vipPromoSection">
         <div class="vip-countdown-header">
             <span class="vip-countdown-title">⚡ عروض حصرية لفترة محدودة عند الترقية:</span>
@@ -407,12 +415,10 @@
         <button class="buy-btn" style="background:#eccc68; color:#000; font-size:12px; margin-top:8px;" onclick="switchSection('profile')">🚀 ترقية حسابي الآن واستلام الخصم</button>
     </div>
 
-    <!-- استبدال الإعلان التروجيني القديم ببانرات صورية -->
     <div class="promo-banners-slider" id="topPromoSliderArea">
         <img src="https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=800" id="dynamicPromoBannerImg" alt="إعلان ترويجي" onclick="showToast('📢 تابع العروض والخصومات اليومية المتجددة!')">
     </div>
 
-    <!-- تم إخفاء الهيرو بانر النصي القديم نهائياً واستبداله بالصور أعلاه -->
     <div class="hero-banner" id="heroBanner" style="display:none;"></div>
 
     <div class="tabs-container" id="mainTabsContainer">
@@ -442,6 +448,31 @@
     <div class="checkout-modal" id="checkoutModal">
         <div class="checkout-box">
             <h3 style="color:var(--accent-color); margin-bottom:12px; font-size:15px; display:flex; align-items:center; gap:6px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--accent-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> تأكيد بيانات الشحن واليوزرات</h3>
+            
+            <div class="gift-box-wrapper" id="giftSectionWrapper">
+                <label style="font-size:12px; color:var(--accent-light); font-weight:800; display:flex; align-items:center; gap:5px; margin-bottom:8px;">
+                    <input type="checkbox" id="chkIsGift" onchange="toggleGiftFields()" style="width:16px; height:16px; accent-color:var(--accent-color);">
+                    🎁 شراء هذا الاشتراك كهدية لشخص آخر؟
+                </label>
+                <div id="giftFieldsContainer" style="display:none; margin-top:10px;">
+                    <div class="form-group">
+                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">نوع إرسال الهدية</label>
+                        <select id="giftSendType" class="form-select" onchange="toggleGiftSenderNameField()">
+                            <option value="named">بإسم المرسل (يظهر اسمك)</option>
+                            <option value="anonymous">مجهول (بدون اسم المرسل)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="giftSenderNameGroup">
+                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">اسم المرسل</label>
+                        <input type="text" id="giftSenderName" class="custom-input" placeholder="اكتب اسمك ليظهر مع الهدية">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رسالة مرفقة مع الهدية (اختياري)</label>
+                        <input type="text" id="giftMessage" class="custom-input" placeholder="اكتب تهنئة أو رسالة مرافقة للهدية">
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">البريد الإلكتروني الحساب / المعرف الرقمي</label>
                 <input type="text" id="chkEmail" class="custom-input" placeholder="ايميل الحساب أو المعرف المستهدف">
@@ -738,7 +769,6 @@
                         document.getElementById('userPfpImage').src = savedAvatar;
                     }
 
-                    // التحكم في إظهار/إخفاء قسم الترويج للخصم حسب حالة المستخدم
                     const promoSection = document.getElementById('vipPromoSection');
                     if (isVip) {
                         promoSection.classList.add('hidden');
@@ -929,8 +959,23 @@
         function initiateCheckoutFlow(productId, planId) {
             tempSelectedProdId = productId;
             tempSelectedPlanId = planId;
+            document.getElementById('chkIsGift').checked = false;
+            document.getElementById('giftFieldsContainer').style.display = 'none';
+            document.getElementById('giftSenderName').value = '';
+            document.getElementById('giftMessage').value = '';
             document.getElementById('checkoutModal').classList.add('active');
             adjustUserFields();
+        }
+
+        function toggleGiftFields() {
+            const isGift = document.getElementById('chkIsGift').checked;
+            document.getElementById('giftFieldsContainer').style.display = isGift ? 'block' : 'none';
+            toggleGiftSenderNameField();
+        }
+
+        function toggleGiftSenderNameField() {
+            const type = document.getElementById('giftSendType').value;
+            document.getElementById('giftSenderNameGroup').style.display = type === 'named' ? 'block' : 'none';
         }
 
         function adjustUserFields() {
@@ -975,8 +1020,17 @@
             let generatedCode = 'DLVRKO-' + Math.floor(100000 + Math.random() * 900000);
             let isTypeSubscription = product.category === 'cards' || product.name.includes('اشتراك');
 
+            const isGiftChecked = document.getElementById('chkIsGift').checked;
+            let giftInfoText = '';
+            if (isGiftChecked) {
+                const giftType = document.getElementById('giftSendType').value;
+                const senderName = giftType === 'named' ? (document.getElementById('giftSenderName').value.trim() || 'فاعل خير') : 'مجهول';
+                const giftMsg = document.getElementById('giftMessage').value.trim();
+                giftInfoText = ` [🎁 هدية من: ${senderName}${giftMsg ? ` | رسالة الهدية: ${giftMsg}` : ''}]`;
+            }
+
             purchases.unshift({
-                name: `${product.name} - ${plan.name}`,
+                name: `${product.name} - ${plan.name}${giftInfoText}`,
                 price: price,
                 date: new Date().toLocaleString('ar-LY'),
                 isSubscription: isTypeSubscription,
@@ -987,7 +1041,7 @@
             });
 
             notifications.unshift({
-                title: '🛒 تم تأكيد وتنفيذ طلبك الفوري',
+                title: isGiftChecked ? '🎁 تم إرسال طلب الإهداء بنجاح' : '🛒 تم تأكيد وتنفيذ طلبك الفوري',
                 body: `تم استلام الباقة بنجاح من محفظتك بقيمة ${price} د.ل.`,
                 time: 'الآن'
             });
@@ -1002,7 +1056,7 @@
             updateUI();
             renderPurchases();
             document.getElementById('plansListContainer').style.display = 'none';
-            showToast(`🎉 تم إرسال وتنفيذ طلبك بنجاح! راجع أرشيف المشتريات للنسخ والاستلام الفوري`);
+            showToast(isGiftChecked ? `🎉 تم إرسال اشتراك الهدية بنجاح! شكراً لك` : `🎉 تم إرسال وتنفيذ طلبك بنجاح! راجع أرشيف المشتريات للنسخ والاستلام الفوري`);
         }
 
         function selectPaymentMethod(methodName) {
@@ -1192,7 +1246,6 @@
             isVip = true;
             document.body.classList.add('royal-vip-theme');
             
-            // إخفاء قسم الترويج للخصم بعد الترقية
             document.getElementById('vipPromoSection').classList.add('hidden');
             
             db.collection('users').doc(currentUserDocId).update({ walletBalance, isVip });
@@ -1214,7 +1267,7 @@
         }
 
         function updateUI() {
-            document.getElementById('topBalance').innerText = walletBalance.toFixed(2) + ' د.ل';
+            document.getElementById('topBalance').innerHTML = `<span> د.ل</span><b>${walletBalance.toFixed(2)}</b>+`;
             document.getElementById('pointsDisplay').innerText = totalPoints;
             document.getElementById('profileLevel').innerText = isVip ? 'عضوية دليفريكو باي الملكية VIP' : 'عضوية عادية هادئة';
             document.getElementById('upgradeBtn').style.display = isVip ? 'none' : 'block';
