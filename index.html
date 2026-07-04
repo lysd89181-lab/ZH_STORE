@@ -6,7 +6,7 @@
     <title>Dlvrko pay | دليفريكو باي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- مكتبات Firebase الإصدار المتوافق -->
+    <!-- مكتبات Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -66,7 +66,7 @@
             transition: all 0.4s ease;
         }
 
-        /* تنسيق الشريط العلوي الجديد المعدل */
+        /* الشريط العلوي */
         .top-bar {
             background: var(--top-bar-bg);
             padding: 12px 16px;
@@ -92,7 +92,7 @@
         }
         .top-bar .actions-zone { justify-self: end; display: flex; align-items: center; gap: 15px; }
         
-        /* مربع الرصيد العائم المعدل بدون أيقونة المحفظة */
+        /* مربع الرصيد العائم - التصميم الجديد: الرصيد ثم علامة الزائد */
         .glass-balance-floating {
             position: fixed;
             bottom: 85px;
@@ -106,15 +106,29 @@
             display: flex;
             align-items: center;
             padding: 8px 16px;
-            gap: 10px;
+            gap: 8px;
             box-shadow: var(--shadow), var(--neon-glow);
             transition: var(--transition);
             cursor: pointer;
-            direction: rtl;
+            direction: ltr;
         }
-        .glass-balance-floating .plus-btn {
-            width: 26px;
-            height: 26px;
+        .glass-balance-floating .balance-value {
+            font-size: 15px;
+            font-weight: 900;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            direction: ltr;
+        }
+        .glass-balance-floating .balance-value .currency {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 600;
+        }
+        .glass-balance-floating .plus-icon {
+            width: 28px;
+            height: 28px;
             background: var(--accent-color);
             color: #fff;
             border-radius: 50%;
@@ -122,12 +136,9 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 14px;
-            order: 1;
+            font-size: 16px;
+            flex-shrink: 0;
         }
-        .glass-balance-floating .balance-info { display: flex; flex-direction: column; align-items: flex-start; direction: rtl; order: 2; margin-left: 4px; }
-        .glass-balance-floating .balance-info .lbl { font-size: 9px; color: rgba(255,255,255,0.6); font-weight: 600; }
-        .glass-balance-floating .balance-info .val { font-size: 14px; font-weight: 900; color: #fff; display: flex; gap: 4px; direction: ltr; }
 
         .notif-bell { position: relative; color: var(--accent-color); display: flex; align-items: center; cursor: pointer; }
         .notif-bell svg { width: 24px; height: 24px; fill: var(--accent-color); }
@@ -138,13 +149,12 @@
         }
         .notif-bell .badge.hidden { display: none; }
         
-        /* تنسيق القائمة الجانبية المعدلة بالكامل */
+        /* القائمة الجانبية */
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 190; display: none; backdrop-filter: blur(4px); }
         .sidebar-overlay.active { display: block; }
         .sidebar { position: fixed; top: 0; right: -320px; width: 290px; height: 100%; background: var(--top-bar-bg); z-index: 200; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8); padding: 0 0 25px 0; overflow-y: auto; border-left: 1.5px solid var(--border-color); display: flex; flex-direction: column; }
         .sidebar.active { right: 0; }
         
-        /* لافتة الصورة المستطيلة الجديدة داخل القائمة الجانبية */
         .sidebar-brand-banner {
             width: 100%;
             height: 120px;
@@ -175,13 +185,13 @@
         .sidebar-brand-text .en { font-size: 16px; font-weight: 900; letter-spacing: 1px; color: var(--accent-light); }
         .sidebar-brand-text .ar { font-size: 14px; font-weight: 800; margin-top: 2px; color: #fff; }
 
-        .sidebar-menu-wrapper { padding: 0 15px; }
+        .sidebar-menu-wrapper { padding: 0 15px; flex: 1; }
         .sidebar-item { background: rgba(255, 255, 255, 0.02); padding: 12px 14px; border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255, 255, 255, 0.03); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 13px; color: #ddd; }
         .sidebar-item:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--accent-color); transform: translateX(-4px); }
-        .sidebar-item svg { width: 18px; height: 18px; fill: var(--accent-color); }
+        .sidebar-item svg { width: 18px; height: 18px; fill: var(--accent-color); flex-shrink: 0; }
         
         .sidebar-reward-box {
-            margin: auto 15px 0 15px;
+            margin: 15px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px dashed var(--accent-color);
             padding: 12px;
@@ -194,7 +204,7 @@
         .social-reward-icon { width: 100%; aspect-ratio: 1; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); }
         .social-reward-icon:hover { transform: scale(1.1); border-color: var(--accent-color); }
         .social-reward-icon img { width: 20px; height: 20px; object-fit: contain; }
-        .sidebar-footer { margin-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; font-size: 10px; color: rgba(255,255,255,0.4); text-align: center; }
+        .sidebar-footer { margin-top: auto; padding: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 10px; color: rgba(255,255,255,0.4); text-align: center; }
 
         .vip-countdown-section {
             background: linear-gradient(135deg, #1e110b, #000000);
@@ -204,7 +214,7 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow);
         }
-        .vip-countdown-section.hidden { display: none; } 
+        .vip-countdown-section.hidden { display: none; }
         
         .vip-countdown-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .vip-countdown-title { font-size: 13px; font-weight: 900; color: var(--accent-light); display: flex; align-items: center; gap: 6px; }
@@ -226,7 +236,7 @@
         }
         .promo-banners-slider img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        /* تنسيق الأقسام المباشرة المجمعة */
+        /* تنسيق الأقسام المجمعة */
         .category-group-container { margin-bottom: 25px; }
         .category-group-header { font-size: 15px; font-weight: 800; color: var(--accent-color); padding: 0 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .category-group-header span { background: rgba(255, 71, 87, 0.1); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(255, 71, 87, 0.2); }
@@ -237,11 +247,11 @@
         .tab-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-size: 13px; font-weight: 800; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255, 255, 255, 0.04); color: #c0b09a; }
         .tab-btn.active { background: var(--accent-color); color: #fff; box-shadow: var(--neon-glow); }
 
-        .category-selector-container { padding: 0 16px; margin-bottom: 16px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
+        .category-selector-container { padding: 0 16px; margin-bottom: 16px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; flex-wrap: wrap; }
         .category-selector-container.hidden { display: none; }
         .cat-filter-chip { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #c0b09a; cursor: pointer; white-space: nowrap; transition: var(--transition); }
         .cat-filter-chip.active { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
-        .cat-filter-chip.soon-chip { border-style: dashed; opacity: 0.75; position: relative; }
+        .cat-filter-chip.soon-chip { border-style: dashed; opacity: 0.75; position: relative; cursor: pointer; }
 
         .section-back-header { display: none; padding: 12px 16px; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; }
 
@@ -266,7 +276,7 @@
         .plans-list-container { margin: 16px; background: var(--card-bg); border-radius: var(--radius); padding: 16px; border: 1.5px solid var(--accent-color); display: none; box-shadow: var(--neon-glow); }
         .plan-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); margin-bottom: 6px; border-radius: 8px; }
         
-        /* مودال الشراء والدفع المطور */
+        /* مودال الشراء */
         .checkout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(5px); }
         .checkout-modal.active { display: flex; }
         .checkout-box { background: var(--top-bar-bg); border: 2px solid var(--accent-color); border-radius: var(--radius); padding: 20px; max-width: 390px; width: 100%; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
@@ -296,7 +306,8 @@
         .form-select, .custom-input { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 11px; border-radius: 8px; font-size: 13px; outline: none; margin-bottom: 10px; transition: var(--transition); text-align: right; }
         .form-select:focus, .custom-input:focus { border-color: var(--accent-color); box-shadow: var(--neon-glow); }
         
-        .buy-btn { width: 100%; padding: 12px; background: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; margin-top: 10px; box-shadow: var(--neon-glow); }
+        .buy-btn { width: 100%; padding: 12px; background: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; margin-top: 10px; box-shadow: var(--neon-glow); transition: var(--transition); }
+        .buy-btn:hover { opacity: 0.9; transform: translateY(-1px); }
         
         .vip-features-list { text-align: right; margin: 15px 0; background: rgba(0,0,0,0.3); padding: 14px; border-radius: 8px; border: 1px dashed var(--accent-color); }
         .vip-features-list li { list-style: none; margin-bottom: 8px; font-size: 12px; color: #eee; display: flex; align-items: center; gap: 8px; }
@@ -322,51 +333,53 @@
 
         .tiktok-verified-badge { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; background-color: #20d5ec; color: #fff; border-radius: 50%; font-size: 9px; font-weight: bold; margin-right: 5px; position: relative; box-shadow: 0 0 4px rgba(32, 213, 236, 0.6); }
 
-        /* حقول وخيارات الإهداء */
         .gift-box-wrapper { background: rgba(255, 71, 87, 0.05); border: 1px dashed rgba(255, 71, 87, 0.3); padding: 14px; border-radius: 10px; margin-bottom: 12px; margin-top: 5px; }
         .royal-vip-theme .gift-box-wrapper { background: rgba(236, 204, 104, 0.05); border-color: rgba(236, 204, 104, 0.3); }
         .gift-dynamic-fields { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-top: 8px; }
+        
+        .soon-badge { font-size: 9px; background: var(--accent-color); color: #fff; padding: 2px 6px; border-radius: 4px; margin-right: 6px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
 
-    <!-- شاشة التحميل الترحيبية الاستهلالية للموقع -->
+    <!-- شاشة التحميل -->
     <div id="authLoadingOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#120905;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:15px;text-align:center;padding:20px;">
         <img src="sheaae.jpg" style="width:110px; height:110px; border-radius:50%; border:3px solid #ff4757; box-shadow: 0 0 20px rgba(255,71,87,0.4);" alt="Logo">
         <h2 style="font-weight:900; font-size:22px; color:#ff4757;">دليفريكو باي</h2>
-        <p style="font-size:14px; color:#f5f0ed; font-weight:700; max-width:280px; line-height:1.6;" id="splashSlogan">وجهتك الأولى في عالم الاشتراكات الرقمية</p>
+        <p style="font-size:14px; color:#f5f0ed; font-weight:700; max-width:280px; line-height:1.6;">وجهتك الأولى في عالم الاشتراكات الرقمية</p>
         <div style="width:40px; height:40px; border:4px solid rgba(255,255,255,0.1); border-top-color:#ff4757; border-radius:50%; animation: spin 1s linear infinite; margin-top:10px;"></div>
     </div>
     <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
 
-    <!-- الشريط العلوي المعدل لوضع الشعار المستطيل بالمنتصف تماماً -->
+    <!-- الشريط العلوي -->
     <header class="top-bar">
         <div class="hamburger-zone">
-            <div class="hamburger" onclick="toggleSidebar()">
-                <svg viewBox="0 0 24 24" style="width:26px; height:26px; fill:var(--accent-color); cursor:pointer;"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            <div class="hamburger" onclick="toggleSidebar()" style="cursor:pointer;">
+                <svg viewBox="0 0 24 24" style="width:26px; height:26px; fill:var(--accent-color);"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
             </div>
         </div>
         <div class="center-logo-zone" onclick="resetToHomeMain()">
-            <img id="mainAppTopLogo" alt="Dlvrko pay Logo">
+            <img id="mainAppTopLogo" alt="Dlvrko pay Logo" style="cursor:pointer;">
         </div>
         <div class="actions-zone">
-            <div class="notif-bell" onclick="openNotifModal()">
+            <div class="notif-bell" onclick="openNotifModal()" style="cursor:pointer;">
                 <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
                 <span class="badge hidden" id="notifBadge">0</span>
             </div>
         </div>
     </header>
 
-    <!-- مربع الرصيد المائي العائم السفلي بدون أيقونة المحفظة -->
-    <div class="glass-balance-floating" onclick="switchSection('wallet')">
-        <div class="plus-btn">＋</div>
-        <div class="balance-info">
-            <span class="lbl">محفظتي الحالية</span>
-            <span class="val" id="topBalance"><span> د.ل</span><b>0.00</b>+</span>
+    <!-- مربع الرصيد العائم - التصميم الجديد: الرصيد ثم علامة الزائد -->
+    <div class="glass-balance-floating" onclick="switchSection('wallet')" style="cursor:pointer;">
+        <div class="balance-value">
+            <span class="currency">د.ل</span>
+            <span id="topBalanceAmount">0.00</span>
+            <div class="plus-icon">+</div>
         </div>
     </div>
 
-    <!-- القائمة الجانبية المحدثة بالكامل مع صورة اللوحة والاسم ثنائي اللغة -->
+    <!-- القائمة الجانبية -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand-banner" id="sidebarRectBanner">
@@ -378,32 +391,31 @@
         
         <div class="sidebar-menu-wrapper">
             <div class="sidebar-item" onclick="resetToHomeMain(); toggleSidebar();">
-                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> الرئيسية والخدمات الأفقية
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> الرئيسية والخدمات
             </div>
             <div class="sidebar-item" onclick="switchSection('exchange'); toggleSidebar();">
-                <svg viewBox="0 0 24 24"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> قسم تبديل الرصيد الذكي
+                <svg viewBox="0 0 24 24"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> تبديل الرصيد الذكي
             </div>
             <div class="sidebar-item" onclick="switchSection('wallet'); toggleSidebar();">
-                <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> شحن محفظة الحساب
+                <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> شحن المحفظة
             </div>
             <div class="sidebar-item" onclick="switchSection('purchases'); toggleSidebar();">
-                <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg> أرشيف مشترياتي المباشرة
+                <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg> مشترياتي
             </div>
             <div class="sidebar-item" onclick="switchSection('support'); toggleSidebar();">
-                <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l2.79-2.79C9.93 18.66 10.94 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg> قنوات الدعم المباشر الإداري
+                <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l2.79-2.79C9.93 18.66 10.94 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg> الدعم المباشر
             </div>
             <div class="sidebar-item" onclick="switchSection('profile'); toggleSidebar();">
-                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg> حسابي والترقية للملكي
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg> حسابي والترقية
             </div>
-            <div class="sidebar-item" onclick="signOut()">
-                <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L13.67 11H3v2h10.67zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg> تسجيل خروج آمن
+            <div class="sidebar-item" onclick="signOut();" style="color: #ff4757;">
+                <svg viewBox="0 0 24 24" style="fill: #ff4757;"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L13.67 11H3v2h10.67zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg> تسجيل خروج
             </div>
         </div>
 
-        <!-- نظام الربح الموسع بـ 4 منصات ليشمل سناب شات بقيمة 0.50 د.ل -->
         <div class="sidebar-reward-box">
             <h4>🎁 تابع منصاتنا واحصل على مكافأة!</h4>
-            <p>اضغط وتصفح أي منصة للحصول على 0.50 د.ل فورية لمحفظتك (لمرة واحدة فقط لكل تطبيق)</p>
+            <p>اضغط وتصفح أي منصة للحصول على 0.50 د.ل فورية لمحفظتك</p>
             <div class="social-reward-grid">
                 <div class="social-reward-icon" id="reward-facebook" onclick="claimSocialBonus('facebook', 'https://facebook.com')">
                     <img alt="Facebook">
@@ -420,153 +432,163 @@
             </div>
         </div>
 
-        <div class="sidebar-footer"><p>جميع الحقوق محفوظة لمنصة دليفريكو باي © 2026</p></div>
+        <div class="sidebar-footer"><p>جميع الحقوق محفوظة © 2026</p></div>
     </div>
 
-    <!-- نافذة العروض المحددة الزمن -->
+    <!-- العروض المحددة الزمن -->
     <div class="vip-countdown-section" id="vipPromoSection">
         <div class="vip-countdown-header">
-            <span class="vip-countdown-title">⚡ عروض حصرية لفترة محدودة عند الترقية:</span>
+            <span class="vip-countdown-title">⚡ عروض حصرية لفترة محدودة:</span>
             <div class="timer-display" id="promoTimer">02:59:59</div>
         </div>
         <div class="discount-item-row">
-            <div class="discount-item-info">اشترك الآن في العضوية الملكية ووفر أكثر من 80% من أسعار شحن باقات الألعاب والبطاقات الرقمية الفورية!</div>
+            <div class="discount-item-info">اشترك الآن في العضوية الملكية ووفر أكثر من 80% من أسعار شحن باقات الألعاب والبطاقات الرقمية!</div>
             <div class="price-badge-zone">
                 <span class="old-price">سعر العاديين: 50 د.ل</span>
-                <span class="new-price">سعر الـ VIP الملكي: 10 د.ل</span>
+                <span class="new-price">سعر VIP الملكي: 10 د.ل</span>
             </div>
         </div>
-        <button class="buy-btn" style="background:#eccc68; color:#000; font-size:12px; margin-top:8px;" onclick="switchSection('profile')">🚀 ترقية حسابي الآن واستلام الخصم</button>
+        <button class="buy-btn" style="background:#eccc68; color:#000; font-size:12px; margin-top:8px;" onclick="switchSection('profile')">🚀 ترقية حسابي الآن</button>
     </div>
 
-    <!-- لافتة سلايدر الإعلانات الرئيسية المجلوبة من الـ GitHub -->
+    <!-- لافتة الإعلانات -->
     <div class="promo-banners-slider" id="topPromoSliderArea">
-        <img id="dynamicPromoBannerImg" alt="إعلان ترويجي" onclick="showToast('📢 تابع العروض والخصومات اليومية المتجددة!')">
+        <img id="dynamicPromoBannerImg" alt="إعلان ترويجي" onclick="showToast('📢 تابع العروض والخصومات اليومية!')" style="cursor:pointer;">
     </div>
 
     <div class="tabs-container" id="mainTabsContainer">
-        <button class="tab-btn" style="opacity: 0.5; cursor: not-allowed;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;margin-left:4px;"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg> خدمات ديلفري (قريباً)</button>
-        <button class="tab-btn active" onclick="resetToHomeMain()"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;margin-left:4px;"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> الاشتراكات الرقمية</button>
+        <button class="tab-btn" style="opacity: 0.5; cursor: not-allowed;">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;margin-left:4px;"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg> 
+            خدمات ديلفري (قريباً)
+        </button>
+        <button class="tab-btn active" onclick="resetToHomeMain()">
+            <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;margin-left:4px;"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> 
+            الاشتراكات الرقمية
+        </button>
     </div>
 
-    <!-- شريط تصفية اختيار الأقسام العلوي السريع -->
+    <!-- شريط تصفية الأقسام -->
     <div class="category-selector-container" id="categoryChipsContainer"></div>
 
-    <!-- ترويسة الرجوع والتنقل الداخلي للأقسام المعزولة -->
+    <!-- ترويسة الرجوع -->
     <div class="section-back-header" id="backSectionHeader">
         <span id="currentActiveCategoryName" style="color:var(--accent-color); font-weight:900; font-size:14px;">القسم المحدد</span>
         <button onclick="resetToHomeMain()" style="background:var(--accent-color); border:none; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:bold; cursor:pointer; color:#fff;">كل الأقسام ✕</button>
     </div>
 
-    <!-- الواجهة والمنطقة الرئيسية المحدثة لعرض المنتجات داخل الأقسام مباشرة -->
+    <!-- المنطقة الرئيسية للمنتجات -->
     <div class="section active" id="homeSection">
         <div id="directCategorizedProductsList"></div>
         
         <div class="plans-list-container" id="plansListContainer">
             <h4 style="color:var(--accent-color); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:14px;">
-                <span id="selectedProductName">الباقات المتاحة الفورية</span>
-                <button onclick="document.getElementById('plansListContainer').style.display='none'" style="background:none; border:none; color:var(--danger); font-size:15px; cursor:pointer;">إغلاق ✕</button>
+                <span id="selectedProductName">الباقات المتاحة</span>
+                <button onclick="document.getElementById('plansListContainer').style.display='none'" style="background:none; border:none; color:var(--danger); font-size:15px; cursor:pointer;">✕</button>
             </h4>
             <div id="plansList"></div>
         </div>
     </div>
 
-    <!-- مودال تأكيد بيانات الشحن وتفعيل ميزة الإهداء المتكاملة والتحكم بها من لوحة الإدارة -->
+    <!-- مودال تأكيد الشراء -->
     <div class="checkout-modal" id="checkoutModal">
         <div class="checkout-box">
-            <h3 style="color:var(--accent-color); margin-bottom:12px; font-size:15px; display:flex; align-items:center; gap:6px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--accent-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> تأكيد بيانات الشحن واليوزرات</h3>
+            <h3 style="color:var(--accent-color); margin-bottom:12px; font-size:15px; display:flex; align-items:center; gap:6px;">
+                <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--accent-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> 
+                تأكيد بيانات الشحن
+            </h3>
             
             <div class="activation-flow-hint" id="activationFlowHint">
-                طريقة التفعيل والتسليم لهذا المنتج تظهر هنا تلقائياً بناءً على نوع الخدمة.
+                طريقة التفعيل والتسليم لهذا المنتج تظهر هنا تلقائياً.
             </div>
 
-            <!-- خيار الإهداء الجديد كلياً والتحكم بحقوله بشكل كامل -->
             <div class="gift-box-wrapper" id="giftSectionWrapper">
                 <label style="font-size:12px; color:var(--accent-light); font-weight:800; display:flex; align-items:center; gap:5px; cursor:pointer;">
                     <input type="checkbox" id="chkIsGift" onchange="toggleGiftFields()" style="width:17px; height:17px; accent-color:var(--accent-color);">
-                    🎁 إرسال هذا الطلب كهدية لشخص آخر؟
+                    🎁 إرسال كهدية لشخص آخر؟
                 </label>
                 <div id="giftFieldsContainer" class="gift-dynamic-fields" style="display:none;">
-                    <div class="form-group" id="group-giftSender">
+                    <div class="form-group">
                         <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">اسم المرسل (اختياري)</label>
-                        <input type="text" id="giftSenderName" class="custom-input" placeholder="اكتب اسمك ليظهر مع الهدية">
+                        <input type="text" id="giftSenderName" class="custom-input" placeholder="اسمك ليظهر مع الهدية">
                     </div>
-                    <div class="form-group" id="group-giftRecipient">
-                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رقم تواصل المستلم أو اليوزر (مطلوب) *</label>
-                        <input type="text" id="giftRecipientContact" class="custom-input" placeholder="أدخل رقم هاتف أو يوزر الشخص المستهدف">
+                    <div class="form-group">
+                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رقم تواصل المستلم *</label>
+                        <input type="text" id="giftRecipientContact" class="custom-input" placeholder="رقم هاتف أو يوزر المستلم">
                     </div>
-                    <div class="form-group" id="group-giftMsg">
-                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رسالة مرفقة مع الهدية (اختياري)</label>
-                        <input type="text" id="giftMessage" class="custom-input" placeholder="اكتب تهنئة أو رسالة مرافقة للهدية">
+                    <div class="form-group">
+                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رسالة مرفقة (اختياري)</label>
+                        <input type="text" id="giftMessage" class="custom-input" placeholder="رسالة مرافقة للهدية">
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;" id="lblChkEmail">البريد الإلكتروني الحساب / المعرف الرقمي</label>
-                <input type="text" id="chkEmail" class="custom-input" placeholder="ايميل الحساب أو المعرف المستهدف">
+                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;" id="lblChkEmail">البريد الإلكتروني / المعرف الرقمي</label>
+                <input type="text" id="chkEmail" class="custom-input" placeholder="ايميل الحساب أو المعرف">
             </div>
             <div class="form-group" id="passwordFieldGroup">
-                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">كلمة مرور الحساب الحالية</label>
-                <input type="password" id="chkPassword" class="custom-input" placeholder="كلمة مرور الحساب">
+                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">كلمة مرور الحساب</label>
+                <input type="password" id="chkPassword" class="custom-input" placeholder="كلمة المرور">
             </div>
             
             <div class="form-group" id="userCountFieldGroup">
-                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">عدد اليوزرات النشطة داخل الحساب المراد تعبئتها</label>
+                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">عدد اليوزرات النشطة</label>
                 <select id="chkUserCount" class="form-select" onchange="adjustUserFields()">
-                    <option value="1">يوزر واحد نشط (User 1)</option>
-                    <option value="2">يوزرين إثنين داخل الحساب (User 2)</option>
-                    <option value="3">3 يوزرات كاملة للطلب (User 3)</option>
+                    <option value="1">يوزر واحد (User 1)</option>
+                    <option value="2">يوزرين (User 2)</option>
+                    <option value="3">3 يوزرات (User 3)</option>
                 </select>
             </div>
             <div id="dynamicUserNamesContainer"></div>
             
             <button class="buy-btn" onclick="finalizePurchaseExecution()">تأكيد خصم الرصيد وتنفيذ الطلب</button>
-            <button class="buy-btn" style="background:rgba(255,255,255,0.1); color:#fff; margin-top:5px;" onclick="closeCheckoutModal()">إلغاء وتراجع</button>
+            <button class="buy-btn" style="background:rgba(255,255,255,0.1); color:#fff; margin-top:5px;" onclick="closeCheckoutModal()">إلغاء</button>
         </div>
     </div>
 
-    <!-- نافذة الإشعارات والرسائل التنبيهية -->
+    <!-- نافذة الإشعارات -->
     <div class="notif-modal" id="notifModal">
         <div class="notif-modal-box">
-            <h3 style="color:var(--accent-color); margin-bottom:14px; font-size:15px;">تنبيهات وإشعارات الحساب</h3>
+            <h3 style="color:var(--accent-color); margin-bottom:14px; font-size:15px;">تنبيهات الحساب</h3>
             <div id="notifList"></div>
-            <button class="buy-btn" onclick="document.getElementById('notifModal').classList.remove('active')">إغلاق النافذة</button>
+            <button class="buy-btn" onclick="document.getElementById('notifModal').classList.remove('active')">إغلاق</button>
         </div>
     </div>
 
-    <!-- قسم تبديل الرصيد للشبكات المحلية الليبية -->
+    <!-- قسم تبديل الرصيد -->
     <div class="section" id="exchangeSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> قسم تبديل رصيد (ليبيانا - مدار - LTT)
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> 
+            تبديل رصيد (ليبيانا - مدار - LTT)
         </div>
         <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 11px;">
-            <p style="color: var(--accent-light); font-weight: bold;">📊 عمولة النظام المعتمدة والذكية للتبديل السريع:</p>
-            <p style="margin-top: 4px; color: #ddd;">للمستخدمين العاديين: <span style="color: var(--accent-color); font-weight: bold;">5%</span> | للمشتركين الملكيين VIP: <span style="color: var(--success); font-weight: bold;">0% مجاناً بدون عمولة</span></p>
+            <p style="color: var(--accent-light); font-weight: bold;">📊 عمولة النظام:</p>
+            <p style="margin-top: 4px; color: #ddd;">عاديين: <span style="color: var(--accent-color); font-weight: bold;">5%</span> | VIP: <span style="color: var(--success); font-weight: bold;">0% مجاناً</span></p>
         </div>
         <div class="form-group">
-            <label style="font-size:12px; display:block; margin-bottom:6px;">اختر شبكة الرصيد المستهدفة:</label>
+            <label style="font-size:12px; display:block; margin-bottom:6px;">اختر الشبكة:</label>
             <select id="exchangeNetwork" class="form-select">
                 <option value="ليبيانا">ليبيانا (Libyana)</option>
-                <option value="مدار">المدار الجديد (Al-Madar)</option>
-                <option value="LTT">ليبيا للاتصالات والتقنية (LTT)</option>
+                <option value="مدار">المدار (Al-Madar)</option>
+                <option value="LTT">ليبيا للاتصالات (LTT)</option>
             </select>
         </div>
         <div class="form-group">
-            <label style="font-size:12px; display:block; margin-bottom:6px;">المبلغ المراد تحويله وتبديله (د.ل):</label>
-            <input type="number" id="exchangeAmount" class="custom-input" placeholder="أدخل قيمة الرصيد" oninput="calculateExchangeFee()">
+            <label style="font-size:12px; display:block; margin-bottom:6px;">المبلغ (د.ل):</label>
+            <input type="number" id="exchangeAmount" class="custom-input" placeholder="أدخل القيمة" oninput="calculateExchangeFee()">
         </div>
         <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 12px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>العمولة المحتسبة:</span><span id="exchangeFeeVal">0.00 د.ل</span></div>
-            <div style="display:flex; justify-content:space-between; font-weight:bold; color: var(--success);"><span>إجمالي المستلم الصافي بمحفظتك:</span><span id="exchangeTotalVal">0.00 د.ل</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>العمولة:</span><span id="exchangeFeeVal">0.00 د.ل</span></div>
+            <div style="display:flex; justify-content:space-between; font-weight:bold; color: var(--success);"><span>الصافي:</span><span id="exchangeTotalVal">0.00 د.ل</span></div>
         </div>
-        <button class="buy-btn" onclick="executeBalanceExchange()">تأكيد التبديل الفوري وإضافة الرصيد</button>
+        <button class="buy-btn" onclick="executeBalanceExchange()">تأكيد التبديل الفوري</button>
     </div>
 
-    <!-- قسم شحن رصيد المحفظة عبر طرق الدفع المختلفة -->
+    <!-- قسم شحن المحفظة -->
     <div class="section" id="walletSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 Oz"/></svg> شحن الرصيد والتحويلات المالية
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            شحن الرصيد والتحويلات
         </div>
         
         <div class="wallet-methods-grid">
@@ -591,80 +613,84 @@
         <input type="hidden" id="selectedWalletMethod" value="ليبيانا">
 
         <div id="cryptoAddressArea" style="display: none; background: rgba(0,0,0,0.4); padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--accent-color);">
-            <div style="font-size: 11px; color: #aaa; margin-bottom: 4px;">شبكة الدفع الرقمية المعتمدة (Bybit USDT) - سعر الصرف: 1$ = 11 د.ل :</div>
+            <div style="font-size: 11px; color: #aaa; margin-bottom: 4px;">شبكة Bybit USDT - سعر الصرف: 1$ = 11 د.ل</div>
             <div class="copy-row" style="margin-bottom: 0;">
                 <span style="font-size: 10px; color: var(--accent-light);">0x7995128cda55a8a9970053853da3c28847995266</span>
-                <button class="copy-btn" onclick="copyToClipboard('0x7995128cda55a8a9970053853da3c28847995266')">نسخ العنوان</button>
+                <button class="copy-btn" onclick="copyToClipboard('0x7995128cda55a8a9970053853da3c28847995266')">نسخ</button>
             </div>
         </div>
 
         <div class="form-group">
-            <label style="font-size:12px;" id="walletAccountLabel">رقم هاتف ليبيانا (الذي قمت بتحويل الرصيد منه)</label>
-            <input class="custom-input" placeholder="أدخل تفاصيل التحقق بدقة" id="walletUserAccountNum" type="text">
+            <label style="font-size:12px;" id="walletAccountLabel">رقم هاتف ليبيانا</label>
+            <input class="custom-input" placeholder="أدخل تفاصيل التحقق" id="walletUserAccountNum" type="text">
         </div>
         <div class="form-group">
-            <label style="font-size:12px;">المبلغ أو القيمة المراد إيداعها بالمحفظة (د.ل)</label>
-            <input class="custom-input" placeholder="أدخل مبلغ الشحن بالدينار الليبي" id="walletUserAmount" type="number">
+            <label style="font-size:12px;">المبلغ المراد إيداعه (د.ل)</label>
+            <input class="custom-input" placeholder="أدخل مبلغ الشحن" id="walletUserAmount" type="number">
         </div>
         
         <div class="form-group">
-            <label style="font-size:12px; display:block; margin-bottom:4px;">إرفاق صورة إيصال التحويل المالي أو لقطة الشاشة:</label>
+            <label style="font-size:12px; display:block; margin-bottom:4px;">إرفاق صورة الإيصال:</label>
             <input type="file" id="walletReceiptFile" class="custom-input" accept="image/*" style="padding: 6px;">
         </div>
 
-        <button class="buy-btn" onclick="submitWalletDepositRequest()">إرسال تفاصيل الإشعار لمراجعته الفورية</button>
+        <button class="buy-btn" onclick="submitWalletDepositRequest()">إرسال إشعار الإيداع للمراجعة</button>
         
-        <div style="margin-top:20px;"><h4 style="color:var(--accent-color); margin-bottom:8px; font-size:13px;">سجل العمليات الأخيرة</h4><div id="walletHistoryContainer"></div></div>
+        <div style="margin-top:20px;">
+            <h4 style="color:var(--accent-color); margin-bottom:8px; font-size:13px;">سجل العمليات</h4>
+            <div id="walletHistoryContainer"></div>
+        </div>
     </div>
 
-    <!-- أرشيف العمليات والمشتريات الفورية وتفاصيل الهدايا المعزولة -->
+    <!-- قسم المشتريات -->
     <div class="section" id="purchasesSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg> أرشيف العمليات والمشتريات والطلبات المباشرة
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>
+            أرشيف المشتريات والطلبات
         </div>
         <div id="purchasesList"></div>
     </div>
 
-    <!-- قسم الدعم المباشر ومراسلة الإدارة -->
+    <!-- قسم الدعم -->
     <div class="section" id="supportSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> مراسلة ودعم إدارة الموقع الإدارية
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+            مراسلة ودعم الإدارة
         </div>
         <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
-            <p style="color: var(--accent-light); font-weight: bold; font-size: 12px; margin-bottom: 12px;">📞 قنوات الدعم الفني السريع المباشر (للمشتركين والزوار):</p>
+            <p style="color: var(--accent-light); font-weight: bold; font-size: 12px; margin-bottom: 12px;">📞 قنوات الدعم الفني:</p>
             
             <a href="tel:0946721067" class="support-action-btn">
                 <div class="btn-side">
                     <img src="https://cdn-icons-png.flaticon.com/512/3616/3616215.png" alt="Call">
-                    <span>الاتصال الهاتفي المباشر الفوري</span>
+                    <span>الاتصال الهاتفي المباشر</span>
                 </div>
-                <span style="color:var(--success); font-size:11px;">اضغط للاتصال 📞</span>
+                <span style="color:var(--success); font-size:11px;">📞 اضغط للاتصال</span>
             </a>
 
             <a href="https://wa.me/218926721067" target="_blank" class="support-action-btn">
                 <div class="btn-side">
                     <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
-                    <span>مراسلة الدعم الفني عبر الواتساب</span>
+                    <span>مراسلة الواتساب</span>
                 </div>
-                <span style="color:var(--success); font-size:11px;">افتح المحادثة 💬</span>
+                <span style="color:var(--success); font-size:11px;">💬 افتح المحادثة</span>
             </a>
         </div>
         
         <div id="chatBox" style="height:140px; overflow-y:auto; background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:10px; font-size:12px;"></div>
-        <input class="custom-input" id="chatInput" placeholder="اكتب استفسارك المباشر هنا للإدارة...">
-        <button class="buy-btn" onclick="sendChat()">إرسال الرسالة للتحقق</button>
+        <input class="custom-input" id="chatInput" placeholder="اكتب استفسارك هنا...">
+        <button class="buy-btn" onclick="sendChat()">إرسال الرسالة</button>
     </div>
 
-    <!-- قسم الملف الشخصي والترقية والتحكم بالنقاط -->
+    <!-- قسم الملف الشخصي -->
     <div class="section" id="profileSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg> إدارة الحساب والاشتراك الملكي
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg>
+            إدارة الحساب والاشتراك الملكي
         </div>
 
         <div class="profile-sub-section">
-            <div class="sub-sec-title">
-                <span>قسم معلومات حسابي البيانية</span>
-            </div>
+            <div class="sub-sec-title"><span>معلومات حسابي</span></div>
             <div style="text-align: center; padding: 10px 0;">
                 
                 <div class="avatar-upload-wrapper">
@@ -683,32 +709,30 @@
                 
                 <div style="margin-top: 15px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
                     <div style="font-size: 24px; font-weight: 900; color:var(--accent-color);" id="pointsDisplay">0</div>
-                    <div style="font-size: 11px; color:#aaa;">النقاط التراكمية الحالية من المشتريات والنشاط</div>
+                    <div style="font-size: 11px; color:#aaa;">النقاط التراكمية</div>
                     <div style="display:flex; gap:8px; justify-content:center; margin-top:8px;">
-                        <button class="buy-btn" style="padding: 6px 12px; font-size: 11px; width: auto; margin-top: 0;" onclick="requestExchangePoints()">تسييل النقاط لرصيد</button>
-                        <button class="buy-btn" id="dailyCheckInBtn" style="padding: 6px 12px; font-size: 11px; width: auto; margin-top: 0; background: var(--success);" onclick="executeDailyCheckIn()">⚡ تسجيل النشاط اليومي (+5 نقاط)</button>
+                        <button class="buy-btn" style="padding: 6px 12px; font-size: 11px; width: auto; margin-top: 0;" onclick="requestExchangePoints()">تسييل النقاط</button>
+                        <button class="buy-btn" id="dailyCheckInBtn" style="padding: 6px 12px; font-size: 11px; width: auto; margin-top: 0; background: var(--success);" onclick="executeDailyCheckIn()">⚡ نشاط يومي (+5)</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="profile-sub-section" style="background: linear-gradient(135deg, #1f1a10, #080808); border: 2px solid #eccc68;">
-            <div class="sub-sec-title" style="color: #eccc68;">
-                <span>قسم ترقية الحساب إلى النظام الملكي VIP</span>
-            </div>
-            <p style="font-size:11px; text-align:right; color:#f0e6d3; line-height:1.5;">انضم الآن للنظام الملكي الحصري لتحديث شكل ومظهر سيستم دليفريكو باي بالكامل للون الأسود والذهبي والحصول على تخفيضات ومميزات خارقة فورية.</p>
+            <div class="sub-sec-title" style="color: #eccc68;"><span>ترقية إلى VIP الملكي</span></div>
+            <p style="font-size:11px; text-align:right; color:#f0e6d3; line-height:1.5;">انضم للنظام الملكي الحصري واحصل على تخفيضات ومميزات خارقة فورية.</p>
             
             <ul class="vip-features-list">
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> علامة توثيق زرقاء مميزة تظهر بجانب اسم حسابك مباشرة.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> إمكانية استرجاع المبلغ خلال 60 دقيقة من الاشتراك في نتفلكس وشاهد فقط.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> دعم سريع ذو أولوية فائقة خلال فترة الاشتراك في حالة حدوث مشكلة.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> تصفير عمولة قسم تبديل الرصيد تماماً لتصبح (0% عمولة).</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> علامة توثيق زرقاء بجانب اسمك.</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> استرجاع المبلغ خلال 60 دقيقة (نتفلكس وشاهد).</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> دعم سريع ذو أولوية فائقة.</li>
+                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> تصفير عمولة تبديل الرصيد (0%).</li>
             </ul>
-            <button class="buy-btn" id="upgradeBtn" style="background:#eccc68; color:#000; font-weight:900;" onclick="executeUpgradeToVip()">ترقية وتفعيل العضوية الملكية (10 د.ل/شهرياً)</button>
+            <button class="buy-btn" id="upgradeBtn" style="background:#eccc68; color:#000; font-weight:900;" onclick="executeUpgradeToVip()">ترقية وتفعيل العضوية (10 د.ل/شهرياً)</button>
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي الثابت المطور والمعدل -->
+    <!-- شريط التنقل السفلي -->
     <nav class="bottom-nav">
         <button class="nav-item" onclick="switchSection('wallet')">
             <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -718,7 +742,7 @@
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg>
             <span>حسابي</span>
         </button>
-        <div class="nav-center" onclick="resetToHomeMain()">
+        <div class="nav-center" onclick="resetToHomeMain()" style="cursor:pointer;">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
         </div>
         <button class="nav-item" onclick="switchSection('purchases')">
@@ -731,9 +755,8 @@
         </button>
     </nav>
 
-    <!-- الرمز البرمجي والمنطق التنفيذي لجافا سكريبت لمنصة دليفريكو باي -->
     <script>
-        // إعدادات وبيانات الربط الخاصة بـ Firebase المُحدثة والمصححة بالكامل
+        // ==================== إعدادات Firebase ====================
         const firebaseConfig = {
             apiKey: "AIzaSyAsDZDLbzB0Vfqgo8SenbE4DTxjc7m_xqA",
             authDomain: "iq-store-f6195.firebaseapp.com",
@@ -744,15 +767,14 @@
             measurementId: "G-YWQNRWW9Q1"
         };
         
-        // تفعيل وتهيئة المشروع
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // رابط مستودع GitHub الأساسي المعتمد لجلب كافة صور الملفات بشكل ديناميكي مجهّز
+        // رابط GitHub للأصول
         const GITHUB_ASSETS_BASE = "https://raw.githubusercontent.com/MansorHakeem/dlvrko-pay-assets/main/images/";
 
-        // متغيرات الحالة الخاصة بالتطبيق والربط المالي
+        // ==================== متغيرات الحالة ====================
         let currentUserDocId = null;
         let walletBalance = 0;
         let isVip = false;
@@ -762,20 +784,32 @@
         let currentCategory = 'all';
         let lastCheckInTime = null;
 
-        // مصفوفة الأقسام المحدثة شاملة القسم الجديد "شراء من مواقع عالمية" مع وسم (قريباً)
+        // الأقسام الرئيسية - جميعها قابلة للتعديل والإضافة من لوحة التحكم
         const categories = [
-            { code: 'all', title: '🔥 كل الأقسام والخدمات' },
-            { code: 'games', title: '🎮 شحن باقات الألعاب' },
-            { code: 'cards', title: '💳 بطاقات ماستركارد' },
-            { code: 'smm', title: '🚀 خدمات السوشيال ميديا' },
-            { code: 'global_soon', title: '🌐 شراء من مواقع عالمية', soon: true }
+            { code: 'all', title: '🔥 كل الأقسام', active: true, editable: true },
+            { code: 'games', title: '🎮 شحن باقات الألعاب', active: true, editable: true },
+            { code: 'cards', title: '💳 بطاقات ماستركارد واشتراكات', active: true, editable: true },
+            { code: 'smm', title: '🚀 خدمات السوشيال ميديا', active: true, editable: true },
+            { code: 'global_shopping', title: '🌐 شراء من مواقع عالمية', active: true, editable: true, soon: false }
         ];
 
         let activeProducts = [];
         let tempSelectedProdId = null;
         let tempSelectedPlanId = null;
 
-        // الاستماع لحالة تسجيل الدخول والتحقق الآمن المستمر للسيستم
+        // ==================== دالة تحويل اسم القسم إلى صورة ====================
+        function getCategoryImage(categoryCode) {
+            const imageMap = {
+                'games': GITHUB_ASSETS_BASE + 'categories/cat_games.png',
+                'cards': GITHUB_ASSETS_BASE + 'categories/cat_cards.png',
+                'smm': GITHUB_ASSETS_BASE + 'categories/cat_smm.png',
+                'global_shopping': GITHUB_ASSETS_BASE + 'categories/cat_global.png',
+                'all': GITHUB_ASSETS_BASE + 'categories/cat_all.png'
+            };
+            return imageMap[categoryCode] || GITHUB_ASSETS_BASE + 'categories/cat_default.png';
+        }
+
+        // ==================== الاستماع لحالة المصادقة ====================
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
             return auth.onAuthStateChanged(async (user) => {
                 document.getElementById('authLoadingOverlay').style.display = 'none';
@@ -788,73 +822,83 @@
                     initApp();
                 }
             });
-        }).catch(e => console.error("Firebase Auth Persistence error:", e));
+        }).catch(e => console.error("Auth error:", e));
 
-        // دالة إعداد وتوزيع مسارات الصور المجلوبة من GitHub مباشرة حسب أسماء الملفات
+        // ==================== إعداد الصور ====================
         function setupGitHubImages() {
             document.getElementById('mainAppTopLogo').src = GITHUB_ASSETS_BASE + "top_logo_rect.png";
             document.getElementById('sidebarRectBanner').style.backgroundImage = `url('${GITHUB_ASSETS_BASE}sidebar_banner.png')`;
             
-            // صور قنوات الإيداع بالمحفظة
             document.getElementById('imgPayLibiana').src = GITHUB_ASSETS_BASE + "pay_libyana.png";
             document.getElementById('imgPayMadar').src = GITHUB_ASSETS_BASE + "pay_madar.png";
             document.getElementById('imgPayOne').src = GITHUB_ASSETS_BASE + "pay_onepay.png";
             document.getElementById('imgPayBybit').src = GITHUB_ASSETS_BASE + "pay_bybit.png";
 
-            // صور منصات بونص المكافآت الأربعة
             document.getElementById('reward-facebook').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_fb.png";
             document.getElementById('reward-instagram').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_ig.png";
             document.getElementById('reward-tiktok').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_tk.png";
             document.getElementById('reward-snapchat').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_snap.png";
         }
 
-        // جلب وثيقة بيانات المستخدم من Firebase ومزامنة حالتها وتوثيق الترقية والسمات
+        // ==================== تحميل بيانات المستخدم ====================
         async function loadUserData(user) {
             try {
                 const doc = await db.collection('users').doc(user.uid).get();
                 if (doc.exists) {
                     const data = doc.data();
                     currentUserDocId = user.uid;
-                    walletBalance = data.walletBalance || 0;
+                    walletBalance = data.walletBalance || data.balance || 0;
                     isVip = data.isVip || false;
                     totalPoints = data.totalPoints || 0;
                     purchases = data.purchases || [];
                     notifications = data.notifications || [];
                     lastCheckInTime = data.lastCheckInTime || null;
-                    document.getElementById('profileNameDisplay').innerText = data.displayName || user.email;
+                    
+                    document.getElementById('profileNameDisplay').innerText = data.name || data.displayName || data.username || user.email.split('@')[0];
                     
                     const savedAvatar = localStorage.getItem('user_custom_avatar_' + user.uid);
                     if (savedAvatar) document.getElementById('userPfpImage').src = savedAvatar;
 
-                    const promoSection = document.getElementById('vipPromoSection');
-                    if (isVip) {
-                        promoSection.classList.add('hidden');
-                        document.body.classList.add('royal-vip-theme');
-                    } else {
-                        promoSection.classList.remove('hidden');
-                        document.body.classList.remove('royal-vip-theme');
-                    }
-                    startPromoCountdown();
+                    updateVipTheme();
                 } else {
-                    await db.collection('users').doc(user.uid).set({
+                    // إنشاء مستند جديد للمستخدم
+                    const initialData = {
                         email: user.email,
-                        displayName: user.email.split('@')[0],
+                        name: user.email.split('@')[0],
+                        username: user.email.split('@')[0],
+                        balance: 0,
                         walletBalance: 0,
                         isVip: false,
                         totalPoints: 0,
                         purchases: [],
                         notifications: [],
-                        lastCheckInTime: null
-                    });
+                        lastCheckInTime: null,
+                        createdAt: new Date().toISOString()
+                    };
+                    await db.collection('users').doc(user.uid).set(initialData);
                     currentUserDocId = user.uid;
                     document.getElementById('profileNameDisplay').innerText = user.email.split('@')[0];
                 }
-            } catch (e) { console.error("Error standard loading user doc details:", e); }
+            } catch (e) { 
+                console.error("Error loading user:", e); 
+            }
         }
 
-        // جلب اللافتة والمنتجات من قاعدة البيانات مع نظام تحويل الأسماء لصور جيت هاب تلقائياً
+        function updateVipTheme() {
+            const promoSection = document.getElementById('vipPromoSection');
+            if (isVip) {
+                promoSection.classList.add('hidden');
+                document.body.classList.add('royal-vip-theme');
+            } else {
+                promoSection.classList.remove('hidden');
+                document.body.classList.remove('royal-vip-theme');
+            }
+        }
+
+        // ==================== جلب المنتجات واللافتات ====================
         async function fetchProductsAndBanners() {
             try {
+                // جلب اللافتة
                 const bannerDoc = await db.collection('app_settings').doc('banners').get();
                 if(bannerDoc.exists && bannerDoc.data().topBannerUrl) {
                     document.getElementById('dynamicPromoBannerImg').src = bannerDoc.data().topBannerUrl;
@@ -862,68 +906,224 @@
                     document.getElementById('dynamicPromoBannerImg').src = GITHUB_ASSETS_BASE + "default_promo_banner.png";
                 }
 
-                // جلب المنتجات المباشرة مع مراجعة تصحيح مفتاح Firebase
+                // جلب المنتجات من Firebase
                 const snapshot = await db.collection('products').get();
                 let loaded = [];
+                
                 snapshot.forEach(doc => { 
                     let pData = doc.data();
-                    // اعتماد جلب صورة المنتج من ملفات مستودع GitHub بناء على الاسم البرمجي أو المعرف الخاص به
-                    let githubProductImage = GITHUB_ASSETS_BASE + "products/" + (pData.imageName || doc.id + ".png");
-                    loaded.push({ id: doc.id, ...pData, image: githubProductImage }); 
+                    let githubProductImage = GITHUB_ASSETS_BASE + "products/" + (pData.imageName || pData.image || doc.id + ".png");
+                    
+                    // معالجة الخطط والأسعار
+                    let plans = pData.plans || [];
+                    if (Array.isArray(plans)) {
+                        plans = plans.map(plan => ({
+                            id: plan.id || ('plan_' + Date.now()),
+                            name: plan.name || 'باقة',
+                            price: Number(plan.price) || 0,
+                            vipPrice: Number(plan.vipPrice) || Number(plan.price) || 0
+                        }));
+                    }
+                    
+                    loaded.push({ 
+                        id: doc.id, 
+                        name: pData.name || 'منتج',
+                        category: pData.category || 'games',
+                        image: githubProductImage,
+                        rating: pData.rating || 4.5,
+                        reviewCount: pData.reviewCount || 10,
+                        available: pData.available !== false,
+                        plans: plans,
+                        isGame: pData.isGame || (pData.category === 'games'),
+                        order: pData.order || 1
+                    }); 
                 });
                 
-                activeProducts = loaded.length > 0 ? loaded : [
-                    { id: 'pubg_global', name: 'ببجي موبايل الشحن العالمي الفوري', category: 'games', rating: 4.9, reviewCount: 142, available: true, plans: [{ id: 'pb1', name: '60 شدة ببجي كود فوري', price: 6, vipPrice: 5 }, { id: 'pb2', name: '325 شدة شحن كود فوري', price: 28, vipPrice: 25 }], isGame: true },
-                    { id: 'netflix_premium', name: 'اشتراك منصة نيتفليكس حساب كامل بريميوم', category: 'cards', rating: 4.8, reviewCount: 98, available: true, plans: [{ id: 'nt1', name: 'باقة بريميوم 4K شاشة مستقلة شهر', price: 15, vipPrice: 12 }], isGame: false },
-                    { id: 'freefire_diamonds', name: 'شحن قسائم جواهر فري فاير كود آلي', category: 'games', rating: 4.7, reviewCount: 85, available: true, plans: [{ id: 'ff1', name: 'باقة 1080 دايموند كود فوري', price: 38, vipPrice: 34 }], isGame: true },
-                    { id: 'youtube_premium', name: 'اشتراك يوتيوب بريميوم أفراد رسمي', category: 'cards', rating: 4.9, reviewCount: 210, available: true, plans: [{ id: 'yt1', name: 'اشتراك شهر كامل رسمي باليوزر والملف', price: 12, vipPrice: 10 }], isGame: false },
-                    { id: 'tiktok_followers', name: 'رشق متابعين وتفاعل منصة تيك توك سريع', category: 'smm', rating: 4.6, reviewCount: 54, available: true, plans: [{ id: 'tk1', name: '1000 متابع حقيقي عربي متفاعل', price: 20, vipPrice: 16 }], isGame: false }
-                ];
-
-                // تعديل مسارات الصور للمنتجات الافتراضية لتطابق نظام جلب مستودع GitHub
-                activeProducts.forEach(p => {
-                    p.image = GITHUB_ASSETS_BASE + "products/" + p.id + ".png";
-                });
-
-            } catch (e) { console.error("Error occurred during fetching product documents mapping:", e); }
+                // إذا لم تكن هناك منتجات من Firebase، استخدم المنتجات الافتراضية
+                if (loaded.length === 0) {
+                    loaded = getDefaultProducts();
+                }
+                
+                activeProducts = loaded;
+                
+                console.log('✅ تم جلب ' + activeProducts.length + ' منتج بنجاح');
+                console.log('📂 الأقسام المتوفرة:', [...new Set(activeProducts.map(p => p.category))]);
+                
+            } catch (e) { 
+                console.error("Error fetching products:", e);
+                activeProducts = getDefaultProducts();
+            }
         }
 
-        // تهيئة واجهة المستخدم وضخ البيانات بداخلها
+        function getDefaultProducts() {
+            return [
+                { 
+                    id: 'pubg_global', 
+                    name: 'ببجي موبايل - شحن عالمي فوري', 
+                    category: 'games', 
+                    rating: 4.9, 
+                    reviewCount: 142, 
+                    available: true, 
+                    image: GITHUB_ASSETS_BASE + "products/pubg_global.png",
+                    plans: [
+                        { id: 'pb1', name: '60 شدة ببجي كود فوري', price: 6, vipPrice: 5 }, 
+                        { id: 'pb2', name: '325 شدة شحن كود فوري', price: 28, vipPrice: 25 },
+                        { id: 'pb3', name: '660 شدة ببجي', price: 55, vipPrice: 48 }
+                    ], 
+                    isGame: true,
+                    order: 1
+                },
+                { 
+                    id: 'netflix_premium', 
+                    name: 'نيتفليكس بريميوم - حساب كامل', 
+                    category: 'cards', 
+                    rating: 4.8, 
+                    reviewCount: 98, 
+                    available: true, 
+                    image: GITHUB_ASSETS_BASE + "products/netflix_premium.png",
+                    plans: [
+                        { id: 'nt1', name: 'باقة بريميوم 4K شهر', price: 15, vipPrice: 12 },
+                        { id: 'nt2', name: 'باقة بريميوم 3 أشهر', price: 40, vipPrice: 33 }
+                    ], 
+                    isGame: false,
+                    order: 2
+                },
+                { 
+                    id: 'freefire_diamonds', 
+                    name: 'فري فاير - جواهر كود آلي', 
+                    category: 'games', 
+                    rating: 4.7, 
+                    reviewCount: 85, 
+                    available: true, 
+                    image: GITHUB_ASSETS_BASE + "products/freefire_diamonds.png",
+                    plans: [
+                        { id: 'ff1', name: '1080 دايموند كود فوري', price: 38, vipPrice: 34 },
+                        { id: 'ff2', name: '2200 دايموند', price: 75, vipPrice: 65 }
+                    ], 
+                    isGame: true,
+                    order: 3
+                },
+                { 
+                    id: 'youtube_premium', 
+                    name: 'يوتيوب بريميوم - اشتراك رسمي', 
+                    category: 'cards', 
+                    rating: 4.9, 
+                    reviewCount: 210, 
+                    available: true, 
+                    image: GITHUB_ASSETS_BASE + "products/youtube_premium.png",
+                    plans: [
+                        { id: 'yt1', name: 'اشتراك شهر كامل', price: 12, vipPrice: 10 },
+                        { id: 'yt2', name: 'اشتراك 3 أشهر', price: 30, vipPrice: 25 }
+                    ], 
+                    isGame: false,
+                    order: 4
+                },
+                { 
+                    id: 'tiktok_followers', 
+                    name: 'تيك توك - متابعين وتفاعل', 
+                    category: 'smm', 
+                    rating: 4.6, 
+                    reviewCount: 54, 
+                    available: true, 
+                    image: GITHUB_ASSETS_BASE + "products/tiktok_followers.png",
+                    plans: [
+                        { id: 'tk1', name: '1000 متابع حقيقي', price: 20, vipPrice: 16 },
+                        { id: 'tk2', name: '5000 متابع', price: 85, vipPrice: 70 }
+                    ], 
+                    isGame: false,
+                    order: 5
+                },
+                { 
+                    id: 'amazon_gift', 
+                    name: 'بطاقة هدايا أمازون عالمية', 
+                    category: 'global_shopping', 
+                    rating: 4.8, 
+                    reviewCount: 67, 
+                    available: true, 
+                    image: GITHUB_ASSETS_BASE + "products/amazon_gift.png",
+                    plans: [
+                        { id: 'am1', name: 'بطاقة 25$ أمازون', price: 30, vipPrice: 26 },
+                        { id: 'am2', name: 'بطاقة 50$ أمازون', price: 58, vipPrice: 50 },
+                        { id: 'am3', name: 'بطاقة 100$ أمازون', price: 112, vipPrice: 98 }
+                    ], 
+                    isGame: false,
+                    order: 6
+                },
+                { 
+                    id: 'steam_wallet', 
+                    name: 'بطاقة ستيم - محفظة ألعاب PC', 
+                    category: 'global_shopping', 
+                    rating: 4.9, 
+                    reviewCount: 89, 
+                    available: true, 
+                    image: GITHUB_ASSETS_BASE + "products/steam_wallet.png",
+                    plans: [
+                        { id: 'st1', name: 'بطاقة 20$ ستيم', price: 24, vipPrice: 21 },
+                        { id: 'st2', name: 'بطاقة 50$ ستيم', price: 56, vipPrice: 49 }
+                    ], 
+                    isGame: false,
+                    order: 7
+                }
+            ];
+        }
+
+        // ==================== تهيئة التطبيق ====================
         function initApp() {
             renderCategoryChips();
             renderDirectGroupedProducts();
             updateUI();
             renderNotifications();
             renderPurchases();
+            startPromoCountdown();
+            
+            // تحديث كل 30 ثانية للتحقق من المنتجات الجديدة
+            setInterval(async () => {
+                await fetchProductsAndBanners();
+                renderDirectGroupedProducts();
+                renderCategoryChips();
+            }, 30000);
         }
 
-        // بناء وعرض أزرار تصفية الأقسام في الشريط العلوي السريع مع معالجة حقل "قريباً" للقسم الجديد
+        // ==================== عرض أزرار الأقسام ====================
         function renderCategoryChips() {
             const container = document.getElementById('categoryChipsContainer');
+            if (!container) return;
+            
             container.innerHTML = categories.map(c => {
-                if (c.soon) {
-                    return `<div class="cat-filter-chip soon-chip" onclick="showToast('📢 قسم شراء من مواقع عالمية سيتم إطلاقه قريباً جداً في التحديث القادم!')">${c.title} <small style="color:var(--accent-color);font-weight:900;">(قريباً)</small></div>`;
-                }
-                return `<div class="cat-filter-chip ${currentCategory === c.code ? 'active' : ''}" onclick="filterByCategory('${c.code}')">${c.title}</div>`;
+                const isActive = currentCategory === c.code;
+                const activeClass = isActive ? 'active' : '';
+                
+                return `
+                    <div class="cat-filter-chip ${activeClass}" 
+                         onclick="filterByCategory('${c.code}')"
+                         style="cursor:pointer;">
+                        ${c.title}
+                    </div>
+                `;
             }).join('');
         }
 
-        // الهيكلة والتصميم الجديد: المنتجات معروضة داخل أقسامها مجمعة ومباشرة فور اختيار القسم
+        // ==================== عرض المنتجات مجمعة حسب الأقسام ====================
         function renderDirectGroupedProducts() {
             const container = document.getElementById('directCategorizedProductsList');
+            if (!container) return;
             container.innerHTML = '';
 
-            // فلترة وتجهيز الأقسام النشطة المطلوب عرضها
-            let targetedCategories = categories.filter(c => c.code !== 'all' && !c.soon);
-            
-            if (currentCategory !== 'all') {
-                targetedCategories = targetedCategories.filter(c => c.code === currentCategory);
+            // تحديد الأقسام المراد عرضها
+            let targetedCategories;
+            if (currentCategory === 'all') {
+                targetedCategories = categories.filter(c => c.code !== 'all');
+            } else {
+                targetedCategories = categories.filter(c => c.code === currentCategory);
             }
 
             targetedCategories.forEach(cat => {
                 let filteredProducts = activeProducts.filter(p => p.category === cat.code);
                 
-                // إنشاء حاوية مستقلة لكل قسم مع المنتجات التابعة له مباشرة
+                // ترتيب المنتجات حسب order
+                filteredProducts.sort((a, b) => (a.order || 999) - (b.order || 999));
+                
+                // إنشاء حاوية القسم
                 let catSectionHtml = document.createElement('div');
                 catSectionHtml.className = 'category-group-container';
                 catSectionHtml.id = 'group-sec-' + cat.code;
@@ -937,9 +1137,12 @@
                 let gridHtml = `<div class="products-grid">`;
                 
                 if (filteredProducts.length === 0) {
-                    gridHtml += `<p style="grid-column:span 2; text-align:center; padding:20px; color:#c0b09a; font-size:12px;">لا توجد خدمات رقمية متوفرة حالياً في هذا القسم.</p>`;
+                    gridHtml += `<p style="grid-column:span 2; text-align:center; padding:20px; color:#c0b09a; font-size:12px;">
+                        لا توجد خدمات متوفرة حالياً في هذا القسم
+                    </p>`;
                 } else {
                     filteredProducts.forEach(p => {
+                        // ترتيب الخطط حسب السعر
                         if(p.plans && p.plans.length > 0) {
                             p.plans.sort((a, b) => {
                                 let priceA = isVip ? (a.vipPrice || a.price) : a.price;
@@ -960,9 +1163,12 @@
                             `<span class="stock-status-badge unavailable">🔴 غير متوفر</span>`;
 
                         gridHtml += `
-                            <div class="product-card" onclick="showProductPlans('${p.id}')">
+                            <div class="product-card" onclick="showProductPlans('${p.id}')" style="cursor:pointer;">
                                 ${stockBadge}
-                                <div class="product-img-wrapper"><img src="${p.image}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=300'"></div>
+                                <div class="product-img-wrapper">
+                                    <img src="${p.image}" alt="${p.name}" 
+                                         onerror="this.src='${GITHUB_ASSETS_BASE}products/default_product.png'">
+                                </div>
                                 <div class="product-info-bottom">
                                     <div class="pname">${p.name}</div>
                                     <div class="price-range">${displayPrice}</div>
@@ -971,7 +1177,7 @@
                                         <span class="review-count-lbl">(${p.rating || 5.0} / ${p.reviewCount || 10})</span>
                                     </div>
                                 </div>
-                                ${isVip ? '<span class="vip-badge">👑 ملكي VIP</span>' : ''}
+                                ${isVip ? '<span class="vip-badge">👑 VIP</span>' : ''}
                             </div>
                         `;
                     });
@@ -981,12 +1187,15 @@
                 catSectionHtml.innerHTML = sectionTitleHtml + gridHtml;
                 container.appendChild(catSectionHtml);
             });
+            
+            console.log('✅ تم عرض المنتجات في الأقسام:', targetedCategories.map(c => c.title).join(', '));
         }
 
-        // دالة الفلترة السريعة الفورية والتحكم بظهور اللافتات المرافقة
+        // ==================== فلترة حسب القسم ====================
         function filterByCategory(code) {
             currentCategory = code;
             renderCategoryChips();
+            
             const mainTabs = document.getElementById('mainTabsContainer');
             const backHeader = document.getElementById('backSectionHeader');
             const sliderArea = document.getElementById('topPromoSliderArea');
@@ -994,18 +1203,20 @@
             
             if(code !== 'all') {
                 mainTabs.classList.add('hidden');
-                sliderArea.style.display = 'none';
+                if(sliderArea) sliderArea.style.display = 'none';
                 backHeader.style.display = 'flex';
                 document.getElementById('currentActiveCategoryName').innerText = selectedCatObj ? selectedCatObj.title : "الخدمات";
             } else {
                 mainTabs.classList.remove('hidden');
-                sliderArea.style.display = 'block';
+                if(sliderArea) sliderArea.style.display = 'block';
                 backHeader.style.display = 'none';
             }
+            
             renderDirectGroupedProducts();
+            document.getElementById('plansListContainer').style.display = 'none';
         }
 
-        // تصفير الفلتر والرجوع للرئيسية والخدمات الشاملة مباشرة
+        // ==================== الرجوع للرئيسية ====================
         function resetToHomeMain() {
             currentCategory = 'all';
             document.getElementById('mainTabsContainer').classList.remove('hidden');
@@ -1017,21 +1228,23 @@
             renderDirectGroupedProducts();
         }
 
-        // عرض قائمة الباقات الفرعية لمنتج محدد مع التمرير السلس
+        // ==================== عرض باقات المنتج ====================
         function showProductPlans(productId) {
             const product = activeProducts.find(p => p.id === productId);
             if (!product) return;
             
             if(product.available === false) {
-                return showToast('⚠️ عذراً، هذا المنتج غير متوفر حالياً. سيتم إتاحته قريباً جداً!');
+                return showToast('⚠️ هذا المنتج غير متوفر حالياً');
             }
-            if(!product.plans) return;
+            if(!product.plans || product.plans.length === 0) {
+                return showToast('⚠️ لا توجد باقات متاحة لهذا المنتج');
+            }
             
             const container = document.getElementById('plansListContainer');
             const nameHeader = document.getElementById('selectedProductName');
             const listDiv = document.getElementById('plansList');
             
-            nameHeader.innerText = `عروض متوفرة لـ ${product.name}`;
+            nameHeader.innerText = `عروض ${product.name}`;
             
             listDiv.innerHTML = product.plans.map(plan => {
                 const finalPrice = isVip ? (plan.vipPrice || plan.price) : plan.price;
@@ -1039,9 +1252,11 @@
                     <div class="plan-item">
                         <div>
                             <span style="font-weight:700; font-size:13px; color:#fff;">${plan.name}</span>
+                            ${isVip && plan.vipPrice ? `<span style="font-size:10px; color:var(--success); display:block;">توفير VIP: ${plan.price - plan.vipPrice} د.ل</span>` : ''}
                         </div>
-                        <button class="buy-btn" onclick="initiateCheckoutFlow('${product.id}', '${plan.id}')" style="padding:6px 14px; font-size:12px; background:var(--accent-color); color:#fff; width:auto; margin-top:0;">
-                            شراء بقيمة ${finalPrice} د.ل
+                        <button class="buy-btn" onclick="initiateCheckoutFlow('${product.id}', '${plan.id}')" 
+                                style="padding:6px 14px; font-size:12px; width:auto; margin-top:0;">
+                            شراء بـ ${finalPrice} د.ل
                         </button>
                     </div>
                 `;
@@ -1051,7 +1266,7 @@
             container.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // فتح وتجهيز مودال الشراء مع تحديث آلية التفعيل والتسليم مباشرة حسب نوع الطلب (ألعاب/اشتراكات)
+        // ==================== فتح مودال الشراء ====================
         function initiateCheckoutFlow(productId, planId) {
             tempSelectedProdId = productId;
             tempSelectedPlanId = planId;
@@ -1059,39 +1274,42 @@
             const product = activeProducts.find(p => p.id === productId);
             const flowHint = document.getElementById('activationFlowHint');
             
-            // تخصيص النص التعريفي التفصيلي لطريقة التفعيل والتسليم الفوري
             if (product && (product.isGame || product.category === 'games')) {
-                flowHint.innerHTML = "🎯 <strong>طريقة التسليم (باقات الألعاب):</strong> سيتم تسليم كود شحن اللعبة وتفعيله تلقائياً وفورياً في حسابك فور إتمام الشراء بنجاح.";
+                flowHint.innerHTML = "🎯 <strong>طريقة التسليم (باقات الألعاب):</strong> سيتم تسليم كود الشحن وتفعيله تلقائياً في حسابك فور إتمام الشراء.";
                 document.getElementById('lblChkEmail').innerText = "المعرف الرقمي للعبة (ID) / يوزر الحساب";
                 document.getElementById('passwordFieldGroup').style.display = "none";
                 document.getElementById('userCountFieldGroup').style.display = "block";
             } else {
-                flowHint.innerHTML = "📥 <strong>طريقة التسليم (الاشتراكات الرقمية):</strong> سيتم تزويدك بالبريد الإلكتروني، كلمة السر، واليوزر المجهز المعتمد لتسجيل الدخول الفوري للحساب.";
-                document.getElementById('lblChkEmail').innerText = "البريد الإلكتروني الحالي للحساب";
+                flowHint.innerHTML = "📥 <strong>طريقة التسليم (الاشتراكات والبطاقات):</strong> سيتم تزويدك بالبيانات المطلوبة للتفعيل فور إتمام الشراء.";
+                document.getElementById('lblChkEmail').innerText = "البريد الإلكتروني للحساب";
                 document.getElementById('passwordFieldGroup').style.display = "block";
                 document.getElementById('userCountFieldGroup').style.display = "none";
             }
 
-            // إعادة تصفير وإخفاء حقول خيار الإهداء
+            // تصفير حقول الإهداء
             document.getElementById('chkIsGift').checked = false;
             document.getElementById('giftFieldsContainer').style.display = 'none';
             document.getElementById('giftSenderName').value = '';
             document.getElementById('giftRecipientContact').value = '';
             document.getElementById('giftMessage').value = '';
+            document.getElementById('chkEmail').value = '';
+            document.getElementById('chkPassword').value = '';
             
             document.getElementById('checkoutModal').classList.add('active');
             adjustUserFields();
         }
 
-        // فتح وإخفاء حقول الإهداء المتقدمة ديناميكياً
         function toggleGiftFields() {
             const isGift = document.getElementById('chkIsGift').checked;
             document.getElementById('giftFieldsContainer').style.display = isGift ? 'block' : 'none';
         }
 
-        // تعديل حقول تعبئة يوزرات الألعاب واللاعبين المستهدفين داخل الطلب
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.remove('active');
+        }
+
         function adjustUserFields() {
-            const count = parseInt(document.getElementById('chkUserCount').value);
+            const count = parseInt(document.getElementById('chkUserCount').value) || 1;
             const container = document.getElementById('dynamicUserNamesContainer');
             container.innerHTML = '';
             
@@ -1099,17 +1317,13 @@
             if (product && (product.isGame || product.category === 'games')) {
                 for(let i = 1; i <= count; i++) {
                     container.innerHTML += `
-                        <input type="text" id="chkUser${i}" class="custom-input" placeholder="اسم أو معرف اليوزر النشط رقم (${i}) المراد شحنه">
+                        <input type="text" id="chkUser${i}" class="custom-input" placeholder="اسم اليوزر النشط رقم (${i})">
                     `;
                 }
             }
         }
 
-        function closeCheckoutModal() {
-            document.getElementById('checkoutModal').classList.remove('active');
-        }
-
-        // تنفيذ عملية خصم الرصيد مع تطبيق قواعد تسليم الألعاب والاشتراكات وخيار الإهداء اليدوي للإدارة
+        // ==================== تنفيذ الشراء ====================
         async function finalizePurchaseExecution() {
             const email = document.getElementById('chkEmail').value.trim();
             const pass = document.getElementById('chkPassword').value.trim();
@@ -1117,26 +1331,27 @@
             const recipientContact = document.getElementById('giftRecipientContact').value.trim();
             
             const product = activeProducts.find(p => p.id === tempSelectedProdId);
-            const plan = product.plans.find(p => p.id === tempSelectedPlanId);
-            const price = isVip ? (plan.vipPrice || plan.price) : plan.price;
+            if (!product) return showToast('⚠️ خطأ: المنتج غير موجود');
             
+            const plan = product.plans.find(p => p.id === tempSelectedPlanId);
+            if (!plan) return showToast('⚠️ خطأ: الباقة غير موجودة');
+            
+            const price = isVip ? (plan.vipPrice || plan.price) : plan.price;
             let isTypeGame = product.isGame || product.category === 'games';
 
-            // شروط التحقق من تعبئة المدخلات الإلزامية
-            if(!email) return showToast('⚠️ يرجى إدخال البريد الإلكتروني أو معرف الحساب أولاً لإتمام الطلب الرقمي');
-            if(!isTypeGame && !pass) return showToast('⚠️ يرجى إدخال كلمة سر الحساب للاشتراكات الرقمية المباشرة');
+            if(!email) return showToast('⚠️ يرجى إدخال البريد الإلكتروني أو معرف الحساب');
+            if(!isTypeGame && !pass) return showToast('⚠️ يرجى إدخال كلمة سر الحساب');
             
-            // التحقق من تعبئة بيانات الإهداء المخصصة في حال تفعيل الخيار
             if (isGiftChecked && !recipientContact) {
-                return showToast('⚠️ حقل رقم أو يوزر الشخص المستلم للهدية مطلوب لتنفيذ الطلب اليدوي');
+                return showToast('⚠️ حقل رقم المستلم مطلوب للهدية');
             }
 
             if (walletBalance < price) {
                 closeCheckoutModal();
-                return showToast('❌ رصيدك الحالي غير كافٍ، الرجاء تعبئة رصيد المحفظة أولاً أو تبديل رصيد');
+                return showToast('❌ رصيدك غير كافٍ، الرجاء شحن المحفظة أولاً');
             }
 
-            // خصم الرصيد ومنح نقاط التراكم التلقائية
+            // خصم الرصيد
             walletBalance -= price;
             totalPoints += Math.floor(price * 0.5);
             
@@ -1151,35 +1366,33 @@
 
             let generatedCode = 'DLVRKO-' + Math.floor(100000 + Math.random() * 900000);
             
-            // بناء كائن تفاصيل الهدايا لحفظه بشكل كامل تحت تحكم لوحة تحكم الإدارة
             let giftMetadata = null;
             let giftInfoText = '';
             
             if (isGiftChecked) {
                 const senderName = document.getElementById('giftSenderName').value.trim() || 'فاعل خير';
-                const giftMsg = document.getElementById('giftMessage').value.trim() || 'بدون رسالة مرافقة';
-                giftInfoText = ` [🎁 هدية من: ${senderName} إلى: ${recipientContact}]`;
+                const giftMsg = document.getElementById('giftMessage').value.trim() || 'بدون رسالة';
+                giftInfoText = ` [🎁 هدية من: ${senderName}]`;
                 
                 giftMetadata = {
                     isGift: true,
                     senderName: senderName,
                     recipientContact: recipientContact,
                     giftMessage: giftMsg,
-                    adminManualProcessing: true, // إشعار للإدارة للتنفيذ اليدوي الكامل للطلب
-                    status: 'جاري المراجعة اليدوية للهدايا'
+                    adminManualProcessing: true,
+                    status: 'جاري المراجعة اليدوية'
                 };
             }
 
-            // إدراج وحفظ الطلب في أرشيف الحساب مع فك تسليم الأكواد والبيانات الفورية
             let orderPayload = {
                 name: `${product.name} - ${plan.name}${giftInfoText}`,
                 price: price,
                 date: new Date().toLocaleString('ar-LY'),
                 isSubscription: !isTypeGame,
-                deliveredCode: isGiftChecked ? "جاري التجهيز اليدوي بواسطة الإدارة (طلب هدية)" : generatedCode,
+                deliveredCode: isGiftChecked ? "جاري التجهيز بواسطة الإدارة" : generatedCode,
                 deliveredEmail: email,
-                deliveredPass: isTypeGame ? "تفعيل تلقائي آلي للعبة" : pass,
-                deliveredUsers: isTypeGame ? userListDetails.join(', ') : 'يوزر 1 الأساسي داخل الاشتراك',
+                deliveredPass: isTypeGame ? "تفعيل تلقائي" : pass,
+                deliveredUsers: isTypeGame ? userListDetails.join(', ') : 'يوزر 1',
                 giftDetails: giftMetadata,
                 isGiftOrder: isGiftChecked
             };
@@ -1187,24 +1400,31 @@
             purchases.unshift(orderPayload);
 
             notifications.unshift({
-                title: isGiftChecked ? '🎁 تم إرسال طلب الإهداء اليدوي بنجاح' : '🛒 تم تأكيد وتنفيذ طلبك الفوري بنجاح',
-                body: `تم خصم باقة الخدمة من محفظتك بقيمة ${price} د.ل. وعملية التسليم جارية حالياً بدقة.`,
+                title: isGiftChecked ? '🎁 تم إرسال طلب الإهداء' : '🛒 تم تأكيد طلبك',
+                body: `تم خصم ${price} د.ل من محفظتك.`,
                 time: 'الآن'
             });
 
-            // تحديث قاعدة بيانات Firebase بالبيانات والهيكلية الشاملة
+            // تحديث Firebase
             if(currentUserDocId) {
-                await db.collection('users').doc(currentUserDocId).update({
-                    walletBalance, totalPoints, purchases, notifications
-                });
-                
-                // إرسال نسخة مستقلة إلى لوحة تحكم الإدارة الشاملة للتحكم في الطلبات والهدايا (إضافة/تعديل/حذف)
-                await db.collection('all_orders').add({
-                    userId: currentUserDocId,
-                    userEmail: auth.currentUser.email,
-                    ...orderPayload,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                try {
+                    await db.collection('users').doc(currentUserDocId).update({
+                        walletBalance, 
+                        balance: walletBalance,
+                        totalPoints, 
+                        purchases, 
+                        notifications
+                    });
+                    
+                    await db.collection('all_orders').add({
+                        userId: currentUserDocId,
+                        userEmail: auth.currentUser.email,
+                        ...orderPayload,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                } catch(e) {
+                    console.error("Error saving order:", e);
+                }
             }
 
             closeCheckoutModal();
@@ -1213,13 +1433,13 @@
             document.getElementById('plansListContainer').style.display = 'none';
             
             if (isGiftChecked) {
-                showToast(`🎉 تم إرسال اشتراك الهدية بنجاح! تم قيد الطلب يدويًا للمراجعة الفورية من طاقم دليفريكو باي`);
+                showToast(`🎉 تم إرسال الهدية! الطلب قيد المراجعة من الإدارة`);
             } else {
-                showToast(`🎉 تم إرسال وتنفيذ طلبك الرقمي بنجاح! راجع أرشيف مشترياتك للاستلام الفوري للمفاتيح والبيانات`);
+                showToast(`🎉 تم تنفيذ طلبك بنجاح! راجع أرشيف مشترياتك`);
             }
         }
 
-        // التحكم باختيار وتحديث تبويبات طرق الشحن الإيداعية داخل المحفظة
+        // ==================== اختيار طريقة الدفع ====================
         function selectPaymentMethod(methodName) {
             document.getElementById('selectedWalletMethod').value = methodName;
             document.querySelectorAll('.wallet-card').forEach(card => card.classList.remove('selected'));
@@ -1231,20 +1451,21 @@
             
             if (methodName === 'ليبيانا') {
                 document.getElementById('method-libiana').classList.add('selected');
-                label.innerText = 'رقم هاتف ليبيانا (الذي قمت بتحويل الرصيد منه)';
+                label.innerText = 'رقم هاتف ليبيانا';
             } else if (methodName === 'مدار') {
                 document.getElementById('method-madar').classList.add('selected');
-                label.innerText = 'رقم هاتف المدار (الذي قمت بتحويل الرصيد منه)';
+                label.innerText = 'رقم هاتف المدار';
             } else if (methodName === 'بايبت') {
                 document.getElementById('method-crypto').classList.add('selected');
                 cryptoArea.style.display = "block";
-                label.innerText = 'عنوان محفظة الـ USDT التي أرسلت منها أو معرف المعاملة الفرعي التابع لك';
+                label.innerText = 'عنوان محفظة USDT أو معرف المعاملة';
             } else {
                 document.getElementById('method-bank').classList.add('selected');
-                label.innerText = 'رقم حسابك المحول منه أو كود التحقق من عملية الرشق لـ (ون باي / لي باي)';
+                label.innerText = 'رقم حسابك أو كود التحقق';
             }
         }
 
+        // ==================== تبديل الرصيد ====================
         function calculateExchangeFee() {
             const amount = parseFloat(document.getElementById('exchangeAmount').value) || 0;
             const feePercent = isVip ? 0.00 : 0.05;
@@ -1255,12 +1476,11 @@
             document.getElementById('exchangeTotalVal').innerText = total.toFixed(2) + ' د.ل';
         }
 
-        // معالجة وتنفيذ تبديل الرصيد الآمن للشبكات
         async function executeBalanceExchange() {
             const network = document.getElementById('exchangeNetwork').value;
             const amount = parseFloat(document.getElementById('exchangeAmount').value) || 0;
             
-            if (amount <= 0) return showToast('⚠️ يرجى كتابة مبلغ صالح وموجب لإتمام عملية التبديل');
+            if (amount <= 0) return showToast('⚠️ يرجى كتابة مبلغ صالح');
             
             const feePercent = isVip ? 0.00 : 0.05;
             const fee = amount * feePercent;
@@ -1269,37 +1489,35 @@
             walletBalance += cleanCredit;
             
             notifications.unshift({
-                title: '🔄 عملية تبديل رصيد ناجحة في الحساب',
-                body: `تم تبديل رصيد شبكة ${network} بقيمة ${amount} د.ل وإضافة صافي قيمته ${cleanCredit.toFixed(2)} د.ل لمحفظتك الأساسية الحالية.`,
+                title: '🔄 تبديل رصيد ناجح',
+                body: `تم تبديل ${amount} د.ل ${network} وإضافة ${cleanCredit.toFixed(2)} د.ل لمحفظتك.`,
                 time: 'الآن'
             });
             
             if (currentUserDocId) {
                 await db.collection('users').doc(currentUserDocId).update({
-                    walletBalance, notifications
+                    walletBalance, balance: walletBalance, notifications
                 });
             }
             
             updateUI();
             document.getElementById('exchangeAmount').value = '';
-            document.getElementById('exchangeFeeVal').innerText = '0.00 د.ل';
-            document.getElementById('exchangeTotalVal').innerText = '0.00 د.ل';
-            showToast(`✅ تم تبديل الرصيد بنجاح! تم قيد القيمة الصافية بعد احتساب العمولة في محفظتك فورياً`);
+            calculateExchangeFee();
+            showToast(`✅ تم التبديل بنجاح! تمت إضافة ${cleanCredit.toFixed(2)} د.ل`);
         }
 
-        // تسجيل النشاط والمكافأة اليومية الحصرية لأعضاء النظام الملكي
+        // ==================== النشاط اليومي ====================
         async function executeDailyCheckIn() {
-            if (!isVip) return showToast('❌ ميزة تسجيل النشاط والبونص اليومي حصرية فقط للمشتركين الملكيين VIP العظماء');
+            if (!isVip) return showToast('❌ الميزة حصرية للأعضاء الملكيين VIP');
             
             const now = new Date();
             if (lastCheckInTime) {
                 const lastDate = new Date(lastCheckInTime);
-                const diffTime = Math.abs(now - lastDate);
-                const diffHours = diffTime / (1000 * 60 * 60);
+                const diffHours = (now - lastDate) / (1000 * 60 * 60);
                 
                 if (diffHours < 24) {
-                    const remainingHours = Math.ceil(24 - diffHours);
-                    return showToast(`⏳ لقد قمت بالتحقق اليومي سابقاً، يرجى الانتظار ${remainingHours} ساعة أخرى لإعادة كسب البونص`);
+                    const remaining = Math.ceil(24 - diffHours);
+                    return showToast(`⏳ انتظر ${remaining} ساعة للتسجيل مجدداً`);
                 }
             }
             
@@ -1311,63 +1529,59 @@
             });
             
             updateUI();
-            showToast('⚡ مبروك! تم التحقق من نشاطك اليومي الملكي وإضافة +5 نقاط مجانية لحسابك بنجاح');
+            showToast('⚡ تم إضافة +5 نقاط لنشاطك اليومي!');
         }
 
+        // ==================== الصورة الشخصية ====================
         function handleAvatarChange(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                const base64Image = e.target.result;
-                document.getElementById('userPfpImage').src = base64Image;
+                document.getElementById('userPfpImage').src = e.target.result;
                 if(currentUserDocId) {
-                    localStorage.setItem('user_custom_avatar_' + currentUserDocId, base64Image);
+                    localStorage.setItem('user_custom_avatar_' + currentUserDocId, e.target.result);
                 }
-                showToast('📸 تم تحديث وتغيير صورة ملفك الشخصي بنجاح على الهاتف!');
+                showToast('📸 تم تحديث صورتك الشخصية!');
             };
             reader.readAsDataURL(file);
         }
 
-        // آلية جني الأرباح من متابعة الحسابات بعد توسيعها لتشمل 4 منصات (تيك توك، فيسبوك، انستقرام، سناب شات)
+        // ==================== مكافآت المنصات ====================
         async function claimSocialBonus(platform, url) {
             window.open(url, '_blank');
             if(!currentUserDocId) return;
             
             const bonusKey = `claimed_bonus_${currentUserDocId}_${platform}`;
-            const alreadyClaimed = localStorage.getItem(bonusKey);
-            
-            if(alreadyClaimed === 'true') {
-                setTimeout(() => { showToast(`ℹ️ لقد حصلت على مكافأة متابعة وتصفح منصة ${platform} مسبقاً! المكافأة تمنح لمرة واحدة لكل حساب`); }, 1000);
-                return;
+            if(localStorage.getItem(bonusKey) === 'true') {
+                return showToast(`ℹ️ لقد حصلت على مكافأة ${platform} مسبقاً`);
             }
             
-            walletBalance += 0.50; // ضبط قيمة الربح المستهدفة والمقرة بالتحديث البرمجي (0.50 د.ل) لكل منصة
+            walletBalance += 0.50;
             localStorage.setItem(bonusKey, 'true');
             
             notifications.unshift({
-                title: `🎁 بونص دعم منصة ${platform}`,
-                body: `شكراً لمتابعتنا ودعم حساباتنا على تطبيق ${platform}، تم قيد مبلغ المكافأة بقيمة 0.50 د.ل لحسابك.`,
+                title: `🎁 بونص ${platform}`,
+                body: `تم إضافة 0.50 د.ل لمحفظتك`,
                 time: 'الآن'
             });
             
-            if(currentUserDocId) {
-                await db.collection('users').doc(currentUserDocId).update({
-                    walletBalance, notifications
-                });
-            }
+            await db.collection('users').doc(currentUserDocId).update({
+                walletBalance, balance: walletBalance, notifications
+            });
             
             updateUI();
-            setTimeout(() => { showToast(`🎉 مبروك الفوز! تم إضافة 0.50 د.ل إلى محفظتك مباشرة لدعمك منصة دليفريكو باي على ${platform}`); }, 1200);
+            showToast(`🎉 تم إضافة 0.50 د.ل من متابعة ${platform}!`);
         }
 
+        // ==================== مؤقت العروض ====================
         function startPromoCountdown() {
             let totalSeconds = 3 * 60 * 60;
             const timerElement = document.getElementById('promoTimer');
             
-            const interval = setInterval(() => {
-                if (totalSeconds <= 0) { totalSeconds = 3 * 60 * 60; }
+            setInterval(() => {
+                if (totalSeconds <= 0) totalSeconds = 3 * 60 * 60;
                 totalSeconds--;
                 
                 const hrs = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
@@ -1378,14 +1592,14 @@
             }, 1000);
         }
 
-        // إرسال تفاصيل إشعارات شحن وإيداع الأموال بالمحفظة لمراجعتها بواسطة الإدارة
+        // ==================== إيداع المحفظة ====================
         async function submitWalletDepositRequest() {
             const bank = document.getElementById('selectedWalletMethod').value;
             const userAcc = document.getElementById('walletUserAccountNum').value.trim();
             const amount = parseFloat(document.getElementById('walletUserAmount').value);
 
             if(!userAcc || !amount || amount <= 0) {
-                return showToast('⚠️ يرجى ملء حقول رقم حساب التحويل والقيمة الإيداعية بدقة لإتمام التدقيق');
+                return showToast('⚠️ يرجى ملء جميع الحقول');
             }
 
             await db.collection('deposit_requests').add({
@@ -1398,138 +1612,180 @@
                 date: new Date().toLocaleString('ar-LY')
             });
 
-            showToast(`✅ تم إرسال إشعار الدفع الفني لطريقة [ ${bank} ] بنجاح، جاري المراجعة والتحقق المباشر والآلي من الإدارة لإيداعه`);
+            showToast(`✅ تم إرسال إشعار الإيداع للمراجعة`);
             document.getElementById('walletUserAccountNum').value = '';
             document.getElementById('walletUserAmount').value = '';
         }
 
-        // تفعيل العضوية الملكية الذهبية فورياً
-        function executeUpgradeToVip() {
-            if (isVip) return;
-            if (walletBalance < 10) return showToast('❌ رصيد محفظتك الحالي أقل من تكلفة تفعيل الترقية الفخمة الملكية (10 د.ل)');
+        // ==================== ترقية VIP ====================
+        async function executeUpgradeToVip() {
+            if (isVip) return showToast('👑 أنت بالفعل عضو ملكي VIP!');
+            if (walletBalance < 10) return showToast('❌ رصيدك أقل من 10 د.ل');
             
             walletBalance -= 10;
             isVip = true;
-            document.body.classList.add('royal-vip-theme');
-            document.getElementById('vipPromoSection').classList.add('hidden');
             
-            db.collection('users').doc(currentUserDocId).update({ walletBalance, isVip });
+            updateVipTheme();
+            
+            await db.collection('users').doc(currentUserDocId).update({ 
+                walletBalance, balance: walletBalance, isVip 
+            });
+            
             updateUI();
             renderDirectGroupedProducts();
             calculateExchangeFee();
-            showToast('👑 مبارك الترقية للنظام الملكي الفخم! تم تفعيل الشارات الذهبية والتوثيق والخصومات الفورية بنجاح');
+            showToast('👑 مبارك! تمت ترقيتك للنظام الملكي VIP');
         }
 
-        function requestExchangePoints() {
-            if (!isVip) return showToast('❌ تحويل وتسييل النقاط لكاش ميزة حصرية فقط لأعضاء النظام الملكي VIP الفاخرين');
-            if (totalPoints < 30) return showToast('❌ الحد الأدنى المؤهل لنقل النقاط وتحويلها لرصيد هو 30 نقطة تراكمية');
+        // ==================== تسييل النقاط ====================
+        async function requestExchangePoints() {
+            if (!isVip) return showToast('❌ الميزة حصرية للأعضاء الملكيين');
+            if (totalPoints < 30) return showToast('❌ الحد الأدنى 30 نقطة');
+            
             const cash = totalPoints / 10;
             walletBalance += cash;
             totalPoints = 0;
-            db.collection('users').doc(currentUserDocId).update({ walletBalance, totalPoints });
+            
+            await db.collection('users').doc(currentUserDocId).update({ 
+                walletBalance, balance: walletBalance, totalPoints 
+            });
+            
             updateUI();
-            showToast(`✅ تم بنجاح تسييل النقاط وإضافة +${cash.toFixed(2)} د.ل مباشرة لمحفظتك الأساسية`);
+            showToast(`✅ تم تحويل النقاط إلى ${cash.toFixed(2)} د.ل`);
         }
 
+        // ==================== تحديث واجهة المستخدم ====================
         function updateUI() {
-            document.getElementById('topBalance').innerHTML = `<span> د.ل</span><b>${walletBalance.toFixed(2)}</b>+`;
+            document.getElementById('topBalanceAmount').innerText = walletBalance.toFixed(2);
             document.getElementById('pointsDisplay').innerText = totalPoints;
-            document.getElementById('profileLevel').innerText = isVip ? 'عضوية دليفريكو باي الملكية VIP' : 'عضوية عادية هادئة';
-            document.getElementById('upgradeBtn').style.display = isVip ? 'none' : 'block';
+            document.getElementById('profileLevel').innerText = isVip ? 'عضوية VIP الملكية' : 'عضوية عادية';
+            
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            if (upgradeBtn) upgradeBtn.style.display = isVip ? 'none' : 'block';
             
             document.getElementById('verifiedBadgeContainer').innerHTML = isVip ? 
-                `<span class="tiktok-verified-badge" title="حساب موثق ملكي فخم">✓</span>` : '';
+                `<span class="tiktok-verified-badge" title="حساب موثق">✓</span>` : '';
+            
+            const badge = document.getElementById('notifBadge');
+            if (badge) {
+                if (notifications.length > 0) {
+                    badge.classList.remove('hidden');
+                    badge.innerText = notifications.length;
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
         }
 
+        // ==================== نسخ النص ====================
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                showToast('📋 تم نسخ النص المختار إلى الحافظة بنجاح!');
+                showToast('📋 تم النسخ!');
             }).catch(() => {
-                showToast('❌ عذراً لم تنجح عملية النسخ الآلي');
+                showToast('❌ فشل النسخ');
             });
         }
 
-        // معالجة وبناء عرض أرشيف المشتريات والطلبات المباشرة مع تتبع تسليم الهدايا اليدوية والاشتراكات
+        // ==================== عرض المشتريات ====================
         function renderPurchases() {
             const container = document.getElementById('purchasesList');
             if (!container) return;
-            if (!purchases.length) { container.innerHTML = '<p style="color:#aaa; text-align:center; font-size:12px; padding:15px;">أرشيف المشتريات والطلبات فارغ حالياً.</p>'; return; }
+            
+            if (!purchases.length) { 
+                container.innerHTML = '<p style="color:#aaa; text-align:center; padding:15px;">لا توجد مشتريات بعد</p>'; 
+                return; 
+            }
             
             container.innerHTML = purchases.map(p => {
                 let deliveryHtml = '';
                 
-                // فرز شكل وعرض التسليم للمشتريات بناءً على نوع المنتج وما إذا كان طلباً كهدية أم لا
                 if (p.isGiftOrder) {
                     deliveryHtml = `
-                        <div class="delivery-box" style="border-color:#eccc68; background:rgba(236,204,104,0.02)">
-                            <div class="delivery-title" style="color:#eccc68;">🎁 تفاصيل طلب اشتراك الهدية المعزول:</div>
-                            <div style="padding: 5px 0; line-height:1.6; color:#ddd;">
-                                <div>• مرسل الهدية: <strong style="color:#fff;">${p.giftDetails?.senderName || 'فاعل خير'}</strong></div>
-                                <div>• مستلم الهدية الفرعي: <strong style="color:var(--accent-light);">${p.giftDetails?.recipientContact}</strong></div>
-                                <div>• الرسالة المرفقة: <span style="font-style:italic; color:#aaa;">"${p.giftDetails?.giftMessage || 'لا توجد رسالة'}"</span></div>
-                                <div style="margin-top:5px; color:var(--success); font-weight:800;">⚙️ الطلب قيد التنفيذ اليدوي بواسطة الإدارة وسيجري إرساله للمستلم فورا.</div>
+                        <div class="delivery-box" style="border-color:#eccc68;">
+                            <div class="delivery-title" style="color:#eccc68;">🎁 تفاصيل الهدية:</div>
+                            <div style="color:#ddd; line-height:1.6;">
+                                <div>• المرسل: <strong>${p.giftDetails?.senderName || 'فاعل خير'}</strong></div>
+                                <div>• المستلم: <strong style="color:var(--accent-light);">${p.giftDetails?.recipientContact}</strong></div>
+                                <div style="color:var(--success); font-weight:800;">⚙️ قيد التنفيذ اليدوي</div>
                             </div>
                         </div>
                     `;
                 } else if (p.isSubscription) {
                     deliveryHtml = `
                         <div class="delivery-box">
-                            <div class="delivery-title">📥 تفاصيل بيانات اشتراك الحساب المسلم فورا:</div>
+                            <div class="delivery-title">📥 بيانات التسليم:</div>
                             <div class="copy-row">
                                 <span>البريد: ${p.deliveredEmail}</span>
-                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredEmail}')">نسخ البريد</button>
+                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredEmail}')">نسخ</button>
                             </div>
                             <div class="copy-row">
                                 <span>كلمة السر: ${p.deliveredPass}</span>
-                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredPass}')">نسخ الباسوورد</button>
-                            </div>
-                            <div class="copy-row">
-                                <span>اليوزرات المجهزة المتاحة: ${p.deliveredUsers || 'يوزر 1 الأساسي'}</span>
-                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredUsers || 'يوزر 1 الأساسي'}')">نسخ اليوزر</button>
+                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredPass}')">نسخ</button>
                             </div>
                         </div>
                     `;
                 } else {
                     deliveryHtml = `
                         <div class="delivery-box">
-                            <div class="delivery-title">📥 كود شحن وتعبئة المنتج الفوري والألعاب:</div>
+                            <div class="delivery-title">📥 كود الشحن:</div>
                             <div class="copy-row">
-                                <span style="color:var(--accent-light); font-weight:bold; letter-spacing:1px;">${p.deliveredCode}</span>
-                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredCode}')">نسخ الكود فوراً</button>
+                                <span style="color:var(--accent-light); font-weight:bold;">${p.deliveredCode}</span>
+                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredCode}')">نسخ</button>
                             </div>
-                            <div style="font-size:10px; color:#aaa; margin-top:4px; text-align:right;">المعرفات المشحونة: ${p.deliveredUsers}</div>
                         </div>
                     `;
                 }
 
                 return `
                     <div style="background:var(--card-bg); padding:14px; border-radius:10px; margin-bottom:12px; font-size:12px; border:1px solid var(--border-color)">
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; justify-content:space-between;">
                             <strong>${p.name}</strong>
-                            <span style="color:var(--accent-light); font-weight:bold;">${p.price} د.ل</span>
+                            <span style="color:var(--accent-light);">${p.price} د.ل</span>
                         </div>
                         ${deliveryHtml}
-                        <div style="font-size:9px; color:#aaa; text-align:left; margin-top:6px;">تاريخ تنفيذ الطلب: ${p.date}</div>
+                        <div style="font-size:9px; color:#aaa; margin-top:6px;">${p.date}</div>
                     </div>
                 `;
             }).join('');
         }
 
+        // ==================== عرض الإشعارات ====================
         function renderNotifications() {
             const list = document.getElementById('notifList');
-            if (!list || !notifications.length) { if(list) list.innerHTML='<p style="font-size:12px; color:#aaa;">لا توجد تنبيهات جديدة حالية في السجل</p>'; return; }
-            list.innerHTML = notifications.map(n => `
+            if (!list) return;
+            
+            if (!notifications.length) { 
+                list.innerHTML = '<p style="font-size:12px; color:#aaa;">لا توجد تنبيهات</p>'; 
+                return; 
+            }
+            
+            list.innerHTML = notifications.slice(0, 20).map(n => `
                 <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid var(--border-color)">
                     <div style="font-weight:bold; font-size:12px; color:var(--accent-color);">${n.title}</div>
-                    <div style="font-size:11px; color:#ccc; margin-top:3px;">${n.body}</div>
+                    <div style="font-size:11px; color:#ccc;">${n.body}</div>
+                    <div style="font-size:9px; color:#666;">${n.time || ''}</div>
                 </div>
             `).join('');
         }
 
-        // دالة التنقل السلس والذكي بين نوافذ وأقسام التطبيق السفلية والجانبية
+        // ==================== التنقل بين الأقسام ====================
         function switchSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(section + 'Section')?.classList.add('active');
+            
+            const sectionMap = {
+                'home': 'homeSection',
+                'exchange': 'exchangeSection',
+                'wallet': 'walletSection',
+                'purchases': 'purchasesSection',
+                'support': 'supportSection',
+                'profile': 'profileSection'
+            };
+            
+            const targetId = sectionMap[section];
+            if (targetId) {
+                const target = document.getElementById(targetId);
+                if (target) target.classList.add('active');
+            }
             
             const tabs = document.getElementById('mainTabsContainer');
             const chips = document.getElementById('categoryChipsContainer');
@@ -1537,13 +1793,10 @@
             const sliderArea = document.getElementById('topPromoSliderArea');
 
             if (section === 'home') {
-                if(currentCategory === 'all') {
-                    tabs?.classList.remove('hidden');
-                    if(sliderArea) sliderArea.style.display = 'block';
-                } else {
-                    backHeader.style.display = 'flex';
-                }
+                tabs?.classList.remove('hidden');
                 chips?.classList.remove('hidden');
+                if(sliderArea) sliderArea.style.display = 'block';
+                backHeader.style.display = currentCategory !== 'all' ? 'flex' : 'none';
             } else {
                 tabs?.classList.add('hidden');
                 chips?.classList.add('hidden');
@@ -1551,42 +1804,77 @@
                 backHeader.style.display = 'none';
                 document.getElementById('plansListContainer').style.display = 'none';
             }
+            
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // تحديث المحتوى
+            if (section === 'purchases') renderPurchases();
+            if (section === 'profile') updateUI();
         }
 
-        function openNotifModal() { document.getElementById('notifModal').classList.add('active'); }
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
-        function signOut() { auth.signOut().then(() => window.location.href = 'long.html'); }
+        // ==================== وظائف مساعدة ====================
+        function openNotifModal() { 
+            renderNotifications();
+            document.getElementById('notifModal').classList.add('active'); 
+        }
+        
+        function toggleSidebar() { 
+            document.getElementById('sidebar').classList.toggle('active'); 
+            document.getElementById('sidebarOverlay').classList.toggle('active'); 
+        }
+        
+        function signOut() { 
+            auth.signOut().then(() => window.location.href = 'long.html'); 
+        }
         
         function sendChat() {
             const inp = document.getElementById('chatInput');
-            if(!inp.value.trim()) return;
-            document.getElementById('chatBox').innerHTML += `<div style="text-align:left; color:var(--accent-color); margin-bottom:5px;">👤 ${inp.value}</div>`;
-            let cachedMsg = inp.value;
-            inp.value = '';
+            if(!inp || !inp.value.trim()) return;
             
-            // ربط وإرسال المحادثة الفنية مباشرة إلى Firestore تحت مراقبة الإدارة
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div style="color:var(--accent-color); margin-bottom:5px;">👤 ${inp.value}</div>`;
+            
             if (currentUserDocId) {
                 db.collection('support_chats').add({
                     userId: currentUserDocId,
-                    email: auth.currentUser.email,
-                    message: cachedMsg,
+                    email: auth.currentUser?.email,
+                    message: inp.value,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
             }
             
+            inp.value = '';
+            
             setTimeout(() => { 
-                document.getElementById('chatBox').innerHTML += `<div style="color:#eccc68; margin-bottom:5px;">🤖 تم نقل استفسارك المباشر للوحة تحكم دليفريكو باي بنجاح، جاري التدقيق.</div>`; 
-                document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+                chatBox.innerHTML += `<div style="color:#eccc68; margin-bottom:5px;">🤖 تم إرسال استفسارك للإدارة</div>`; 
+                chatBox.scrollTop = chatBox.scrollHeight;
             }, 800);
         }
 
         function showToast(msg) {
+            const existingToast = document.querySelector('.custom-toast');
+            if (existingToast) existingToast.remove();
+            
             const t = document.createElement('div');
-            t.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--top-bar-bg); color:#fff; padding:12px 24px; border-radius:30px; z-index:9999; font-weight:bold; font-size:12px; box-shadow:var(--shadow); text-align:center; transition: all 0.3s ease; border: 1.5px solid var(--accent-color); max-width:85%;';
-            t.innerText = msg; document.body.appendChild(t);
+            t.className = 'custom-toast';
+            t.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--top-bar-bg); color:#fff; padding:12px 24px; border-radius:30px; z-index:9999; font-weight:bold; font-size:12px; box-shadow:var(--shadow); text-align:center; border:1.5px solid var(--accent-color); max-width:85%; animation:fadeInOut 4s forwards;';
+            t.innerText = msg; 
+            document.body.appendChild(t);
+            
             setTimeout(() => t.remove(), 4000);
         }
+
+        // إضافة أنيميشن للتوست
+        const styleSheet = document.createElement("style");
+        styleSheet.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+                80% { opacity: 1; }
+                100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
     </script>
 </body>
-</html>
+    </html>
