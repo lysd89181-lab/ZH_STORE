@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dlvrko pay | دليفريكو باي</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- مكتبات Firebase الإصدار المتوافق -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <style>
         :root {
             --main-bg: #1a0f0a;
@@ -63,6 +66,7 @@
             transition: all 0.4s ease;
         }
 
+        /* تنسيق الشريط العلوي الجديد المعدل */
         .top-bar {
             background: var(--top-bar-bg);
             padding: 12px 16px;
@@ -76,11 +80,11 @@
             box-shadow: var(--neon-glow);
         }
         .top-bar .hamburger-zone { justify-self: start; }
-        .top-bar .center-logo-zone { justify-self: center; display: flex; align-items: center; justify-content: center; height: 100%; }
+        .top-bar .center-logo-zone { justify-self: center; display: flex; align-items: center; justify-content: center; height: 100%; cursor: pointer; }
         .top-bar .center-logo-zone img {
             width: auto;
-            height: 45px;
-            max-width: 140px;
+            height: 48px;
+            max-width: 160px;
             border-radius: 0;
             border: none;
             object-fit: contain;
@@ -88,6 +92,7 @@
         }
         .top-bar .actions-zone { justify-self: end; display: flex; align-items: center; gap: 15px; }
         
+        /* مربع الرصيد العائم المعدل بدون أيقونة المحفظة */
         .glass-balance-floating {
             position: fixed;
             bottom: 85px;
@@ -100,7 +105,7 @@
             border-radius: 50px;
             display: flex;
             align-items: center;
-            padding: 6px 14px 6px 6px;
+            padding: 8px 16px;
             gap: 10px;
             box-shadow: var(--shadow), var(--neon-glow);
             transition: var(--transition);
@@ -108,8 +113,8 @@
             direction: rtl;
         }
         .glass-balance-floating .plus-btn {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             background: var(--accent-color);
             color: #fff;
             border-radius: 50%;
@@ -117,12 +122,12 @@
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 15px;
+            font-size: 14px;
             order: 1;
         }
         .glass-balance-floating .balance-info { display: flex; flex-direction: column; align-items: flex-start; direction: rtl; order: 2; margin-left: 4px; }
-        .glass-balance-floating .balance-info .lbl { font-size: 8px; color: rgba(255,255,255,0.6); font-weight: 600; }
-        .glass-balance-floating .balance-info .val { font-size: 13px; font-weight: 900; color: #fff; display: flex; gap: 4px; direction: ltr; }
+        .glass-balance-floating .balance-info .lbl { font-size: 9px; color: rgba(255,255,255,0.6); font-weight: 600; }
+        .glass-balance-floating .balance-info .val { font-size: 14px; font-weight: 900; color: #fff; display: flex; gap: 4px; direction: ltr; }
 
         .notif-bell { position: relative; color: var(--accent-color); display: flex; align-items: center; cursor: pointer; }
         .notif-bell svg { width: 24px; height: 24px; fill: var(--accent-color); }
@@ -133,45 +138,50 @@
         }
         .notif-bell .badge.hidden { display: none; }
         
+        /* تنسيق القائمة الجانبية المعدلة بالكامل */
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 190; display: none; backdrop-filter: blur(4px); }
         .sidebar-overlay.active { display: block; }
-        .sidebar { position: fixed; top: 0; right: -320px; width: 280px; height: 100%; background: var(--top-bar-bg); z-index: 200; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8); padding: 25px 15px; overflow-y: auto; border-left: 1.5px solid var(--border-color); display: flex; flex-direction: column; }
+        .sidebar { position: fixed; top: 0; right: -320px; width: 290px; height: 100%; background: var(--top-bar-bg); z-index: 200; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -10px 0 40px rgba(0, 0, 0, 0.8); padding: 0 0 25px 0; overflow-y: auto; border-left: 1.5px solid var(--border-color); display: flex; flex-direction: column; }
         .sidebar.active { right: 0; }
         
-        .sidebar-header {
+        /* لافتة الصورة المستطيلة الجديدة داخل القائمة الجانبية */
+        .sidebar-brand-banner {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--accent-color);
         }
-        .sidebar-header img {
-            width: 100%;
-            max-width: 220px;
-            height: auto;
-            border-radius: 8px;
-            margin-bottom: 10px;
+        .sidebar-brand-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1;
         }
-        .sidebar-header .site-title {
-            color: var(--accent-color);
-            font-size: 18px;
-            font-weight: 800;
+        .sidebar-brand-text {
+            position: relative;
+            z-index: 2;
             text-align: center;
+            color: #fff;
         }
-        .sidebar-header .site-title small {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #ddd;
-        }
-        
+        .sidebar-brand-text .en { font-size: 16px; font-weight: 900; letter-spacing: 1px; color: var(--accent-light); }
+        .sidebar-brand-text .ar { font-size: 14px; font-weight: 800; margin-top: 2px; color: #fff; }
+
+        .sidebar-menu-wrapper { padding: 0 15px; }
         .sidebar-item { background: rgba(255, 255, 255, 0.02); padding: 12px 14px; border-radius: 10px; margin-bottom: 8px; border: 1px solid rgba(255, 255, 255, 0.03); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 13px; color: #ddd; }
         .sidebar-item:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--accent-color); transform: translateX(-4px); }
         .sidebar-item svg { width: 18px; height: 18px; fill: var(--accent-color); }
         
         .sidebar-reward-box {
-            margin-top: auto;
+            margin: auto 15px 0 15px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px dashed var(--accent-color);
             padding: 12px;
@@ -180,8 +190,8 @@
         }
         .sidebar-reward-box h4 { font-size: 12px; color: var(--accent-light); margin-bottom: 6px; font-weight: 800; }
         .sidebar-reward-box p { font-size: 10px; color: #bbb; margin-bottom: 10px; }
-        .social-reward-grid { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-        .social-reward-icon { width: 36px; height: 36px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); }
+        .social-reward-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; justify-content: center; }
+        .social-reward-icon { width: 100%; aspect-ratio: 1; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); }
         .social-reward-icon:hover { transform: scale(1.1); border-color: var(--accent-color); }
         .social-reward-icon img { width: 20px; height: 20px; object-fit: contain; }
         .sidebar-footer { margin-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; font-size: 10px; color: rgba(255,255,255,0.4); text-align: center; }
@@ -214,46 +224,33 @@
             aspect-ratio: 16 / 7;
             position: relative;
         }
-        .promo-banners-slider img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+        .promo-banners-slider img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .hero-banner { display: none; }
+        /* تنسيق الأقسام المباشرة المجمعة */
+        .category-group-container { margin-bottom: 25px; }
+        .category-group-header { font-size: 15px; font-weight: 800; color: var(--accent-color); padding: 0 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .category-group-header span { background: rgba(255, 71, 87, 0.1); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(255, 71, 87, 0.2); }
+        .royal-vip-theme .category-group-header span { background: rgba(236, 204, 104, 0.1); border-color: rgba(236, 204, 104, 0.2); }
 
         .tabs-container { display: flex; gap: 10px; padding: 0 16px; margin-bottom: 16px; }
         .tabs-container.hidden { display: none; }
         .tab-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-size: 13px; font-weight: 800; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(255, 255, 255, 0.04); color: #c0b09a; }
         .tab-btn.active { background: var(--accent-color); color: #fff; box-shadow: var(--neon-glow); }
-        .tab-btn svg { width: 16px; height: 16px; fill: currentColor; }
-        .tab-btn.disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .category-selector-container { padding: 0 16px; margin-bottom: 16px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+        .category-selector-container { padding: 0 16px; margin-bottom: 16px; display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
         .category-selector-container.hidden { display: none; }
         .cat-filter-chip { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #c0b09a; cursor: pointer; white-space: nowrap; transition: var(--transition); }
         .cat-filter-chip.active { background: var(--accent-color); color: #fff; border-color: var(--accent-color); }
-        .cat-filter-chip.coming-soon { opacity: 0.6; cursor: not-allowed; }
+        .cat-filter-chip.soon-chip { border-style: dashed; opacity: 0.75; position: relative; }
 
-        .section-back-header { display: none; padding: 10px 16px; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; }
+        .section-back-header { display: none; padding: 12px 16px; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; }
 
-        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px 20px; }
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; }
         .product-card { background: var(--card-bg); border-radius: var(--radius); position: relative; overflow: hidden; cursor: pointer; transition: var(--transition); border: 1px solid var(--border-color); display: flex; flex-direction: column; box-shadow: var(--shadow); }
         .product-card:hover { transform: translateY(-3px); border-color: var(--accent-color); }
         .product-img-wrapper { width: 100%; aspect-ratio: 3 / 4; position: relative; overflow: hidden; background: rgba(0,0,0,0.3); }
         .product-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        .stock-status-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 9px;
-            font-weight: 800;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
+        .stock-status-badge { position: absolute; top: 8px; left: 8px; padding: 3px 8px; border-radius: 6px; font-size: 9px; font-weight: 800; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .stock-status-badge.available { background: var(--success); color: #000; }
         .stock-status-badge.unavailable { background: var(--danger); color: #fff; }
 
@@ -268,11 +265,13 @@
 
         .plans-list-container { margin: 16px; background: var(--card-bg); border-radius: var(--radius); padding: 16px; border: 1.5px solid var(--accent-color); display: none; box-shadow: var(--neon-glow); }
         .plan-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); margin-bottom: 6px; border-radius: 8px; }
-        .plan-item:last-child { margin-bottom: 0; }
         
+        /* مودال الشراء والدفع المطور */
         .checkout-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(5px); }
         .checkout-modal.active { display: flex; }
-        .checkout-box { background: var(--top-bar-bg); border: 2px solid var(--accent-color); border-radius: var(--radius); padding: 20px; max-width: 380px; width: 100%; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
+        .checkout-box { background: var(--top-bar-bg); border: 2px solid var(--accent-color); border-radius: var(--radius); padding: 20px; max-width: 390px; width: 100%; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; }
+
+        .activation-flow-hint { background: rgba(255,255,255,0.03); border-right: 3px solid var(--accent-color); padding: 10px; border-radius: 6px; margin-bottom: 12px; font-size: 12px; line-height: 1.5; color: #ddd; }
 
         .notif-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 400; display: none; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
         .notif-modal.active { display: flex; }
@@ -288,15 +287,13 @@
         .section { display: none; padding: 0 16px 20px; }
         .section.active { display: block; }
         .section-title { color: var(--accent-color); font-size: 16px; font-weight: 900; margin-bottom: 16px; border-right: 4px solid var(--accent-color); padding-right: 8px; display: flex; align-items: center; gap: 8px; }
-        .section-title svg { width: 20px; height: 20px; fill: var(--accent-color); }
         
         .wallet-methods-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
         .wallet-card { background: var(--card-bg); border-radius: 12px; padding: 14px; border: 1px solid var(--border-color); cursor: pointer; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: var(--transition); }
         .wallet-card.selected { border-color: var(--accent-light); background: rgba(255, 255, 255, 0.05); box-shadow: var(--neon-glow); }
         .wallet-card img { width: 45px; height: 45px; object-fit: contain; border-radius: 8px; }
-        .wallet-card span { font-size: 12px; font-weight: 800; color: #fff; }
 
-        .form-select, .custom-input { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 11px; border-radius: 8px; font-size: 13px; outline: none; margin-bottom: 10px; transition: var(--transition); }
+        .form-select, .custom-input { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 11px; border-radius: 8px; font-size: 13px; outline: none; margin-bottom: 10px; transition: var(--transition); text-align: right; }
         .form-select:focus, .custom-input:focus { border-color: var(--accent-color); box-shadow: var(--neon-glow); }
         
         .buy-btn { width: 100%; padding: 12px; background: var(--accent-color); color: #fff; border: none; border-radius: 8px; font-weight: 900; font-size: 15px; cursor: pointer; margin-top: 10px; box-shadow: var(--neon-glow); }
@@ -313,7 +310,6 @@
         
         .profile-sub-section { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); }
         .sub-sec-title { font-size: 14px; font-weight: 800; color: var(--accent-color); margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-        .sub-sec-title svg { width: 16px; height: 16px; fill: var(--accent-color); }
 
         .support-action-btn { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); padding: 14px; border-radius: 10px; margin-bottom: 10px; text-decoration: none; color: #fff; font-weight: bold; font-size: 13px; transition: var(--transition); }
         .support-action-btn:hover { background: rgba(255,255,255,0.07); transform: translateY(-2px); border-color: var(--accent-color); }
@@ -324,34 +320,17 @@
         .user-avatar-pfp { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-color); box-shadow: var(--neon-glow); }
         .avatar-edit-label { position: absolute; bottom: 0; left: 0; background: var(--accent-color); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--top-bar-bg); }
 
-        .tiktok-verified-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 15px;
-            height: 15px;
-            background-color: #20d5ec;
-            color: #fff;
-            border-radius: 50%;
-            font-size: 9px;
-            font-weight: bold;
-            margin-right: 5px;
-            position: relative;
-            box-shadow: 0 0 4px rgba(32, 213, 236, 0.6);
-        }
+        .tiktok-verified-badge { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; background-color: #20d5ec; color: #fff; border-radius: 50%; font-size: 9px; font-weight: bold; margin-right: 5px; position: relative; box-shadow: 0 0 4px rgba(32, 213, 236, 0.6); }
 
-        .gift-box-wrapper {
-            background: rgba(255, 71, 87, 0.05);
-            border: 1px dashed rgba(255, 71, 87, 0.3);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            margin-top: 5px;
-        }
+        /* حقول وخيارات الإهداء */
+        .gift-box-wrapper { background: rgba(255, 71, 87, 0.05); border: 1px dashed rgba(255, 71, 87, 0.3); padding: 14px; border-radius: 10px; margin-bottom: 12px; margin-top: 5px; }
+        .royal-vip-theme .gift-box-wrapper { background: rgba(236, 204, 104, 0.05); border-color: rgba(236, 204, 104, 0.3); }
+        .gift-dynamic-fields { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); margin-top: 8px; }
     </style>
 </head>
 <body>
 
+    <!-- شاشة التحميل الترحيبية الاستهلالية للموقع -->
     <div id="authLoadingOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#120905;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:15px;text-align:center;padding:20px;">
         <img src="sheaae.jpg" style="width:110px; height:110px; border-radius:50%; border:3px solid #ff4757; box-shadow: 0 0 20px rgba(255,71,87,0.4);" alt="Logo">
         <h2 style="font-weight:900; font-size:22px; color:#ff4757;">دليفريكو باي</h2>
@@ -360,6 +339,7 @@
     </div>
     <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
 
+    <!-- الشريط العلوي المعدل لوضع الشعار المستطيل بالمنتصف تماماً -->
     <header class="top-bar">
         <div class="hamburger-zone">
             <div class="hamburger" onclick="toggleSidebar()">
@@ -367,7 +347,7 @@
             </div>
         </div>
         <div class="center-logo-zone" onclick="resetToHomeMain()">
-            <img src="sheaae.jpg" alt="Logo" onerror="this.src='https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=100'">
+            <img id="mainAppTopLogo" alt="Dlvrko pay Logo">
         </div>
         <div class="actions-zone">
             <div class="notif-bell" onclick="openNotifModal()">
@@ -377,6 +357,7 @@
         </div>
     </header>
 
+    <!-- مربع الرصيد المائي العائم السفلي بدون أيقونة المحفظة -->
     <div class="glass-balance-floating" onclick="switchSection('wallet')">
         <div class="plus-btn">＋</div>
         <div class="balance-info">
@@ -385,52 +366,56 @@
         </div>
     </div>
 
+    <!-- القائمة الجانبية المحدثة بالكامل مع صورة اللوحة والاسم ثنائي اللغة -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
     <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <img src="sheaae.jpg" alt="Dlvrko pay">
-            <div class="site-title">
-                Dlvrko pay
-                <small>دليفريكو باي</small>
+        <div class="sidebar-brand-banner" id="sidebarRectBanner">
+            <div class="sidebar-brand-text">
+                <div class="en">Dlvrko pay</div>
+                <div class="ar">دليفريكو باي</div>
             </div>
         </div>
-        <div class="sidebar-item" onclick="resetToHomeMain(); toggleSidebar();">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> الرئيسية والخدمات
-        </div>
-        <div class="sidebar-item" onclick="switchSection('exchange'); toggleSidebar();">
-            <svg viewBox="0 0 24 24"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> قسم تبديل الرصيد
-        </div>
-        <div class="sidebar-item" onclick="switchSection('wallet'); toggleSidebar();">
-            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> شحن المحفظة
-        </div>
-        <div class="sidebar-item" onclick="switchSection('purchases'); toggleSidebar();">
-            <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg> أرشيف مشترياتي
-        </div>
-        <div class="sidebar-item" onclick="switchSection('support'); toggleSidebar();">
-            <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l2.79-2.79C9.93 18.66 10.94 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg> الدعم المباشر
-        </div>
-        <div class="sidebar-item" onclick="switchSection('profile'); toggleSidebar();">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg> حسابي والترقية
-        </div>
-        <div class="sidebar-item" onclick="signOut()">
-            <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L13.67 11H3v2h10.67zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg> تسجيل خروج
+        
+        <div class="sidebar-menu-wrapper">
+            <div class="sidebar-item" onclick="resetToHomeMain(); toggleSidebar();">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> الرئيسية والخدمات الأفقية
+            </div>
+            <div class="sidebar-item" onclick="switchSection('exchange'); toggleSidebar();">
+                <svg viewBox="0 0 24 24"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> قسم تبديل الرصيد الذكي
+            </div>
+            <div class="sidebar-item" onclick="switchSection('wallet'); toggleSidebar();">
+                <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> شحن محفظة الحساب
+            </div>
+            <div class="sidebar-item" onclick="switchSection('purchases'); toggleSidebar();">
+                <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg> أرشيف مشترياتي المباشرة
+            </div>
+            <div class="sidebar-item" onclick="switchSection('support'); toggleSidebar();">
+                <svg viewBox="0 0 24 24"><path d="M12 2c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l2.79-2.79C9.93 18.66 10.94 19 12 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg> قنوات الدعم المباشر الإداري
+            </div>
+            <div class="sidebar-item" onclick="switchSection('profile'); toggleSidebar();">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg> حسابي والترقية للملكي
+            </div>
+            <div class="sidebar-item" onclick="signOut()">
+                <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L13.67 11H3v2h10.67zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg> تسجيل خروج آمن
+            </div>
         </div>
 
+        <!-- نظام الربح الموسع بـ 4 منصات ليشمل سناب شات بقيمة 0.50 د.ل -->
         <div class="sidebar-reward-box">
             <h4>🎁 تابع منصاتنا واحصل على مكافأة!</h4>
             <p>اضغط وتصفح أي منصة للحصول على 0.50 د.ل فورية لمحفظتك (لمرة واحدة فقط لكل تطبيق)</p>
             <div class="social-reward-grid">
-                <div class="social-reward-icon" onclick="claimSocialBonus('facebook', 'https://facebook.com')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook">
+                <div class="social-reward-icon" id="reward-facebook" onclick="claimSocialBonus('facebook', 'https://facebook.com')">
+                    <img alt="Facebook">
                 </div>
-                <div class="social-reward-icon" onclick="claimSocialBonus('instagram', 'https://instagram.com')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+                <div class="social-reward-icon" id="reward-instagram" onclick="claimSocialBonus('instagram', 'https://instagram.com')">
+                    <img alt="Instagram">
                 </div>
-                <div class="social-reward-icon" onclick="claimSocialBonus('tiktok', 'https://tiktok.com')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3046/3046124.png" alt="TikTok">
+                <div class="social-reward-icon" id="reward-tiktok" onclick="claimSocialBonus('tiktok', 'https://tiktok.com')">
+                    <img alt="TikTok">
                 </div>
-                <div class="social-reward-icon" onclick="claimSocialBonus('snapchat', 'https://snapchat.com')">
-                    <img src="https://cdn-icons-png.flaticon.com/512/5969/5969028.png" alt="Snapchat">
+                <div class="social-reward-icon" id="reward-snapchat" onclick="claimSocialBonus('snapchat', 'https://snapchat.com')">
+                    <img alt="Snapchat">
                 </div>
             </div>
         </div>
@@ -438,6 +423,7 @@
         <div class="sidebar-footer"><p>جميع الحقوق محفوظة لمنصة دليفريكو باي © 2026</p></div>
     </div>
 
+    <!-- نافذة العروض المحددة الزمن -->
     <div class="vip-countdown-section" id="vipPromoSection">
         <div class="vip-countdown-header">
             <span class="vip-countdown-title">⚡ عروض حصرية لفترة محدودة عند الترقية:</span>
@@ -453,26 +439,28 @@
         <button class="buy-btn" style="background:#eccc68; color:#000; font-size:12px; margin-top:8px;" onclick="switchSection('profile')">🚀 ترقية حسابي الآن واستلام الخصم</button>
     </div>
 
+    <!-- لافتة سلايدر الإعلانات الرئيسية المجلوبة من الـ GitHub -->
     <div class="promo-banners-slider" id="topPromoSliderArea">
-        <img src="https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=800" id="dynamicPromoBannerImg" alt="إعلان ترويجي" onclick="showToast('📢 تابع العروض والخصومات اليومية المتجددة!')">
+        <img id="dynamicPromoBannerImg" alt="إعلان ترويجي" onclick="showToast('📢 تابع العروض والخصومات اليومية المتجددة!')">
     </div>
-
-    <div class="hero-banner" id="heroBanner" style="display:none;"></div>
 
     <div class="tabs-container" id="mainTabsContainer">
-        <button class="tab-btn disabled" style="opacity: 0.5; cursor: not-allowed;"><svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> شراء من مواقع عالمية (قريباً)</button>
-        <button class="tab-btn active" onclick="resetToHomeMain()"><svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg> الاشتراكات الرقمية</button>
+        <button class="tab-btn" style="opacity: 0.5; cursor: not-allowed;"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;margin-left:4px;"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/></svg> خدمات ديلفري (قريباً)</button>
+        <button class="tab-btn active" onclick="resetToHomeMain()"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;margin-left:4px;"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> الاشتراكات الرقمية</button>
     </div>
 
+    <!-- شريط تصفية اختيار الأقسام العلوي السريع -->
     <div class="category-selector-container" id="categoryChipsContainer"></div>
 
+    <!-- ترويسة الرجوع والتنقل الداخلي للأقسام المعزولة -->
     <div class="section-back-header" id="backSectionHeader">
         <span id="currentActiveCategoryName" style="color:var(--accent-color); font-weight:900; font-size:14px;">القسم المحدد</span>
         <button onclick="resetToHomeMain()" style="background:var(--accent-color); border:none; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:bold; cursor:pointer; color:#fff;">كل الأقسام ✕</button>
     </div>
 
+    <!-- الواجهة والمنطقة الرئيسية المحدثة لعرض المنتجات داخل الأقسام مباشرة -->
     <div class="section active" id="homeSection">
-        <div class="products-grid" id="productsGrid"></div>
+        <div id="directCategorizedProductsList"></div>
         
         <div class="plans-list-container" id="plansListContainer">
             <h4 style="color:var(--accent-color); margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; font-size:14px;">
@@ -483,32 +471,31 @@
         </div>
     </div>
 
+    <!-- مودال تأكيد بيانات الشحن وتفعيل ميزة الإهداء المتكاملة والتحكم بها من لوحة الإدارة -->
     <div class="checkout-modal" id="checkoutModal">
         <div class="checkout-box">
             <h3 style="color:var(--accent-color); margin-bottom:12px; font-size:15px; display:flex; align-items:center; gap:6px;"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:var(--accent-color);"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> تأكيد بيانات الشحن واليوزرات</h3>
             
+            <div class="activation-flow-hint" id="activationFlowHint">
+                طريقة التفعيل والتسليم لهذا المنتج تظهر هنا تلقائياً بناءً على نوع الخدمة.
+            </div>
+
+            <!-- خيار الإهداء الجديد كلياً والتحكم بحقوله بشكل كامل -->
             <div class="gift-box-wrapper" id="giftSectionWrapper">
-                <label style="font-size:12px; color:var(--accent-light); font-weight:800; display:flex; align-items:center; gap:5px; margin-bottom:8px;">
-                    <input type="checkbox" id="chkIsGift" onchange="toggleGiftFields()" style="width:16px; height:16px; accent-color:var(--accent-color);">
-                    🎁 شراء هذا الاشتراك كهدية لشخص آخر؟
+                <label style="font-size:12px; color:var(--accent-light); font-weight:800; display:flex; align-items:center; gap:5px; cursor:pointer;">
+                    <input type="checkbox" id="chkIsGift" onchange="toggleGiftFields()" style="width:17px; height:17px; accent-color:var(--accent-color);">
+                    🎁 إرسال هذا الطلب كهدية لشخص آخر؟
                 </label>
-                <div id="giftFieldsContainer" style="display:none; margin-top:10px;">
-                    <div class="form-group">
-                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">نوع إرسال الهدية</label>
-                        <select id="giftSendType" class="form-select" onchange="toggleGiftSenderNameField()">
-                            <option value="named">بإسم المرسل (يظهر اسمك)</option>
-                            <option value="anonymous">مجهول (بدون اسم المرسل)</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="giftSenderNameGroup">
-                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">اسم المرسل</label>
+                <div id="giftFieldsContainer" class="gift-dynamic-fields" style="display:none;">
+                    <div class="form-group" id="group-giftSender">
+                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">اسم المرسل (اختياري)</label>
                         <input type="text" id="giftSenderName" class="custom-input" placeholder="اكتب اسمك ليظهر مع الهدية">
                     </div>
-                    <div class="form-group">
-                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رقم التواصل أو اليوزر للمستلم</label>
-                        <input type="text" id="giftReceiverContact" class="custom-input" placeholder="رقم الهاتف أو يوزر المستلم">
+                    <div class="form-group" id="group-giftRecipient">
+                        <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رقم تواصل المستلم أو اليوزر (مطلوب) *</label>
+                        <input type="text" id="giftRecipientContact" class="custom-input" placeholder="أدخل رقم هاتف أو يوزر الشخص المستهدف">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="group-giftMsg">
                         <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">رسالة مرفقة مع الهدية (اختياري)</label>
                         <input type="text" id="giftMessage" class="custom-input" placeholder="اكتب تهنئة أو رسالة مرافقة للهدية">
                     </div>
@@ -516,15 +503,15 @@
             </div>
 
             <div class="form-group">
-                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">البريد الإلكتروني الحساب / المعرف الرقمي</label>
+                <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;" id="lblChkEmail">البريد الإلكتروني الحساب / المعرف الرقمي</label>
                 <input type="text" id="chkEmail" class="custom-input" placeholder="ايميل الحساب أو المعرف المستهدف">
             </div>
-            <div class="form-group">
+            <div class="form-group" id="passwordFieldGroup">
                 <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">كلمة مرور الحساب الحالية</label>
                 <input type="password" id="chkPassword" class="custom-input" placeholder="كلمة مرور الحساب">
             </div>
             
-            <div class="form-group">
+            <div class="form-group" id="userCountFieldGroup">
                 <label style="font-size:11px; color:#c0b09a; display:block; margin-bottom:4px;">عدد اليوزرات النشطة داخل الحساب المراد تعبئتها</label>
                 <select id="chkUserCount" class="form-select" onchange="adjustUserFields()">
                     <option value="1">يوزر واحد نشط (User 1)</option>
@@ -539,6 +526,7 @@
         </div>
     </div>
 
+    <!-- نافذة الإشعارات والرسائل التنبيهية -->
     <div class="notif-modal" id="notifModal">
         <div class="notif-modal-box">
             <h3 style="color:var(--accent-color); margin-bottom:14px; font-size:15px;">تنبيهات وإشعارات الحساب</h3>
@@ -547,16 +535,17 @@
         </div>
     </div>
 
+    <!-- قسم تبديل الرصيد للشبكات المحلية الليبية -->
     <div class="section" id="exchangeSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> قسم تبديل رصيد (ليبيانا - مدار - LTT)
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M19 14l4-4-4-4v3H3v2h16v3zM5 10l-4 4 4 4v-3h16v-2H5v-3z"/></svg> قسم تبديل رصيد (ليبيانا - مدار - LTT)
         </div>
         <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 11px;">
             <p style="color: var(--accent-light); font-weight: bold;">📊 عمولة النظام المعتمدة والذكية للتبديل السريع:</p>
             <p style="margin-top: 4px; color: #ddd;">للمستخدمين العاديين: <span style="color: var(--accent-color); font-weight: bold;">5%</span> | للمشتركين الملكيين VIP: <span style="color: var(--success); font-weight: bold;">0% مجاناً بدون عمولة</span></p>
         </div>
         <div class="form-group">
-            <label style="font-size:12px;">اختر شبكة الرصيد المستهدفة:</label>
+            <label style="font-size:12px; display:block; margin-bottom:6px;">اختر شبكة الرصيد المستهدفة:</label>
             <select id="exchangeNetwork" class="form-select">
                 <option value="ليبيانا">ليبيانا (Libyana)</option>
                 <option value="مدار">المدار الجديد (Al-Madar)</option>
@@ -564,7 +553,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label style="font-size:12px;">المبلغ المراد تحويله وتبديله (د.ل):</label>
+            <label style="font-size:12px; display:block; margin-bottom:6px;">المبلغ المراد تحويله وتبديله (د.ل):</label>
             <input type="number" id="exchangeAmount" class="custom-input" placeholder="أدخل قيمة الرصيد" oninput="calculateExchangeFee()">
         </div>
         <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 12px;">
@@ -574,26 +563,27 @@
         <button class="buy-btn" onclick="executeBalanceExchange()">تأكيد التبديل الفوري وإضافة الرصيد</button>
     </div>
 
+    <!-- قسم شحن رصيد المحفظة عبر طرق الدفع المختلفة -->
     <div class="section" id="walletSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg> شحن الرصيد والتحويلات المالية
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 Oz"/></svg> شحن الرصيد والتحويلات المالية
         </div>
         
         <div class="wallet-methods-grid">
             <div class="wallet-card selected" id="method-libiana" onclick="selectPaymentMethod('ليبيانا')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Libyana_Logo.png" onerror="this.src='https://images.unsplash.com/photo-1562408590-e32931084e23?w=80'" alt="ليبيانا">
+                <img id="imgPayLibiana" alt="ليبيانا">
                 <span>شحن ليبيانا</span>
             </div>
             <div class="wallet-card" id="method-madar" onclick="selectPaymentMethod('مدار')">
-                <img src="https://upload.wikimedia.org/wikipedia/ar/e/e3/Al-Madar_Al-Jadeed_logo.png" onerror="this.src='https://images.unsplash.com/photo-1562408590-e32931084e23?w=80'" alt="مدار">
+                <img id="imgPayMadar" alt="مدار">
                 <span>شحن مدار</span>
             </div>
             <div class="wallet-card" id="method-bank" onclick="selectPaymentMethod('مصرف')">
-                <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png" alt="مصرف">
+                <img id="imgPayOne" alt="مصرف">
                 <span>ون باي / لي باي</span>
             </div>
             <div class="wallet-card" id="method-crypto" onclick="selectPaymentMethod('بايبت')">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6A7p8P2qI-pYhO8H7rMreV_hG-LIn-b2xig&s" onerror="this.src='https://cdn-icons-png.flaticon.com/512/6001/6001354.png'" alt="بايبت">
+                <img id="imgPayBybit" alt="بايبت">
                 <span>بايبت USDT</span>
             </div>
         </div>
@@ -618,7 +608,7 @@
         </div>
         
         <div class="form-group">
-            <label style="font-size:12px; display:block; margin-bottom:4px;">إرفاق صورة إيصال التحويل المالي أو لقطة الشاشة (fdf/Images):</label>
+            <label style="font-size:12px; display:block; margin-bottom:4px;">إرفاق صورة إيصال التحويل المالي أو لقطة الشاشة:</label>
             <input type="file" id="walletReceiptFile" class="custom-input" accept="image/*" style="padding: 6px;">
         </div>
 
@@ -627,16 +617,18 @@
         <div style="margin-top:20px;"><h4 style="color:var(--accent-color); margin-bottom:8px; font-size:13px;">سجل العمليات الأخيرة</h4><div id="walletHistoryContainer"></div></div>
     </div>
 
+    <!-- أرشيف العمليات والمشتريات الفورية وتفاصيل الهدايا المعزولة -->
     <div class="section" id="purchasesSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/></svg> أرشيف العمليات والمشتريات الفورية
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg> أرشيف العمليات والمشتريات والطلبات المباشرة
         </div>
         <div id="purchasesList"></div>
     </div>
 
+    <!-- قسم الدعم المباشر ومراسلة الإدارة -->
     <div class="section" id="supportSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg> مراسلة ودعم إدارة الموقع الإدارية
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg> مراسلة ودعم إدارة الموقع الإدارية
         </div>
         <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
             <p style="color: var(--accent-light); font-weight: bold; font-size: 12px; margin-bottom: 12px;">📞 قنوات الدعم الفني السريع المباشر (للمشتركين والزوار):</p>
@@ -663,14 +655,14 @@
         <button class="buy-btn" onclick="sendChat()">إرسال الرسالة للتحقق</button>
     </div>
 
+    <!-- قسم الملف الشخصي والترقية والتحكم بالنقاط -->
     <div class="section" id="profileSection">
         <div class="section-title">
-            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg> إدارة الحساب والاشتراك الملكي
+            <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--accent-color);margin-left:6px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg> إدارة الحساب والاشتراك الملكي
         </div>
 
         <div class="profile-sub-section">
             <div class="sub-sec-title">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 <span>قسم معلومات حسابي البيانية</span>
             </div>
             <div style="text-align: center; padding: 10px 0;">
@@ -702,7 +694,6 @@
 
         <div class="profile-sub-section" style="background: linear-gradient(135deg, #1f1a10, #080808); border: 2px solid #eccc68;">
             <div class="sub-sec-title" style="color: #eccc68;">
-                <svg viewBox="0 0 24 24" style="fill: #eccc68;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                 <span>قسم ترقية الحساب إلى النظام الملكي VIP</span>
             </div>
             <p style="font-size:11px; text-align:right; color:#f0e6d3; line-height:1.5;">انضم الآن للنظام الملكي الحصري لتحديث شكل ومظهر سيستم دليفريكو باي بالكامل للون الأسود والذهبي والحصول على تخفيضات ومميزات خارقة فورية.</p>
@@ -711,19 +702,13 @@
                 <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> علامة توثيق زرقاء مميزة تظهر بجانب اسم حسابك مباشرة.</li>
                 <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> إمكانية استرجاع المبلغ خلال 60 دقيقة من الاشتراك في نتفلكس وشاهد فقط.</li>
                 <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> دعم سريع ذو أولوية فائقة خلال فترة الاشتراك في حالة حدوث مشكلة.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> سهولة وإتاحة إلغاء الخدمات المباشرة خلال فترة السماح المقررة.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> تفعيل فوري وآلي للاشتراكات الرقمية فور الدفع مباشرة.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> تحديثات مستمرة وتحسينات دورية حصرية لباقات الخدمة.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> حماية وتشفير كامل لبيانات المستخدم واليوزرات المسجلة.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> تجربة استخدام مرنة وسهلة للغاية بدون تعقيد برمي أو فني.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> إمكانية التواصل والاتصال المباشر الخاطف مع الطاقم الفني للحل.</li>
-                <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> خصومات أعلى، عروض خاصة أسبوعية، وأولوية في اختيار هدية أسبوعية.</li>
                 <li><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.42z"/></svg> تصفير عمولة قسم تبديل الرصيد تماماً لتصبح (0% عمولة).</li>
             </ul>
             <button class="buy-btn" id="upgradeBtn" style="background:#eccc68; color:#000; font-weight:900;" onclick="executeUpgradeToVip()">ترقية وتفعيل العضوية الملكية (10 د.ل/شهرياً)</button>
         </div>
     </div>
 
+    <!-- شريط التنقل السفلي الثابت المطور والمعدل -->
     <nav class="bottom-nav">
         <button class="nav-item" onclick="switchSection('wallet')">
             <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -746,19 +731,28 @@
         </button>
     </nav>
 
+    <!-- الرمز البرمجي والمنطق التنفيذي لجافا سكريبت لمنصة دليفريكو باي -->
     <script>
+        // إعدادات وبيانات الربط الخاصة بـ Firebase المُحدثة والمصححة بالكامل
         const firebaseConfig = {
             apiKey: "AIzaSyAsDZDLbzB0Vfqgo8SenbE4DTxjc7m_xqA",
             authDomain: "iq-store-f6195.firebaseapp.com",
             projectId: "iq-store-f6195",
             storageBucket: "iq-store-f6195.firebasestorage.app",
             messagingSenderId: "971567926936",
-            appId: "1:971567926936:web:f85205b7d1ea210d3c0aed"
+            appId: "1:971567926936:web:f85205b7d1ea210d3c0aed",
+            measurementId: "G-YWQNRWW9Q1"
         };
+        
+        // تفعيل وتهيئة المشروع
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // رابط مستودع GitHub الأساسي المعتمد لجلب كافة صور الملفات بشكل ديناميكي مجهّز
+        const GITHUB_ASSETS_BASE = "https://raw.githubusercontent.com/MansorHakeem/dlvrko-pay-assets/main/images/";
+
+        // متغيرات الحالة الخاصة بالتطبيق والربط المالي
         let currentUserDocId = null;
         let walletBalance = 0;
         let isVip = false;
@@ -768,31 +762,53 @@
         let currentCategory = 'all';
         let lastCheckInTime = null;
 
+        // مصفوفة الأقسام المحدثة شاملة القسم الجديد "شراء من مواقع عالمية" مع وسم (قريباً)
         const categories = [
             { code: 'all', title: '🔥 كل الأقسام والخدمات' },
             { code: 'games', title: '🎮 شحن باقات الألعاب' },
             { code: 'cards', title: '💳 بطاقات ماستركارد' },
             { code: 'smm', title: '🚀 خدمات السوشيال ميديا' },
-            { code: 'international', title: '🌍 شراء من مواقع عالمية' }
+            { code: 'global_soon', title: '🌐 شراء من مواقع عالمية', soon: true }
         ];
 
         let activeProducts = [];
         let tempSelectedProdId = null;
         let tempSelectedPlanId = null;
 
+        // الاستماع لحالة تسجيل الدخول والتحقق الآمن المستمر للسيستم
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
             return auth.onAuthStateChanged(async (user) => {
                 document.getElementById('authLoadingOverlay').style.display = 'none';
                 if (!user) {
                     window.location.href = 'long.html';
                 } else {
+                    setupGitHubImages();
                     await loadUserData(user);
                     await fetchProductsAndBanners();
                     initApp();
                 }
             });
-        }).catch(e => console.error("Persistence error:", e));
+        }).catch(e => console.error("Firebase Auth Persistence error:", e));
 
+        // دالة إعداد وتوزيع مسارات الصور المجلوبة من GitHub مباشرة حسب أسماء الملفات
+        function setupGitHubImages() {
+            document.getElementById('mainAppTopLogo').src = GITHUB_ASSETS_BASE + "top_logo_rect.png";
+            document.getElementById('sidebarRectBanner').style.backgroundImage = `url('${GITHUB_ASSETS_BASE}sidebar_banner.png')`;
+            
+            // صور قنوات الإيداع بالمحفظة
+            document.getElementById('imgPayLibiana').src = GITHUB_ASSETS_BASE + "pay_libyana.png";
+            document.getElementById('imgPayMadar').src = GITHUB_ASSETS_BASE + "pay_madar.png";
+            document.getElementById('imgPayOne').src = GITHUB_ASSETS_BASE + "pay_onepay.png";
+            document.getElementById('imgPayBybit').src = GITHUB_ASSETS_BASE + "pay_bybit.png";
+
+            // صور منصات بونص المكافآت الأربعة
+            document.getElementById('reward-facebook').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_fb.png";
+            document.getElementById('reward-instagram').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_ig.png";
+            document.getElementById('reward-tiktok').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_tk.png";
+            document.getElementById('reward-snapchat').querySelector('img').src = GITHUB_ASSETS_BASE + "ico_snap.png";
+        }
+
+        // جلب وثيقة بيانات المستخدم من Firebase ومزامنة حالتها وتوثيق الترقية والسمات
         async function loadUserData(user) {
             try {
                 const doc = await db.collection('users').doc(user.uid).get();
@@ -808,20 +824,14 @@
                     document.getElementById('profileNameDisplay').innerText = data.displayName || user.email;
                     
                     const savedAvatar = localStorage.getItem('user_custom_avatar_' + user.uid);
-                    if (savedAvatar) {
-                        document.getElementById('userPfpImage').src = savedAvatar;
-                    }
+                    if (savedAvatar) document.getElementById('userPfpImage').src = savedAvatar;
 
                     const promoSection = document.getElementById('vipPromoSection');
                     if (isVip) {
                         promoSection.classList.add('hidden');
-                    } else {
-                        promoSection.classList.remove('hidden');
-                    }
-
-                    if (isVip) {
                         document.body.classList.add('royal-vip-theme');
                     } else {
+                        promoSection.classList.remove('hidden');
                         document.body.classList.remove('royal-vip-theme');
                     }
                     startPromoCountdown();
@@ -839,151 +849,175 @@
                     currentUserDocId = user.uid;
                     document.getElementById('profileNameDisplay').innerText = user.email.split('@')[0];
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error("Error standard loading user doc details:", e); }
         }
 
+        // جلب اللافتة والمنتجات من قاعدة البيانات مع نظام تحويل الأسماء لصور جيت هاب تلقائياً
         async function fetchProductsAndBanners() {
             try {
                 const bannerDoc = await db.collection('app_settings').doc('banners').get();
                 if(bannerDoc.exists && bannerDoc.data().topBannerUrl) {
                     document.getElementById('dynamicPromoBannerImg').src = bannerDoc.data().topBannerUrl;
+                } else {
+                    document.getElementById('dynamicPromoBannerImg').src = GITHUB_ASSETS_BASE + "default_promo_banner.png";
                 }
 
+                // جلب المنتجات المباشرة مع مراجعة تصحيح مفتاح Firebase
                 const snapshot = await db.collection('products').get();
                 let loaded = [];
-                snapshot.forEach(doc => { loaded.push({ id: doc.id, ...doc.data() }); });
+                snapshot.forEach(doc => { 
+                    let pData = doc.data();
+                    // اعتماد جلب صورة المنتج من ملفات مستودع GitHub بناء على الاسم البرمجي أو المعرف الخاص به
+                    let githubProductImage = GITHUB_ASSETS_BASE + "products/" + (pData.imageName || doc.id + ".png");
+                    loaded.push({ id: doc.id, ...pData, image: githubProductImage }); 
+                });
                 
                 activeProducts = loaded.length > 0 ? loaded : [
-                    { id: '1', name: 'ببجي موبايل الشحن العالمي', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400', category: 'games', rating: 4.9, reviewCount: 142, available: true, plans: [{ id: 'p1', name: '60 شدة ببجي كود فوري', price: 6, vipPrice: 5 }, { id: 'p2', name: '325 شدة شحن فوري', price: 28, vipPrice: 25 }] },
-                    { id: '2', name: 'اشتراك منصة نيتفليكس حساب كامل', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400', category: 'cards', rating: 4.8, reviewCount: 98, available: true, plans: [{ id: 'p3', name: 'باقة بريميوم 4K شهر', price: 15, vipPrice: 12 }] },
-                    { id: '3', name: 'شحن شدات فري فاير', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400', category: 'games', rating: 4.7, reviewCount: 85, available: true, plans: [{ id: 'p4', name: 'باقة 1000 دايموند', price: 10, vipPrice: 7 }] },
-                    { id: '4', name: 'اشتراك يوتيوب بريميوم', image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400', category: 'cards', rating: 4.9, reviewCount: 210, available: true, plans: [{ id: 'p5', name: 'شهر كامل', price: 12, vipPrice: 10 }] },
-                    { id: '5', name: 'شراء ألعاب من ستيم', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400', category: 'international', rating: 4.6, reviewCount: 34, available: false, plans: [] },
-                    { id: '6', name: 'شراء من أمازون', image: 'https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2?w=400', category: 'international', rating: 4.5, reviewCount: 28, available: false, plans: [] },
+                    { id: 'pubg_global', name: 'ببجي موبايل الشحن العالمي الفوري', category: 'games', rating: 4.9, reviewCount: 142, available: true, plans: [{ id: 'pb1', name: '60 شدة ببجي كود فوري', price: 6, vipPrice: 5 }, { id: 'pb2', name: '325 شدة شحن كود فوري', price: 28, vipPrice: 25 }], isGame: true },
+                    { id: 'netflix_premium', name: 'اشتراك منصة نيتفليكس حساب كامل بريميوم', category: 'cards', rating: 4.8, reviewCount: 98, available: true, plans: [{ id: 'nt1', name: 'باقة بريميوم 4K شاشة مستقلة شهر', price: 15, vipPrice: 12 }], isGame: false },
+                    { id: 'freefire_diamonds', name: 'شحن قسائم جواهر فري فاير كود آلي', category: 'games', rating: 4.7, reviewCount: 85, available: true, plans: [{ id: 'ff1', name: 'باقة 1080 دايموند كود فوري', price: 38, vipPrice: 34 }], isGame: true },
+                    { id: 'youtube_premium', name: 'اشتراك يوتيوب بريميوم أفراد رسمي', category: 'cards', rating: 4.9, reviewCount: 210, available: true, plans: [{ id: 'yt1', name: 'اشتراك شهر كامل رسمي باليوزر والملف', price: 12, vipPrice: 10 }], isGame: false },
+                    { id: 'tiktok_followers', name: 'رشق متابعين وتفاعل منصة تيك توك سريع', category: 'smm', rating: 4.6, reviewCount: 54, available: true, plans: [{ id: 'tk1', name: '1000 متابع حقيقي عربي متفاعل', price: 20, vipPrice: 16 }], isGame: false }
                 ];
-            } catch (e) { console.error(e); }
+
+                // تعديل مسارات الصور للمنتجات الافتراضية لتطابق نظام جلب مستودع GitHub
+                activeProducts.forEach(p => {
+                    p.image = GITHUB_ASSETS_BASE + "products/" + p.id + ".png";
+                });
+
+            } catch (e) { console.error("Error occurred during fetching product documents mapping:", e); }
         }
 
+        // تهيئة واجهة المستخدم وضخ البيانات بداخلها
         function initApp() {
             renderCategoryChips();
-            renderProducts();
+            renderDirectGroupedProducts();
             updateUI();
             renderNotifications();
             renderPurchases();
         }
 
+        // بناء وعرض أزرار تصفية الأقسام في الشريط العلوي السريع مع معالجة حقل "قريباً" للقسم الجديد
         function renderCategoryChips() {
             const container = document.getElementById('categoryChipsContainer');
             container.innerHTML = categories.map(c => {
-                let extraClass = '';
-                let onclickAttr = `onclick="filterByCategory('${c.code}')"`;
-                if (c.code === 'international') {
-                    extraClass = 'coming-soon';
-                    onclickAttr = 'onclick="showToast(\'🌍 قسم شراء من مواقع عالمية قريباً جداً!\')"';
+                if (c.soon) {
+                    return `<div class="cat-filter-chip soon-chip" onclick="showToast('📢 قسم شراء من مواقع عالمية سيتم إطلاقه قريباً جداً في التحديث القادم!')">${c.title} <small style="color:var(--accent-color);font-weight:900;">(قريباً)</small></div>`;
                 }
-                return `
-                    <div class="cat-filter-chip ${currentCategory === c.code ? 'active' : ''} ${extraClass}" ${onclickAttr}>${c.title}</div>
-                `;
+                return `<div class="cat-filter-chip ${currentCategory === c.code ? 'active' : ''}" onclick="filterByCategory('${c.code}')">${c.title}</div>`;
             }).join('');
         }
 
-        function renderProducts() {
-            const grid = document.getElementById('productsGrid');
-            let filtered = activeProducts.filter(p => currentCategory === 'all' || p.category === currentCategory);
-            
-            filtered.forEach(p => {
-                if(p.plans && p.plans.length > 0) {
-                    p.plans.sort((a, b) => {
-                        let priceA = isVip ? (a.vipPrice || a.price) : a.price;
-                        let priceB = isVip ? (b.vipPrice || b.price) : b.price;
-                        return priceA - priceB;
-                    });
-                }
-            });
+        // الهيكلة والتصميم الجديد: المنتجات معروضة داخل أقسامها مجمعة ومباشرة فور اختيار القسم
+        function renderDirectGroupedProducts() {
+            const container = document.getElementById('directCategorizedProductsList');
+            container.innerHTML = '';
 
-            if(filtered.length === 0) {
-                grid.innerHTML = `<p style="grid-column:span 2; text-align:center; padding:30px; color:#c0b09a;">لا توجد خدمات حالية في هذا القسم.</p>`;
-                return;
+            // فلترة وتجهيز الأقسام النشطة المطلوب عرضها
+            let targetedCategories = categories.filter(c => c.code !== 'all' && !c.soon);
+            
+            if (currentCategory !== 'all') {
+                targetedCategories = targetedCategories.filter(c => c.code === currentCategory);
             }
 
-            grid.innerHTML = filtered.map(p => {
-                let displayPrice = "اتصل بنا";
-                if(p.plans && p.plans.length > 0) {
-                    let minPrice = isVip ? (p.plans[0].vipPrice || p.plans[0].price) : p.plans[0].price;
-                    displayPrice = `إبتداءً من ${minPrice} د.ل`;
-                }
+            targetedCategories.forEach(cat => {
+                let filteredProducts = activeProducts.filter(p => p.category === cat.code);
                 
-                let rate = p.rating || 5.0;
-                let count = p.reviewCount || 12;
-
-                let isAvailable = p.available !== false;
-                let stockBadge = isAvailable ? 
-                    `<span class="stock-status-badge available">🟢 متوفر</span>` : 
-                    `<span class="stock-status-badge unavailable">🔴 غير متوفر</span>`;
-
-                let onClickAction = `showProductPlans('${p.id}')`;
-                if (!isAvailable) {
-                    onClickAction = `showToast('⚠️ هذا المنتج غير متوفر حالياً، سيتم توفيره قريباً')`;
-                }
-
-                return `
-                    <div class="product-card" onclick="${onClickAction}">
-                        ${stockBadge}
-                        <div class="product-img-wrapper"><img src="${p.image}" alt="${p.name}"></div>
-                        <div class="product-info-bottom">
-                            <div class="pname">${p.name}</div>
-                            <div class="price-range">${displayPrice}</div>
-                            <div class="review-stars-box">
-                                <span class="stars">★ ★ ★ ★ ★</span>
-                                <span class="review-count-lbl">(${rate} / ${count})</span>
-                            </div>
-                        </div>
-                        ${isVip ? '<span class="vip-badge">👑 ملكي VIP</span>' : ''}
+                // إنشاء حاوية مستقلة لكل قسم مع المنتجات التابعة له مباشرة
+                let catSectionHtml = document.createElement('div');
+                catSectionHtml.className = 'category-group-container';
+                catSectionHtml.id = 'group-sec-' + cat.code;
+                
+                let sectionTitleHtml = `
+                    <div class="category-group-header">
+                        <span>${cat.title}</span>
                     </div>
                 `;
-            }).join('');
+                
+                let gridHtml = `<div class="products-grid">`;
+                
+                if (filteredProducts.length === 0) {
+                    gridHtml += `<p style="grid-column:span 2; text-align:center; padding:20px; color:#c0b09a; font-size:12px;">لا توجد خدمات رقمية متوفرة حالياً في هذا القسم.</p>`;
+                } else {
+                    filteredProducts.forEach(p => {
+                        if(p.plans && p.plans.length > 0) {
+                            p.plans.sort((a, b) => {
+                                let priceA = isVip ? (a.vipPrice || a.price) : a.price;
+                                let priceB = isVip ? (b.vipPrice || b.price) : b.price;
+                                return priceA - priceB;
+                            });
+                        }
+
+                        let displayPrice = "اتصل بنا";
+                        if(p.plans && p.plans.length > 0) {
+                            let minPrice = isVip ? (p.plans[0].vipPrice || p.plans[0].price) : p.plans[0].price;
+                            displayPrice = `إبتداءً من ${minPrice} د.ل`;
+                        }
+
+                        let isAvailable = p.available !== false;
+                        let stockBadge = isAvailable ? 
+                            `<span class="stock-status-badge available">🟢 متوفر</span>` : 
+                            `<span class="stock-status-badge unavailable">🔴 غير متوفر</span>`;
+
+                        gridHtml += `
+                            <div class="product-card" onclick="showProductPlans('${p.id}')">
+                                ${stockBadge}
+                                <div class="product-img-wrapper"><img src="${p.image}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1614680376593-902f74fa0d41?w=300'"></div>
+                                <div class="product-info-bottom">
+                                    <div class="pname">${p.name}</div>
+                                    <div class="price-range">${displayPrice}</div>
+                                    <div class="review-stars-box">
+                                        <span class="stars">★ ★ ★ ★ ★</span>
+                                        <span class="review-count-lbl">(${p.rating || 5.0} / ${p.reviewCount || 10})</span>
+                                    </div>
+                                </div>
+                                ${isVip ? '<span class="vip-badge">👑 ملكي VIP</span>' : ''}
+                            </div>
+                        `;
+                    });
+                }
+                
+                gridHtml += `</div>`;
+                catSectionHtml.innerHTML = sectionTitleHtml + gridHtml;
+                container.appendChild(catSectionHtml);
+            });
         }
 
+        // دالة الفلترة السريعة الفورية والتحكم بظهور اللافتات المرافقة
         function filterByCategory(code) {
-            if (code === 'international') {
-                showToast('🌍 قسم شراء من مواقع عالمية قريباً جداً!');
-                return;
-            }
             currentCategory = code;
             renderCategoryChips();
-            const hero = document.getElementById('heroBanner');
             const mainTabs = document.getElementById('mainTabsContainer');
             const backHeader = document.getElementById('backSectionHeader');
             const sliderArea = document.getElementById('topPromoSliderArea');
             const selectedCatObj = categories.find(c => c.code === code);
             
             if(code !== 'all') {
-                hero.classList.add('hidden');
                 mainTabs.classList.add('hidden');
                 sliderArea.style.display = 'none';
                 backHeader.style.display = 'flex';
                 document.getElementById('currentActiveCategoryName').innerText = selectedCatObj ? selectedCatObj.title : "الخدمات";
             } else {
-                hero.classList.remove('hidden');
                 mainTabs.classList.remove('hidden');
                 sliderArea.style.display = 'block';
                 backHeader.style.display = 'none';
             }
-            renderProducts();
+            renderDirectGroupedProducts();
         }
 
+        // تصفير الفلتر والرجوع للرئيسية والخدمات الشاملة مباشرة
         function resetToHomeMain() {
             currentCategory = 'all';
-            document.getElementById('heroBanner').classList.remove('hidden');
             document.getElementById('mainTabsContainer').classList.remove('hidden');
             document.getElementById('topPromoSliderArea').style.display = 'block';
             document.getElementById('backSectionHeader').style.display = 'none';
             document.getElementById('plansListContainer').style.display = 'none';
             switchSection('home');
             renderCategoryChips();
-            renderProducts();
+            renderDirectGroupedProducts();
         }
 
+        // عرض قائمة الباقات الفرعية لمنتج محدد مع التمرير السلس
         function showProductPlans(productId) {
             const product = activeProducts.find(p => p.id === productId);
             if (!product) return;
@@ -991,10 +1025,7 @@
             if(product.available === false) {
                 return showToast('⚠️ عذراً، هذا المنتج غير متوفر حالياً. سيتم إتاحته قريباً جداً!');
             }
-
-            if(!product.plans || product.plans.length === 0) {
-                return showToast('⚠️ لا توجد باقات متاحة لهذا المنتج حالياً');
-            }
+            if(!product.plans) return;
             
             const container = document.getElementById('plansListContainer');
             const nameHeader = document.getElementById('selectedProductName');
@@ -1009,7 +1040,7 @@
                         <div>
                             <span style="font-weight:700; font-size:13px; color:#fff;">${plan.name}</span>
                         </div>
-                        <button class="cta-btn" onclick="initiateCheckoutFlow('${product.id}', '${plan.id}')" style="padding:6px 12px; font-size:12px; background:var(--accent-color); color:#fff; border:none; border-radius:6px; cursor:pointer; font-weight:700;">
+                        <button class="buy-btn" onclick="initiateCheckoutFlow('${product.id}', '${plan.id}')" style="padding:6px 14px; font-size:12px; background:var(--accent-color); color:#fff; width:auto; margin-top:0;">
                             شراء بقيمة ${finalPrice} د.ل
                         </button>
                     </div>
@@ -1020,37 +1051,57 @@
             container.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // فتح وتجهيز مودال الشراء مع تحديث آلية التفعيل والتسليم مباشرة حسب نوع الطلب (ألعاب/اشتراكات)
         function initiateCheckoutFlow(productId, planId) {
             tempSelectedProdId = productId;
             tempSelectedPlanId = planId;
+            
+            const product = activeProducts.find(p => p.id === productId);
+            const flowHint = document.getElementById('activationFlowHint');
+            
+            // تخصيص النص التعريفي التفصيلي لطريقة التفعيل والتسليم الفوري
+            if (product && (product.isGame || product.category === 'games')) {
+                flowHint.innerHTML = "🎯 <strong>طريقة التسليم (باقات الألعاب):</strong> سيتم تسليم كود شحن اللعبة وتفعيله تلقائياً وفورياً في حسابك فور إتمام الشراء بنجاح.";
+                document.getElementById('lblChkEmail').innerText = "المعرف الرقمي للعبة (ID) / يوزر الحساب";
+                document.getElementById('passwordFieldGroup').style.display = "none";
+                document.getElementById('userCountFieldGroup').style.display = "block";
+            } else {
+                flowHint.innerHTML = "📥 <strong>طريقة التسليم (الاشتراكات الرقمية):</strong> سيتم تزويدك بالبريد الإلكتروني، كلمة السر، واليوزر المجهز المعتمد لتسجيل الدخول الفوري للحساب.";
+                document.getElementById('lblChkEmail').innerText = "البريد الإلكتروني الحالي للحساب";
+                document.getElementById('passwordFieldGroup').style.display = "block";
+                document.getElementById('userCountFieldGroup').style.display = "none";
+            }
+
+            // إعادة تصفير وإخفاء حقول خيار الإهداء
             document.getElementById('chkIsGift').checked = false;
             document.getElementById('giftFieldsContainer').style.display = 'none';
             document.getElementById('giftSenderName').value = '';
-            document.getElementById('giftReceiverContact').value = '';
+            document.getElementById('giftRecipientContact').value = '';
             document.getElementById('giftMessage').value = '';
+            
             document.getElementById('checkoutModal').classList.add('active');
             adjustUserFields();
         }
 
+        // فتح وإخفاء حقول الإهداء المتقدمة ديناميكياً
         function toggleGiftFields() {
             const isGift = document.getElementById('chkIsGift').checked;
             document.getElementById('giftFieldsContainer').style.display = isGift ? 'block' : 'none';
-            toggleGiftSenderNameField();
         }
 
-        function toggleGiftSenderNameField() {
-            const type = document.getElementById('giftSendType').value;
-            document.getElementById('giftSenderNameGroup').style.display = type === 'named' ? 'block' : 'none';
-        }
-
+        // تعديل حقول تعبئة يوزرات الألعاب واللاعبين المستهدفين داخل الطلب
         function adjustUserFields() {
             const count = parseInt(document.getElementById('chkUserCount').value);
             const container = document.getElementById('dynamicUserNamesContainer');
             container.innerHTML = '';
-            for(let i = 1; i <= count; i++) {
-                container.innerHTML += `
-                    <input type="text" id="chkUser${i}" class="custom-input" placeholder="اسم أو معرف اليوزر النشط رقم (${i}) للعبة">
-                `;
+            
+            const product = activeProducts.find(p => p.id === tempSelectedProdId);
+            if (product && (product.isGame || product.category === 'games')) {
+                for(let i = 1; i <= count; i++) {
+                    container.innerHTML += `
+                        <input type="text" id="chkUser${i}" class="custom-input" placeholder="اسم أو معرف اليوزر النشط رقم (${i}) المراد شحنه">
+                    `;
+                }
             }
         }
 
@@ -1058,66 +1109,101 @@
             document.getElementById('checkoutModal').classList.remove('active');
         }
 
+        // تنفيذ عملية خصم الرصيد مع تطبيق قواعد تسليم الألعاب والاشتراكات وخيار الإهداء اليدوي للإدارة
         async function finalizePurchaseExecution() {
             const email = document.getElementById('chkEmail').value.trim();
             const pass = document.getElementById('chkPassword').value.trim();
-            if(!email || !pass) return showToast('⚠️ يرجى تعبئة البريد وكلمة سر الحساب أولاً لتأكيد طلب الشحن الرقمي');
+            const isGiftChecked = document.getElementById('chkIsGift').checked;
+            const recipientContact = document.getElementById('giftRecipientContact').value.trim();
             
             const product = activeProducts.find(p => p.id === tempSelectedProdId);
             const plan = product.plans.find(p => p.id === tempSelectedPlanId);
             const price = isVip ? (plan.vipPrice || plan.price) : plan.price;
             
-            if (walletBalance < price) {
-                closeCheckoutModal();
-                return showToast('❌ رصيدك الحالي غير كافٍ، الرجاء تعبئة رصيد المحفظة أولاً');
+            let isTypeGame = product.isGame || product.category === 'games';
+
+            // شروط التحقق من تعبئة المدخلات الإلزامية
+            if(!email) return showToast('⚠️ يرجى إدخال البريد الإلكتروني أو معرف الحساب أولاً لإتمام الطلب الرقمي');
+            if(!isTypeGame && !pass) return showToast('⚠️ يرجى إدخال كلمة سر الحساب للاشتراكات الرقمية المباشرة');
+            
+            // التحقق من تعبئة بيانات الإهداء المخصصة في حال تفعيل الخيار
+            if (isGiftChecked && !recipientContact) {
+                return showToast('⚠️ حقل رقم أو يوزر الشخص المستلم للهدية مطلوب لتنفيذ الطلب اليدوي');
             }
 
+            if (walletBalance < price) {
+                closeCheckoutModal();
+                return showToast('❌ رصيدك الحالي غير كافٍ، الرجاء تعبئة رصيد المحفظة أولاً أو تبديل رصيد');
+            }
+
+            // خصم الرصيد ومنح نقاط التراكم التلقائية
             walletBalance -= price;
             totalPoints += Math.floor(price * 0.5);
             
-            let userCount = parseInt(document.getElementById('chkUserCount').value);
+            let userCount = isTypeGame ? parseInt(document.getElementById('chkUserCount').value) : 1;
             let userListDetails = [];
-            for(let i=1; i<=userCount; i++){
-                let uVal = document.getElementById(`chkUser${i}`)?.value || 'غير محدد';
-                userListDetails.push(uVal);
+            if(isTypeGame) {
+                for(let i=1; i<=userCount; i++){
+                    let uVal = document.getElementById(`chkUser${i}`)?.value || 'غير محدد';
+                    userListDetails.push(uVal);
+                }
             }
 
             let generatedCode = 'DLVRKO-' + Math.floor(100000 + Math.random() * 900000);
-            let isTypeSubscription = product.category === 'cards' || product.name.includes('اشتراك');
-
-            const isGiftChecked = document.getElementById('chkIsGift').checked;
+            
+            // بناء كائن تفاصيل الهدايا لحفظه بشكل كامل تحت تحكم لوحة تحكم الإدارة
+            let giftMetadata = null;
             let giftInfoText = '';
-            let isGiftOrder = false;
+            
             if (isGiftChecked) {
-                isGiftOrder = true;
-                const giftType = document.getElementById('giftSendType').value;
-                const senderName = giftType === 'named' ? (document.getElementById('giftSenderName').value.trim() || 'فاعل خير') : 'مجهول';
-                const receiverContact = document.getElementById('giftReceiverContact').value.trim() || 'غير محدد';
-                const giftMsg = document.getElementById('giftMessage').value.trim();
-                giftInfoText = ` [🎁 هدية من: ${senderName} | للمستلم: ${receiverContact}${giftMsg ? ` | رسالة: ${giftMsg}` : ''}]`;
+                const senderName = document.getElementById('giftSenderName').value.trim() || 'فاعل خير';
+                const giftMsg = document.getElementById('giftMessage').value.trim() || 'بدون رسالة مرافقة';
+                giftInfoText = ` [🎁 هدية من: ${senderName} إلى: ${recipientContact}]`;
+                
+                giftMetadata = {
+                    isGift: true,
+                    senderName: senderName,
+                    recipientContact: recipientContact,
+                    giftMessage: giftMsg,
+                    adminManualProcessing: true, // إشعار للإدارة للتنفيذ اليدوي الكامل للطلب
+                    status: 'جاري المراجعة اليدوية للهدايا'
+                };
             }
 
-            purchases.unshift({
+            // إدراج وحفظ الطلب في أرشيف الحساب مع فك تسليم الأكواد والبيانات الفورية
+            let orderPayload = {
                 name: `${product.name} - ${plan.name}${giftInfoText}`,
                 price: price,
                 date: new Date().toLocaleString('ar-LY'),
-                isSubscription: isTypeSubscription,
-                deliveredCode: isGiftOrder ? 'هدية - ينتظر التنفيذ اليدوي' : generatedCode,
-                deliveredEmail: isGiftOrder ? 'هدية - ينتظر التنفيذ اليدوي' : email,
-                deliveredPass: isGiftOrder ? 'هدية - ينتظر التنفيذ اليدوي' : pass,
-                deliveredUsers: isGiftOrder ? 'هدية - ينتظر التنفيذ اليدوي' : userListDetails.join(', '),
-                isGift: isGiftOrder
-            });
+                isSubscription: !isTypeGame,
+                deliveredCode: isGiftChecked ? "جاري التجهيز اليدوي بواسطة الإدارة (طلب هدية)" : generatedCode,
+                deliveredEmail: email,
+                deliveredPass: isTypeGame ? "تفعيل تلقائي آلي للعبة" : pass,
+                deliveredUsers: isTypeGame ? userListDetails.join(', ') : 'يوزر 1 الأساسي داخل الاشتراك',
+                giftDetails: giftMetadata,
+                isGiftOrder: isGiftChecked
+            };
+
+            purchases.unshift(orderPayload);
 
             notifications.unshift({
-                title: isGiftOrder ? '🎁 تم إرسال طلب الإهداء بنجاح' : '🛒 تم تأكيد وتنفيذ طلبك الفوري',
-                body: isGiftOrder ? `تم خصم ${price} د.ل من محفظتك لإرسال هدية، سيتم تنفيذها يدوياً من قبل الإدارة.` : `تم استلام الباقة بنجاح من محفظتك بقيمة ${price} د.ل.`,
+                title: isGiftChecked ? '🎁 تم إرسال طلب الإهداء اليدوي بنجاح' : '🛒 تم تأكيد وتنفيذ طلبك الفوري بنجاح',
+                body: `تم خصم باقة الخدمة من محفظتك بقيمة ${price} د.ل. وعملية التسليم جارية حالياً بدقة.`,
                 time: 'الآن'
             });
 
+            // تحديث قاعدة بيانات Firebase بالبيانات والهيكلية الشاملة
             if(currentUserDocId) {
                 await db.collection('users').doc(currentUserDocId).update({
                     walletBalance, totalPoints, purchases, notifications
+                });
+                
+                // إرسال نسخة مستقلة إلى لوحة تحكم الإدارة الشاملة للتحكم في الطلبات والهدايا (إضافة/تعديل/حذف)
+                await db.collection('all_orders').add({
+                    userId: currentUserDocId,
+                    userEmail: auth.currentUser.email,
+                    ...orderPayload,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
             }
 
@@ -1125,9 +1211,15 @@
             updateUI();
             renderPurchases();
             document.getElementById('plansListContainer').style.display = 'none';
-            showToast(isGiftOrder ? `🎉 تم إرسال طلب الهدية بنجاح! سيتم تنفيذه من قبل الإدارة يدوياً` : `🎉 تم إرسال وتنفيذ طلبك بنجاح! راجع أرشيف المشتريات للنسخ والاستلام الفوري`);
+            
+            if (isGiftChecked) {
+                showToast(`🎉 تم إرسال اشتراك الهدية بنجاح! تم قيد الطلب يدويًا للمراجعة الفورية من طاقم دليفريكو باي`);
+            } else {
+                showToast(`🎉 تم إرسال وتنفيذ طلبك الرقمي بنجاح! راجع أرشيف مشترياتك للاستلام الفوري للمفاتيح والبيانات`);
+            }
         }
 
+        // التحكم باختيار وتحديث تبويبات طرق الشحن الإيداعية داخل المحفظة
         function selectPaymentMethod(methodName) {
             document.getElementById('selectedWalletMethod').value = methodName;
             document.querySelectorAll('.wallet-card').forEach(card => card.classList.remove('selected'));
@@ -1146,10 +1238,10 @@
             } else if (methodName === 'بايبت') {
                 document.getElementById('method-crypto').classList.add('selected');
                 cryptoArea.style.display = "block";
-                label.innerText = 'عنوان محفظة الـ USDT التي أرسلت منها أو معرف المعاملة (TXID)';
+                label.innerText = 'عنوان محفظة الـ USDT التي أرسلت منها أو معرف المعاملة الفرعي التابع لك';
             } else {
                 document.getElementById('method-bank').classList.add('selected');
-                label.innerText = 'رقم حسابك المحول منه أو كود التحقق من عملية (ون باي / لي باي)';
+                label.innerText = 'رقم حسابك المحول منه أو كود التحقق من عملية الرشق لـ (ون باي / لي باي)';
             }
         }
 
@@ -1163,6 +1255,7 @@
             document.getElementById('exchangeTotalVal').innerText = total.toFixed(2) + ' د.ل';
         }
 
+        // معالجة وتنفيذ تبديل الرصيد الآمن للشبكات
         async function executeBalanceExchange() {
             const network = document.getElementById('exchangeNetwork').value;
             const amount = parseFloat(document.getElementById('exchangeAmount').value) || 0;
@@ -1176,8 +1269,8 @@
             walletBalance += cleanCredit;
             
             notifications.unshift({
-                title: '🔄 عملية تبديل رصيد ناجحة',
-                body: `تم تبديل رصيد شبكة ${network} بقيمة ${amount} د.ل وإضافة صافي ${cleanCredit.toFixed(2)} د.ل لمحفظتك.`,
+                title: '🔄 عملية تبديل رصيد ناجحة في الحساب',
+                body: `تم تبديل رصيد شبكة ${network} بقيمة ${amount} د.ل وإضافة صافي قيمته ${cleanCredit.toFixed(2)} د.ل لمحفظتك الأساسية الحالية.`,
                 time: 'الآن'
             });
             
@@ -1191,11 +1284,12 @@
             document.getElementById('exchangeAmount').value = '';
             document.getElementById('exchangeFeeVal').innerText = '0.00 د.ل';
             document.getElementById('exchangeTotalVal').innerText = '0.00 د.ل';
-            showToast(`✅ تم تبديل الرصيد بنجاح! تم قيد القيمة الصافية في محفظتك فورياً`);
+            showToast(`✅ تم تبديل الرصيد بنجاح! تم قيد القيمة الصافية بعد احتساب العمولة في محفظتك فورياً`);
         }
 
+        // تسجيل النشاط والمكافأة اليومية الحصرية لأعضاء النظام الملكي
         async function executeDailyCheckIn() {
-            if (!isVip) return showToast('❌ ميزة تسجيل النشاط والبونص اليومي حصرية فقط للمشتركين الملكيين VIP');
+            if (!isVip) return showToast('❌ ميزة تسجيل النشاط والبونص اليومي حصرية فقط للمشتركين الملكيين VIP العظماء');
             
             const now = new Date();
             if (lastCheckInTime) {
@@ -1205,7 +1299,7 @@
                 
                 if (diffHours < 24) {
                     const remainingHours = Math.ceil(24 - diffHours);
-                    return showToast(`⏳ لقد قمت بالتحقق اليومي سابقاً، يرجى الانتظار ${remainingHours} ساعة أخرى لإعادة الضغط`);
+                    return showToast(`⏳ لقد قمت بالتحقق اليومي سابقاً، يرجى الانتظار ${remainingHours} ساعة أخرى لإعادة كسب البونص`);
                 }
             }
             
@@ -1217,7 +1311,7 @@
             });
             
             updateUI();
-            showToast('⚡ مبروك! تم التحقق من نشاطك اليومي وإضافة +5 نقاط مجانية لحسابك بنجاح');
+            showToast('⚡ مبروك! تم التحقق من نشاطك اليومي الملكي وإضافة +5 نقاط مجانية لحسابك بنجاح');
         }
 
         function handleAvatarChange(event) {
@@ -1231,11 +1325,12 @@
                 if(currentUserDocId) {
                     localStorage.setItem('user_custom_avatar_' + currentUserDocId, base64Image);
                 }
-                showToast('📸 تم تحديث وتغيير صورة ملفك الشخصي بنجاح!');
+                showToast('📸 تم تحديث وتغيير صورة ملفك الشخصي بنجاح على الهاتف!');
             };
             reader.readAsDataURL(file);
         }
 
+        // آلية جني الأرباح من متابعة الحسابات بعد توسيعها لتشمل 4 منصات (تيك توك، فيسبوك، انستقرام، سناب شات)
         async function claimSocialBonus(platform, url) {
             window.open(url, '_blank');
             if(!currentUserDocId) return;
@@ -1244,16 +1339,16 @@
             const alreadyClaimed = localStorage.getItem(bonusKey);
             
             if(alreadyClaimed === 'true') {
-                setTimeout(() => { showToast(`ℹ️ لقد حصلت على مكافأة ${platform} مسبقاً! المكافأة تمنح لمرة واحدة فقط`); }, 1000);
+                setTimeout(() => { showToast(`ℹ️ لقد حصلت على مكافأة متابعة وتصفح منصة ${platform} مسبقاً! المكافأة تمنح لمرة واحدة لكل حساب`); }, 1000);
                 return;
             }
             
-            walletBalance += 0.50;
+            walletBalance += 0.50; // ضبط قيمة الربح المستهدفة والمقرة بالتحديث البرمجي (0.50 د.ل) لكل منصة
             localStorage.setItem(bonusKey, 'true');
             
             notifications.unshift({
-                title: '🎁 بونص منصات التواصل الاجتماعي',
-                body: `شكراً لمتابعتنا على ${platform}، تم إضافة 0.50 د.ل لحسابك.`,
+                title: `🎁 بونص دعم منصة ${platform}`,
+                body: `شكراً لمتابعتنا ودعم حساباتنا على تطبيق ${platform}، تم قيد مبلغ المكافأة بقيمة 0.50 د.ل لحسابك.`,
                 time: 'الآن'
             });
             
@@ -1264,7 +1359,7 @@
             }
             
             updateUI();
-            setTimeout(() => { showToast(`🎉 مبروك! تم إضافة 0.50 د.ل إلى محفظتك لدعمك منصة ${platform}`); }, 1200);
+            setTimeout(() => { showToast(`🎉 مبروك الفوز! تم إضافة 0.50 د.ل إلى محفظتك مباشرة لدعمك منصة دليفريكو باي على ${platform}`); }, 1200);
         }
 
         function startPromoCountdown() {
@@ -1283,13 +1378,14 @@
             }, 1000);
         }
 
+        // إرسال تفاصيل إشعارات شحن وإيداع الأموال بالمحفظة لمراجعتها بواسطة الإدارة
         async function submitWalletDepositRequest() {
             const bank = document.getElementById('selectedWalletMethod').value;
             const userAcc = document.getElementById('walletUserAccountNum').value.trim();
             const amount = parseFloat(document.getElementById('walletUserAmount').value);
 
             if(!userAcc || !amount || amount <= 0) {
-                return showToast('⚠️ يرجى ملء حقول رقم حساب التحويل والقيمة الإيداعية بدقة');
+                return showToast('⚠️ يرجى ملء حقول رقم حساب التحويل والقيمة الإيداعية بدقة لإتمام التدقيق');
             }
 
             await db.collection('deposit_requests').add({
@@ -1302,31 +1398,31 @@
                 date: new Date().toLocaleString('ar-LY')
             });
 
-            showToast(`✅ تم إرسال إشعار الدفع لطريقة [ ${bank} ] بنجاح، جاري المراجعة والتحقق المباشر من الإدارة`);
+            showToast(`✅ تم إرسال إشعار الدفع الفني لطريقة [ ${bank} ] بنجاح، جاري المراجعة والتحقق المباشر والآلي من الإدارة لإيداعه`);
             document.getElementById('walletUserAccountNum').value = '';
             document.getElementById('walletUserAmount').value = '';
         }
 
+        // تفعيل العضوية الملكية الذهبية فورياً
         function executeUpgradeToVip() {
             if (isVip) return;
-            if (walletBalance < 10) return showToast('❌ رصيد محفظتك الحالي أقل من تكلفة تفعيل الترقية الفخمة (10 د.ل)');
+            if (walletBalance < 10) return showToast('❌ رصيد محفظتك الحالي أقل من تكلفة تفعيل الترقية الفخمة الملكية (10 د.ل)');
             
             walletBalance -= 10;
             isVip = true;
             document.body.classList.add('royal-vip-theme');
-            
             document.getElementById('vipPromoSection').classList.add('hidden');
             
             db.collection('users').doc(currentUserDocId).update({ walletBalance, isVip });
             updateUI();
-            renderProducts();
+            renderDirectGroupedProducts();
             calculateExchangeFee();
-            showToast('👑 مبارك الترقية للنظام الملكي الفخم! تم تفعيل التوثيق والمميزات بنجاح');
+            showToast('👑 مبارك الترقية للنظام الملكي الفخم! تم تفعيل الشارات الذهبية والتوثيق والخصومات الفورية بنجاح');
         }
 
         function requestExchangePoints() {
-            if (!isVip) return showToast('❌ تحويل وتسييل النقاط لكاش ميزة حصرية فقط لأعضاء النظام الملكي VIP');
-            if (totalPoints < 30) return showToast('❌ الحد الأدنى المؤهل لنقل النقاط إلى رصيد هو 30 نقطة');
+            if (!isVip) return showToast('❌ تحويل وتسييل النقاط لكاش ميزة حصرية فقط لأعضاء النظام الملكي VIP الفاخرين');
+            if (totalPoints < 30) return showToast('❌ الحد الأدنى المؤهل لنقل النقاط وتحويلها لرصيد هو 30 نقطة تراكمية');
             const cash = totalPoints / 10;
             walletBalance += cash;
             totalPoints = 0;
@@ -1342,7 +1438,7 @@
             document.getElementById('upgradeBtn').style.display = isVip ? 'none' : 'block';
             
             document.getElementById('verifiedBadgeContainer').innerHTML = isVip ? 
-                `<span class="tiktok-verified-badge" title="حساب موثق ملكي">✓</span>` : '';
+                `<span class="tiktok-verified-badge" title="حساب موثق ملكي فخم">✓</span>` : '';
         }
 
         function copyToClipboard(text) {
@@ -1353,6 +1449,7 @@
             });
         }
 
+        // معالجة وبناء عرض أرشيف المشتريات والطلبات المباشرة مع تتبع تسليم الهدايا اليدوية والاشتراكات
         function renderPurchases() {
             const container = document.getElementById('purchasesList');
             if (!container) return;
@@ -1360,19 +1457,24 @@
             
             container.innerHTML = purchases.map(p => {
                 let deliveryHtml = '';
-                if (p.isGift) {
+                
+                // فرز شكل وعرض التسليم للمشتريات بناءً على نوع المنتج وما إذا كان طلباً كهدية أم لا
+                if (p.isGiftOrder) {
                     deliveryHtml = `
-                        <div class="delivery-box" style="border-color: #eccc68;">
-                            <div class="delivery-title" style="color: #eccc68;">🎁 طلب هدية - ينتظر التنفيذ من الإدارة</div>
-                            <div style="font-size:11px; color:#ddd; padding:4px 0;">
-                                <span>تم خصم المبلغ من محفظتك، سيتم تنفيذ الطلب يدوياً من قبل فريق الدعم.</span>
+                        <div class="delivery-box" style="border-color:#eccc68; background:rgba(236,204,104,0.02)">
+                            <div class="delivery-title" style="color:#eccc68;">🎁 تفاصيل طلب اشتراك الهدية المعزول:</div>
+                            <div style="padding: 5px 0; line-height:1.6; color:#ddd;">
+                                <div>• مرسل الهدية: <strong style="color:#fff;">${p.giftDetails?.senderName || 'فاعل خير'}</strong></div>
+                                <div>• مستلم الهدية الفرعي: <strong style="color:var(--accent-light);">${p.giftDetails?.recipientContact}</strong></div>
+                                <div>• الرسالة المرفقة: <span style="font-style:italic; color:#aaa;">"${p.giftDetails?.giftMessage || 'لا توجد رسالة'}"</span></div>
+                                <div style="margin-top:5px; color:var(--success); font-weight:800;">⚙️ الطلب قيد التنفيذ اليدوي بواسطة الإدارة وسيجري إرساله للمستلم فورا.</div>
                             </div>
                         </div>
                     `;
                 } else if (p.isSubscription) {
                     deliveryHtml = `
                         <div class="delivery-box">
-                            <div class="delivery-title">📥 تفاصيل بيانات اشتراك الحساب المسلم:</div>
+                            <div class="delivery-title">📥 تفاصيل بيانات اشتراك الحساب المسلم فورا:</div>
                             <div class="copy-row">
                                 <span>البريد: ${p.deliveredEmail}</span>
                                 <button class="copy-btn" onclick="copyToClipboard('${p.deliveredEmail}')">نسخ البريد</button>
@@ -1382,7 +1484,7 @@
                                 <button class="copy-btn" onclick="copyToClipboard('${p.deliveredPass}')">نسخ الباسوورد</button>
                             </div>
                             <div class="copy-row">
-                                <span>اليوزرات المجهزة: ${p.deliveredUsers || 'يوزر 1 الأساسي'}</span>
+                                <span>اليوزرات المجهزة المتاحة: ${p.deliveredUsers || 'يوزر 1 الأساسي'}</span>
                                 <button class="copy-btn" onclick="copyToClipboard('${p.deliveredUsers || 'يوزر 1 الأساسي'}')">نسخ اليوزر</button>
                             </div>
                         </div>
@@ -1390,11 +1492,12 @@
                 } else {
                     deliveryHtml = `
                         <div class="delivery-box">
-                            <div class="delivery-title">📥 كود شحن وتعبئة المنتج (مثل 60 شدة ببجي):</div>
+                            <div class="delivery-title">📥 كود شحن وتعبئة المنتج الفوري والألعاب:</div>
                             <div class="copy-row">
-                                <span style="color:var(--accent-light); font-weight:bold;">${p.deliveredCode}</span>
-                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredCode}')">نسخ الكود فورا</button>
+                                <span style="color:var(--accent-light); font-weight:bold; letter-spacing:1px;">${p.deliveredCode}</span>
+                                <button class="copy-btn" onclick="copyToClipboard('${p.deliveredCode}')">نسخ الكود فوراً</button>
                             </div>
+                            <div style="font-size:10px; color:#aaa; margin-top:4px; text-align:right;">المعرفات المشحونة: ${p.deliveredUsers}</div>
                         </div>
                     `;
                 }
@@ -1414,7 +1517,7 @@
 
         function renderNotifications() {
             const list = document.getElementById('notifList');
-            if (!list || !notifications.length) { if(list) list.innerHTML='<p style="font-size:12px; color:#aaa;">لا توجد تنبيهات جديدة حالية</p>'; return; }
+            if (!list || !notifications.length) { if(list) list.innerHTML='<p style="font-size:12px; color:#aaa;">لا توجد تنبيهات جديدة حالية في السجل</p>'; return; }
             list.innerHTML = notifications.map(n => `
                 <div style="background:rgba(255,255,255,0.02); padding:10px; border-radius:8px; margin-bottom:8px; border:1px solid var(--border-color)">
                     <div style="font-weight:bold; font-size:12px; color:var(--accent-color);">${n.title}</div>
@@ -1423,11 +1526,11 @@
             `).join('');
         }
 
+        // دالة التنقل السلس والذكي بين نوافذ وأقسام التطبيق السفلية والجانبية
         function switchSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(section + 'Section')?.classList.add('active');
             
-            const hero = document.getElementById('heroBanner');
             const tabs = document.getElementById('mainTabsContainer');
             const chips = document.getElementById('categoryChipsContainer');
             const backHeader = document.getElementById('backSectionHeader');
@@ -1435,7 +1538,6 @@
 
             if (section === 'home') {
                 if(currentCategory === 'all') {
-                    hero?.classList.remove('hidden');
                     tabs?.classList.remove('hidden');
                     if(sliderArea) sliderArea.style.display = 'block';
                 } else {
@@ -1443,7 +1545,6 @@
                 }
                 chips?.classList.remove('hidden');
             } else {
-                hero?.classList.add('hidden');
                 tabs?.classList.add('hidden');
                 chips?.classList.add('hidden');
                 if(sliderArea) sliderArea.style.display = 'none';
@@ -1461,15 +1562,30 @@
             const inp = document.getElementById('chatInput');
             if(!inp.value.trim()) return;
             document.getElementById('chatBox').innerHTML += `<div style="text-align:left; color:var(--accent-color); margin-bottom:5px;">👤 ${inp.value}</div>`;
+            let cachedMsg = inp.value;
             inp.value = '';
-            setTimeout(() => { document.getElementById('chatBox').innerHTML += `<div style="color:#fff;">🤖 تم نقل استفسارك للوحة تحكم دليفريكو باي بنجاح.</div>`; }, 800);
+            
+            // ربط وإرسال المحادثة الفنية مباشرة إلى Firestore تحت مراقبة الإدارة
+            if (currentUserDocId) {
+                db.collection('support_chats').add({
+                    userId: currentUserDocId,
+                    email: auth.currentUser.email,
+                    message: cachedMsg,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+            
+            setTimeout(() => { 
+                document.getElementById('chatBox').innerHTML += `<div style="color:#eccc68; margin-bottom:5px;">🤖 تم نقل استفسارك المباشر للوحة تحكم دليفريكو باي بنجاح، جاري التدقيق.</div>`; 
+                document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+            }, 800);
         }
 
         function showToast(msg) {
             const t = document.createElement('div');
-            t.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--accent-color); color:#fff; padding:10px 20px; border-radius:20px; z-index:9999; font-weight:bold; font-size:12px; box-shadow:0 4px 10px rgba(0,0,0,0.5); text-align:center; transition: all 0.3s ease; border: 1px solid #eccc68;';
+            t.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--top-bar-bg); color:#fff; padding:12px 24px; border-radius:30px; z-index:9999; font-weight:bold; font-size:12px; box-shadow:var(--shadow); text-align:center; transition: all 0.3s ease; border: 1.5px solid var(--accent-color); max-width:85%;';
             t.innerText = msg; document.body.appendChild(t);
-            setTimeout(() => t.remove(), 3500);
+            setTimeout(() => t.remove(), 4000);
         }
     </script>
 </body>
