@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>مرحباً بك | Dlvrko Pay — دليفريكو باي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#120d0b;--surface:#1a1310;--accent:#c1443c;--accent-light:#e2685c;
+  --gold:#d4af6a;--gold-soft:rgba(212,175,106,.13);--success:#4caf7d;--danger:#d64550;
+  --text:#f3ece5;--dim:#b7a89a;--border:rgba(212,175,106,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{
+  min-height:100vh;color:var(--text);overflow-x:hidden;
+  background:
+    radial-gradient(700px 400px at 85% -10%, rgba(193,68,60,.22), transparent 60%),
+    radial-gradient(600px 400px at 0% 100%, rgba(212,175,106,.12), transparent 60%),
+    var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 18px;
+}
+/* زخارف عائمة */
+.orb{position:fixed;border-radius:50%;filter:blur(60px);opacity:.35;pointer-events:none;animation:float 9s ease-in-out infinite alternate;}
+.orb.a{width:260px;height:260px;background:#7a221d;top:-80px;right:-80px;}
+.orb.b{width:220px;height:220px;background:#3d2c12;bottom:-70px;left:-70px;animation-delay:2s;}
+@keyframes float{from{transform:translateY(0)}to{transform:translateY(26px)}}
+
+.wrap{width:min(420px,100%);position:relative;z-index:2;animation:up .6s cubic-bezier(.2,.8,.3,1);}
+@keyframes up{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+
+.hero{text-align:center;margin-bottom:22px;}
+.hero .mk{
+  width:76px;height:76px;border-radius:22px;margin:0 auto 14px;
+  background:linear-gradient(145deg,var(--accent),#7a221d);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 14px 40px rgba(193,68,60,.4), inset 0 1px 0 rgba(255,255,255,.15);
+}
+.hero .mk svg{width:36px;height:36px;fill:#fff;}
+.hero h1{font-size:24px;font-weight:900;letter-spacing:.3px;}
+.hero h1 span{color:var(--accent-light);}
+.hero .sub{font-size:12.5px;color:var(--dim);margin-top:6px;line-height:1.9;}
+
+.feat-strip{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0 22px;}
+.feat{
+  display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;color:#e8dccb;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:20px;padding:6px 13px;
+}
+.feat svg{width:13px;height:13px;fill:var(--gold);}
+
+.card{
+  background:linear-gradient(165deg,rgba(39,27,22,.9),rgba(21,15,12,.94));
+  border:1px solid rgba(212,175,106,.22);border-radius:24px;padding:24px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.05);
+  backdrop-filter:blur(10px);
+}
+.card h2{font-size:15px;font-weight:900;text-align:center;margin-bottom:4px;}
+.card .ch{font-size:11px;color:var(--dim);text-align:center;margin-bottom:18px;}
+label{font-size:11px;color:var(--dim);display:block;margin-bottom:5px;font-weight:700;}
+label b{color:var(--danger);}
+input{
+  width:100%;background:rgba(0,0,0,.4);border:1.5px solid var(--border);color:#fff;
+  padding:13px 14px;border-radius:14px;font-size:13.5px;outline:none;margin-bottom:13px;
+  transition:.22s;font-family:inherit;
+}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,106,.14);}
+.btn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px;border:none;border-radius:15px;font-size:14px;font-weight:900;cursor:pointer;
+  font-family:inherit;transition:.2s;
+}
+.btn svg{width:16px;height:16px;fill:currentColor;}
+.btn:active{transform:scale(.98);}
+.btn:disabled{opacity:.55;}
+.btn-main{background:linear-gradient(135deg,var(--accent),#8d2a24);color:#fff;box-shadow:0 10px 26px rgba(193,68,60,.35);}
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--dim);font-size:10.5px;font-weight:800;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.btn-guest{background:rgba(255,255,255,.06);color:#e8dccb;border:1px solid var(--border);}
+.note{font-size:10px;color:var(--dim);text-align:center;margin-top:14px;line-height:1.8;}
+.err{color:var(--danger);font-size:11px;font-weight:800;text-align:center;min-height:16px;margin-bottom:4px;}
+.foot{margin-top:20px;font-size:9.5px;color:var(--dim);text-align:center;position:relative;z-index:2;}
+
+/* شاشة تحميل */
+#busy{position:fixed;inset:0;background:rgba(10,6,5,.85);z-index:50;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;backdrop-filter:blur(4px);}
+#busy.on{display:flex;}
+.spin{width:44px;height:44px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--gold);animation:sp .8s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+#busy p{font-size:12px;color:var(--dim);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="orb a"></div><div class="orb b"></div>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="mk" id="logoBox"><img id="logoImg" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:inherit;" onload="this.style.display='block';this.nextElementSibling.style.display='none';"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg></div>
+    <h1>Dlvrko <span>Pay</span> · دليفريكو باي</h1>
+    <div class="sub">منصتك الأولى لشحن الألعاب والاشتراكات الرقمية في ليبيا<br>تسليم فوري · محفظة ذكية · عروض حصرية</div>
+  </div>
+
+  <div class="feat-strip">
+    <span class="feat"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>تسليم فوري</span>
+    <span class="feat"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>دفع آمن</span>
+    <span class="feat"><svg viewBox="0 0 24 24"><path d="M5 16L3 6l5.5 4L12 4l3.5 6L21 6l-2 10H5z"/></svg>عضويات مميزة</span>
+    <span class="feat"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/></svg>هدايا لأصدقائك</span>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;gap:6px;background:rgba(0,0,0,.35);padding:5px;border-radius:14px;margin-bottom:16px;border:1px solid var(--border);">
+      <button type="button" id="tabReg" onclick="setAuthTab('reg')" style="flex:1;border:none;border-radius:10px;padding:10px;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;background:var(--accent);color:#fff;">إنشاء حساب</button>
+      <button type="button" id="tabLogin" onclick="setAuthTab('login')" style="flex:1;border:none;border-radius:10px;padding:10px;font-size:12px;font-weight:900;cursor:pointer;font-family:inherit;background:transparent;color:var(--dim);">تسجيل الدخول</button>
+    </div>
+    <div id="regPane">
+    <h2>أنشئ حسابك في ثوانٍ</h2>
+    <div class="ch">بلا كلمة سر ولا تعقيد — بياناتك تُحفظ على جهازك</div>
+    <label>الاسم الكامل <b>*</b></label>
+    <input id="fName" placeholder="اسمك الكامل">
+    <label>رقم الهاتف <b>*</b></label>
+    <input id="fPhone" placeholder="09XXXXXXXX" inputmode="tel" style="direction:ltr;text-align:right;">
+    <label>البريد الإلكتروني (اختياري)</label>
+    <input id="fEmail" type="email" placeholder="example@mail.com" style="direction:ltr;text-align:right;">
+    <div class="err" id="fErr"></div>
+    <button class="btn btn-main" id="regBtn">
+      <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L13.67 11H3v2h10.67zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+      إنشاء الحساب والدخول
+    </button>
+    </div>
+    <div id="loginPane" style="display:none;">
+      <h2>مرحباً بعودتك 👋</h2>
+      <div class="ch">أدخل رقم الهاتف الذي سجّلت به لاسترجاع حسابك على هذا الجهاز</div>
+      <label>رقم الهاتف <b>*</b></label>
+      <input id="lPhone" placeholder="09XXXXXXXX" inputmode="tel" style="direction:ltr;text-align:right;">
+      <div class="err" id="lErr"></div>
+      <button class="btn btn-main" id="loginBtn">
+        <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L13.67 11H3v2h10.67z"/></svg>
+        تسجيل الدخول
+      </button>
+    </div>
+    <div class="divider">أو</div>
+    <button class="btn btn-guest" id="guestBtn">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-3-8-3z"/></svg>
+      الدخول كزائر
+    </button>
+    <div class="note">بالمتابعة أنت توافق على شروط الاستخدام وسياسة الخصوصية · يمكنك إكمال بياناتك لاحقاً من قسم حسابي</div>
+  </div>
+</div>
+
+<div class="foot">جميع الحقوق محفوظة © 2026 — Dlvrko Pay · دليفريكو باي</div>
+
+<div id="busy"><div class="spin"></div><p>جارٍ تجهيز حسابك…</p></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, getDocs, collection, query, where, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAsDZDLbzB0Vfqgo8SenbE4DTxjc7m_xqA",
+  authDomain: "iq-store-f6195.firebaseapp.com",
+  projectId: "iq-store-f6195",
+  storageBucket: "iq-store-f6195.firebasestorage.app",
+  messagingSenderId: "971567926936",
+  appId: "1:971567926936:web:f85205b7d1ea210d3c0aed",
+  measurementId: "G-YWQNRWW9Q1"
+};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const $=id=>document.getElementById(id);
+
+let UID=null;
+onAuthStateChanged(auth, async fb=>{
+  if(!fb){ try{ await signInAnonymously(auth); }catch(e){ $('fErr').innerText='تعذر الاتصال بالخادم — تحقق من الإنترنت'; } return; }
+  UID=fb.uid;
+  /* لو عنده حساب مسبقاً (على هذا الجهاز أو مربوطاً برقم هاتفه) → دخول مباشر */
+  const linked=localStorage.getItem('dlv_uid');
+  try{ const s=await getDoc(doc(db,'users',linked||UID)); if(s.exists()&&!new URLSearchParams(location.search).get('upgrade')) location.replace('index.html'); }catch(e){}
+});
+
+window.setAuthTab=t=>{
+  const reg=t==='reg';
+  $('regPane').style.display=reg?'block':'none';
+  $('loginPane').style.display=reg?'none':'block';
+  $('tabReg').style.background=reg?'var(--accent)':'transparent'; $('tabReg').style.color=reg?'#fff':'var(--dim)';
+  $('tabLogin').style.background=!reg?'var(--accent)':'transparent'; $('tabLogin').style.color=!reg?'#fff':'var(--dim)';
+};
+
+/* الشعار من الإعدادات (مع كاش محلي للسرعة) */
+(async ()=>{
+  const setLogo=st=>{ if(!st)return;
+    const base=`https://raw.githubusercontent.com/${st.githubUser||'lysd89181-lab'}/${st.githubRepo||'ZH_STORE'}/${st.githubBranch||'main'}/`;
+    if(st.logoFile) $('logoImg').src=base+st.logoFile; };
+  try{ setLogo(JSON.parse(localStorage.getItem('dlv_settings')||'null')); }catch(e){}
+  try{ const s=await getDoc(doc(db,'settings','general')); if(s.exists()) setLogo(s.data()); }catch(e){}
+})();
+
+const randUname=()=>'user_'+Math.random().toString(36).slice(2,7);
+
+async function createAccount(name,phone,email){
+  if(!UID){ $('fErr').innerText='لحظة… جارٍ الاتصال'; return; }
+  $('busy').classList.add('on');
+  const refBy=new URLSearchParams(location.search).get('ref')||null;
+  try{
+    const target=localStorage.getItem('dlv_uid')||UID;
+    /* لو زائر يرقّي حسابه → تحديث بياناته مع الحفاظ على رصيده ومشترياته */
+    const ex=await getDoc(doc(db,'users',target));
+    if(ex.exists()){
+      await setDoc(doc(db,'users',target),{name,phone,email,guest:false},{merge:true});
+      location.replace('index.html'); return;
+    }
+    await setDoc(doc(db,'users',UID),{
+      userId:UID, name, phone, email, guest:false,
+      username:randUname(), usernameChangedAt:0,
+      balance:0, role:'user',
+      referralCode:UID.slice(0,8).toUpperCase(), referredBy:refBy,
+      totalSpent:0, points:0, verified:false, lastCheckIn:null,
+      couponUses:{}, createdAt:serverTimestamp()
+    });
+    location.replace('index.html');
+  }catch(e){
+    $('busy').classList.remove('on');
+    $('fErr').innerText='تعذر إنشاء الحساب — حاول مجدداً';
+  }
+}
+
+$('regBtn').onclick=()=>{
+  const name=$('fName').value.trim(), phone=$('fPhone').value.trim(), email=$('fEmail').value.trim();
+  if(!name) return $('fErr').innerText='اكتب اسمك الكامل';
+  if(!/^09[0-9]{8}$/.test(phone)) return $('fErr').innerText='أدخل رقم هاتف ليبي صحيح (09XXXXXXXX)';
+  $('fErr').innerText='';
+  createAccount(name,phone,email);
+};
+$('guestBtn').onclick=()=>{
+  $('fErr').innerText='';
+  createGuest();
+};
+async function createGuest(){
+  if(!UID){ $('fErr').innerText='لحظة… جارٍ الاتصال'; return; }
+  $('busy').classList.add('on');
+  try{
+    await setDoc(doc(db,'users',UID),{
+      userId:UID, name:'زائر', phone:'', email:'', guest:true,
+      username:randUname(), usernameChangedAt:0,
+      balance:0, role:'user',
+      referralCode:UID.slice(0,8).toUpperCase(), referredBy:null,
+      totalSpent:0, points:0, verified:false, lastCheckIn:null,
+      couponUses:{}, createdAt:serverTimestamp()
+    });
+    location.replace('index.html');
+  }catch(e){ $('busy').classList.remove('on'); $('fErr').innerText='تعذر الدخول — حاول مجدداً'; }
+}
+
+/* تسجيل الدخول برقم الهاتف: ربط الحساب الموجود بهذا الجهاز */
+$('loginBtn').onclick=async ()=>{
+  const phone=$('lPhone').value.trim();
+  if(!/^09[0-9]{8}$/.test(phone)) return $('lErr').innerText='أدخل رقم هاتف ليبي صحيح (09XXXXXXXX)';
+  $('lErr').innerText=''; $('busy').classList.add('on');
+  try{
+    const r=await getDocs(query(collection(db,'users'),where('phone','==',phone),limit(1)));
+    if(r.empty){ $('busy').classList.remove('on'); $('lErr').innerText='لا يوجد حساب مسجل بهذا الرقم — أنشئ حساباً جديداً'; return; }
+    /* ربط هذا الجهاز بمستند الحساب الأصلي */
+    localStorage.setItem('dlv_uid', r.docs[0].id);
+    location.replace('index.html');
+  }catch(e){ $('busy').classList.remove('on'); $('lErr').innerText='تعذر تسجيل الدخول — حاول مجدداً'; }
+};
+</script>
+</body>
+</html>
